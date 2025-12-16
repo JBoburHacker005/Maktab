@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3 } from 'lucide-react';
+import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3, Send, Instagram, Mail, PhoneCall } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, LabelList as RechartsLabelList } from 'recharts';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -422,13 +422,35 @@ const About: React.FC = () => {
                   <div className="absolute -inset-4 bg-gradient-primary rounded-3xl opacity-20 blur-2xl" />
                   <div className="relative rounded-2xl shadow-2xl w-full h-auto bg-card border border-border/50 p-4">
                     <ResponsiveContainer width="100%" height={320}>
-                      <BarChart data={teacherCategoryData} margin={{ top: 24, right: 16, left: 0, bottom: 8 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                        <XAxis dataKey="label" tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }} />
-                        <YAxis allowDecimals={false} tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }} />
+                      <BarChart
+                        data={teacherCategoryData}
+                        margin={{ top: 24, right: 24, left: 0, bottom: 40 }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke="#4b5563"
+                          opacity={0.4}
+                        />
+                        <XAxis
+                          dataKey="label"
+                          tick={{ fill: '#e5e7eb', fontSize: 12, fontWeight: 500 }}
+                          angle={-30}
+                          textAnchor="end"
+                          height={60}
+                        />
+                        <YAxis
+                          allowDecimals={false}
+                          tick={{ fill: '#e5e7eb', fontSize: 12, fontWeight: 500 }}
+                        />
                         <Tooltip
-                          cursor={{ fill: 'var(--muted)', opacity: 0.3 }}
-                          contentStyle={{ borderRadius: 12, border: '1px solid var(--border)', background: 'var(--card)' }}
+                          cursor={{ fill: '#1f2937', opacity: 0.3 }}
+                          contentStyle={{
+                            borderRadius: 12,
+                            border: '1px solid #4b5563',
+                            background: '#020617',
+                            color: '#f9fafb',
+                            fontSize: 13,
+                          }}
                           formatter={(val: number) => [`${val} ta`, 'Soni']}
                         />
                         <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="url(#teacherGradient)">
@@ -438,7 +460,13 @@ const About: React.FC = () => {
                               <stop offset="100%" stopColor="#22C55E" stopOpacity={0.85} />
                             </linearGradient>
                           </defs>
-                          <RechartsLabelList dataKey="value" position="top" fill="var(--foreground)" fontSize={12} />
+                          <RechartsLabelList
+                            dataKey="value"
+                            position="top"
+                            fill="#f9fafb"
+                            fontSize={14}
+                            fontWeight={600}
+                          />
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
@@ -520,47 +548,39 @@ const About: React.FC = () => {
                 <h3 className="font-display font-semibold text-lg text-foreground">
                   {person.name}
                 </h3>
-                <div className="mt-3 space-y-1 text-sm text-muted-foreground">
-                  <div>
-                    Telegram:{' '}
-                    <a
-                      href={contactInfo.telegramUrl}
-                      className="text-primary hover:underline"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {contactInfo.telegramHandle}
-                    </a>
-                  </div>
-                  <div>
-                    GitHub:{' '}
-                    <a
-                      href={contactInfo.githubUrl}
-                      className="text-primary hover:underline"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {contactInfo.githubUrl}
-                    </a>
-                  </div>
-                  <div>
-                    Email:{' '}
-                    <a
-                      href={`mailto:${contactInfo.email}`}
-                      className="text-primary hover:underline"
-                    >
-                      {contactInfo.email}
-                    </a>
-                  </div>
-                  <div>
-                    Tel:{' '}
-                    <a
-                      href={`tel:${contactInfo.phoneHref}`}
-                      className="text-primary hover:underline"
-                    >
-                      {contactInfo.phoneDisplay}
-                    </a>
-                  </div>
+                <div className="mt-3 flex items-center justify-center gap-2">
+                  <a
+                    href={contactInfo.telegramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="Telegram"
+                  >
+                    <Send className="w-5 h-5" />
+                  </a>
+                  <a
+                    href={contactInfo.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="GitHub"
+                  >
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                  <a
+                    href={`mailto:${contactInfo.email}`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="Email"
+                  >
+                    <Mail className="w-5 h-5" />
+                  </a>
+                  <a
+                    href={`tel:${contactInfo.phoneHref}`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="Phone"
+                  >
+                    <PhoneCall className="w-5 h-5" />
+                  </a>
                 </div>
               </motion.div>
             ))}
