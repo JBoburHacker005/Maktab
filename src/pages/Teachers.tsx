@@ -99,8 +99,8 @@ const Teachers: React.FC = () => {
     },
     {
       name: 'Qurbonboyev Mardon',
-      subject: '',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop',
+      subject: 'Law teacher',
+      image: '/teachers/huquq.JPG',
       telegram: '',
       phone: '+998 (97) 451-79-39',
     },
@@ -223,7 +223,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Avezova Gulbadan',
       subject: 'Uzbek Literature',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop',
+      image: '/teachers/ona tili3.JPG',
       telegram: '',
       phone: '+998 (97) 561-10-37',
     },
@@ -237,7 +237,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Arkayeva Iroda',
       subject: 'Uzbek Literature',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop',
+      image: '/teachers/IMG_9304.JPG',
       telegram: '',
       phone: '',
     },
@@ -245,17 +245,14 @@ const Teachers: React.FC = () => {
     {
       name: 'Radjabova Munisa',
       subject: 'Biology',
-      // Eslatma: Vercel (Linux) fayl nomlarini katta-kichik harfga sezgir.
-      // public/teachers ichida rasm nomi "biologiya.jpg", shuning uchun shu yo'lni ishlatamiz.
-      image: '/teachers/biologiya.jpg',
+      image: '/teachers/biologiya.JPG',
       telegram: '',
       phone: '+998 (88) 525-54-45',
     },
     {
       name: 'Eshmuratova Munojat',
       subject: 'Biology',
-      // public/teachers ichida rasm nomi "biologiya2.jpg"
-      image: '/teachers/biologiya2.jpg',
+      image: '/teachers/biologiya2.JPG',
       telegram: '',
       phone: '+998 (97) 459-20-88',
     },
