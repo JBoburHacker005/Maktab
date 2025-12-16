@@ -1,0 +1,482 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "13.0.5"
+  }
+  public: {
+    Tables: {
+      admin_permissions: {
+        Row: {
+          created_at: string
+          id: string
+          permission: Database["public"]["Enums"]["admin_permission"]
+          user_role_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          permission: Database["public"]["Enums"]["admin_permission"]
+          user_role_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          permission?: Database["public"]["Enums"]["admin_permission"]
+          user_role_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_permissions_user_role_id_fkey"
+            columns: ["user_role_id"]
+            isOneToOne: false
+            referencedRelation: "user_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      departments: {
+        Row: {
+          created_at: string
+          description_en: string
+          description_ru: string
+          description_uz: string
+          icon: string | null
+          id: string
+          name_en: string
+          name_ru: string
+          name_uz: string
+          published: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_en: string
+          description_ru: string
+          description_uz: string
+          icon?: string | null
+          id?: string
+          name_en: string
+          name_ru: string
+          name_uz: string
+          published?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_en?: string
+          description_ru?: string
+          description_uz?: string
+          icon?: string | null
+          id?: string
+          name_en?: string
+          name_ru?: string
+          name_uz?: string
+          published?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          created_at: string
+          description_en: string
+          description_ru: string
+          description_uz: string
+          event_date: string
+          id: string
+          image_url: string | null
+          location: string | null
+          published: boolean | null
+          title_en: string
+          title_ru: string
+          title_uz: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_en: string
+          description_ru: string
+          description_uz: string
+          event_date: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          published?: boolean | null
+          title_en: string
+          title_ru: string
+          title_uz: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_en?: string
+          description_ru?: string
+          description_uz?: string
+          event_date?: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          published?: boolean | null
+          title_en?: string
+          title_ru?: string
+          title_uz?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          image_url: string
+          published: boolean | null
+          title_en: string
+          title_ru: string
+          title_uz: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          published?: boolean | null
+          title_en: string
+          title_ru: string
+          title_uz: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          published?: boolean | null
+          title_en?: string
+          title_ru?: string
+          title_uz?: string
+        }
+        Relationships: []
+      }
+      news: {
+        Row: {
+          author_id: string | null
+          category: string
+          content_en: string
+          content_ru: string
+          content_uz: string
+          created_at: string
+          id: string
+          image_url: string | null
+          published: boolean | null
+          title_en: string
+          title_ru: string
+          title_uz: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string
+          content_en: string
+          content_ru: string
+          content_uz: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          title_en: string
+          title_ru: string
+          title_uz: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          category?: string
+          content_en?: string
+          content_ru?: string
+          content_uz?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          title_en?: string
+          title_ru?: string
+          title_uz?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      teachers: {
+        Row: {
+          bio_en: string | null
+          bio_ru: string | null
+          bio_uz: string | null
+          created_at: string
+          email: string | null
+          id: string
+          image_url: string | null
+          name: string
+          phone: string | null
+          published: boolean | null
+          subject_en: string
+          subject_ru: string
+          subject_uz: string
+          updated_at: string
+        }
+        Insert: {
+          bio_en?: string | null
+          bio_ru?: string | null
+          bio_uz?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          phone?: string | null
+          published?: boolean | null
+          subject_en: string
+          subject_ru: string
+          subject_uz: string
+          updated_at?: string
+        }
+        Update: {
+          bio_en?: string | null
+          bio_ru?: string | null
+          bio_uz?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          phone?: string | null
+          published?: boolean | null
+          subject_en?: string
+          subject_ru?: string
+          subject_uz?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          telegram_user_id: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          telegram_user_id?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          telegram_user_id?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      get_role_by_telegram_id: {
+        Args: { _telegram_id: number }
+        Returns: {
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }[]
+      }
+      has_permission: {
+        Args: {
+          _permission: Database["public"]["Enums"]["admin_permission"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+    }
+    Enums: {
+      admin_permission:
+        | "news_create"
+        | "news_edit"
+        | "news_delete"
+        | "events_create"
+        | "events_edit"
+        | "events_delete"
+        | "gallery_create"
+        | "gallery_delete"
+        | "teachers_create"
+        | "teachers_edit"
+        | "teachers_delete"
+        | "departments_create"
+        | "departments_edit"
+        | "departments_delete"
+      app_role: "super_admin" | "admin"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      admin_permission: [
+        "news_create",
+        "news_edit",
+        "news_delete",
+        "events_create",
+        "events_edit",
+        "events_delete",
+        "gallery_create",
+        "gallery_delete",
+        "teachers_create",
+        "teachers_edit",
+        "teachers_delete",
+        "departments_create",
+        "departments_edit",
+        "departments_delete",
+      ],
+      app_role: ["super_admin", "admin"],
+    },
+  },
+} as const

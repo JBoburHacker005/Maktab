@@ -1,0 +1,26 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "src": "/png/(.*)",
+      "dest": "/png/$1"
+    },
+    {
+      "src": "/teachers/(.*)",
+      "dest": "/teachers/$1"
+    },
+    {
+      "src": "/maktab/(.*)",
+      "dest": "/maktab/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
+
