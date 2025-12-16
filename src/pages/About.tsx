@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3, Send, Instagram, Mail, PhoneCall } from 'lucide-react';
+import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3, Send, Github, Mail, PhoneCall } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, LabelList as RechartsLabelList } from 'recharts';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -453,11 +453,18 @@ const About: React.FC = () => {
                           }}
                           formatter={(val: number) => [`${val} ta`, 'Soni']}
                         />
-                        <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="url(#teacherGradient)">
+                        <Bar
+                          dataKey="value"
+                          radius={[8, 8, 0, 0]}
+                          fill="url(#teacher3DGradient)"
+                          stroke="#1d4ed8"
+                          strokeWidth={2}
+                        >
                           <defs>
-                            <linearGradient id="teacherGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#4ADE80" />
-                              <stop offset="100%" stopColor="#22C55E" stopOpacity={0.85} />
+                            <linearGradient id="teacher3DGradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stopColor="#93c5fd" />
+                              <stop offset="35%" stopColor="#60a5fa" />
+                              <stop offset="100%" stopColor="#1d4ed8" />
                             </linearGradient>
                           </defs>
                           <RechartsLabelList
@@ -565,7 +572,7 @@ const About: React.FC = () => {
                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
                     aria-label="GitHub"
                   >
-                    <Instagram className="w-5 h-5" />
+                    <Github className="w-5 h-5" />
                   </a>
                   <a
                     href={`mailto:${contactInfo.email}`}
