@@ -245,16 +245,14 @@ const Teachers: React.FC = () => {
     {
       name: 'Radjabova Munisa',
       subject: 'Biology',
-      // Fayl nomi kichik harflarda: biologiya.jpg
-      image: '/teachers/biologiya.jpg',
+      image: '/teachers/munisa ustoz.JPG',
       telegram: '',
       phone: '+998 (88) 525-54-45',
     },
     {
       name: 'Eshmuratova Munojat',
       subject: 'Biology',
-      // Fayl nomi kichik harflarda: biologiya2.jpg
-      image: '/teachers/biologiya2.jpg',
+      image: '/teachers/munojat ustoz.JPG',
       telegram: '',
       phone: '+998 (97) 459-20-88',
     },
