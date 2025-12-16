@@ -171,7 +171,7 @@ const DepartmentsAdmin: React.FC = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name_uz">{t('nameUz'))}}</Label>
+                    <Label htmlFor="name_uz">{t('nameUz')}</Label>
                     <Input
                       id="name_uz"
                       name="name_uz"
