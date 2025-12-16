@@ -158,7 +158,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Baxtiyorova Dinara',
       subject: 'Russian Literature',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop',
+      image: '',
       telegram: '',
       phone: '+998 (50) 250-98-68',
     },
@@ -209,7 +209,7 @@ const Teachers: React.FC = () => {
     {
       name: ' Hasanboy',
       subject: 'Art',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop',
+      image: '',
       telegram: '',
       phone: '',
     },
@@ -245,14 +245,16 @@ const Teachers: React.FC = () => {
     {
       name: 'Radjabova Munisa',
       subject: 'Biology',
-      image: '/teachers/biologiya.JPG',
+      // Fayl nomi kichik harflarda: biologiya.jpg
+      image: '/teachers/biologiya.jpg',
       telegram: '',
       phone: '+998 (88) 525-54-45',
     },
     {
       name: 'Eshmuratova Munojat',
       subject: 'Biology',
-      image: '/teachers/biologiya2.JPG',
+      // Fayl nomi kichik harflarda: biologiya2.jpg
+      image: '/teachers/biologiya2.jpg',
       telegram: '',
       phone: '+998 (97) 459-20-88',
     },
