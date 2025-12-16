@@ -230,7 +230,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Azatova Laylo',
       subject: 'Uzbek Literature',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop',
+      image: '/teachers/Ona tili 2.JPG',
       telegram: '',
       phone: '',
     },
