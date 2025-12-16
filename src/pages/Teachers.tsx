@@ -245,14 +245,14 @@ const Teachers: React.FC = () => {
     {
       name: 'Radjabova Munisa',
       subject: 'Biology',
-      image: '/teachers/biologiya.jpg',
+      image: '/teachers/biologiya.JPG',
       telegram: '',
       phone: '+998 (88) 525-54-45',
     },
     {
       name: 'Eshmuratova Munojat',
       subject: 'Biology',
-      image: '/teachers/biologiya2.jpg',
+      image: '/teachers/biologiya2.JPG',
       telegram: '',
       phone: '+998 (97) 459-20-88',
     },
