@@ -18,7 +18,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Kenjayev Maqsudbek',
       role: 'Direktor o‘rinbosari (ma’naviy-ma’rifiy)',
-      image: '/teachers/maqsud ustoz.jpg',
+      image: '/teachers/maqsud ustoz.png',
       phone: '+998 (90) 000-00-02',
       telegram: '@Maqsudbek_K',
     },
