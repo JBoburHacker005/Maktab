@@ -207,7 +207,7 @@ const Teachers: React.FC = () => {
       phone: '',
     },
     {
-      name: ' Hasanboy',
+      name: 'Atajonov Hasanboy',
       subject: 'Art',
       image: '/teachers/art.png',
       telegram: '',
