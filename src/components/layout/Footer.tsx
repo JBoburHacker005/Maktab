@@ -129,6 +129,7 @@ const Footer: React.FC = () => {
           <div className="flex items-center justify-center sm:justify-end gap-2 text-sm text-muted-foreground w-full sm:w-auto">
             <span className="text-foreground font-medium">Creator:</span>
             <div className="flex items-center gap-2">
+              <span className="text-foreground font-semibold">Jovliyev Bobur</span>
               <div className="w-8 h-8 rounded-full overflow-hidden border border-border">
                 <img
                   src="/teachers/Bobur.jpg"
@@ -136,7 +137,6 @@ const Footer: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="text-foreground font-semibold">Jovliyev Bobur</span>
             </div>
           </div>
         </div>
