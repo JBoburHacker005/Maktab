@@ -120,6 +120,19 @@ const Footer: React.FC = () => {
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <div className="flex items-center gap-2">
+              <span className="text-foreground font-medium">Creator:</span>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full overflow-hidden border border-border">
+                  <img
+                    src="/teachers/Bobur.jpg"
+                    alt="Jovliyev Bobur"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-foreground font-semibold">Jovliyev Bobur</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
