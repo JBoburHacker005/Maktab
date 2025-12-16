@@ -42,7 +42,14 @@ const imagesToCopy = [
   { src: 'teachers/jt.JPG', dest: 'public/teachers/jt.JPG' },
   { src: 'teachers/ingliz tili3.JPG', dest: 'public/teachers/ingliz tili3.JPG' },
   { src: 'teachers/ingliz tili4.png', dest: 'public/teachers/ingliz tili4.png' },
-  { src: 'teachers/ona tili.jpg', dest: 'public/teachers/ona tili.jpg' }
+  { src: 'teachers/ona tili.jpg', dest: 'public/teachers/ona tili.jpg' },
+  // Uzbek literature additional photos
+  { src: 'teachers/Ona tili 2.JPG', dest: 'public/teachers/Ona tili 2.JPG' },
+  { src: 'teachers/ona tili3.JPG', dest: 'public/teachers/ona tili3.JPG' },
+  // Other new staff photos
+  { src: 'teachers/IMG_9304.JPG', dest: 'public/teachers/IMG_9304.JPG' },
+  { src: 'teachers/huquq.JPG', dest: 'public/teachers/huquq.JPG' },
+  { src: 'teachers/psixolog.jpg', dest: 'public/teachers/psixolog.jpg' },
 ];
 
 imagesToCopy.forEach(({ src, dest }) => {

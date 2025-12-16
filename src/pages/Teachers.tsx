@@ -266,7 +266,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Saparova Sabohat',
       subject: 'Psychologist',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop',
+      image: '/teachers/psixolog.jpg',
       telegram: '',
       phone: '+998 (97) 299-88-40',
     },
