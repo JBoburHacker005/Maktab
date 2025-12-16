@@ -20,17 +20,14 @@ const About: React.FC = () => {
     {
       name: 'Jovliyev Bobur',
       image: '/teachers/Bobur.jpg',
-      role: t('directorRole'),
     },
     {
       name: 'Qurbonboyev Maqsadbek',
       image: '/teachers/Maqsadbek.jpg',
-      role: t('viceDirectorAcademic'),
     },
     {
       name: "Norimov G'anijon",
       image: '/teachers/Ganijon.JPG',
-      role: t('viceDirectorSpiritual'),
     },
   ];
 
@@ -40,6 +37,15 @@ const About: React.FC = () => {
     { label: 'Birinchi toifa', value: 5 },
     { label: 'Oliy toifa', value: 19 },
   ];
+
+  const contactInfo = {
+    telegramHandle: '@Jovliyev_Bobur',
+    telegramUrl: 'https://t.me/Jovliyev_Bobur',
+    githubUrl: 'https://github.com/JBoburHacker005/',
+    email: 'jbobur005@gmail.com',
+    phoneDisplay: '+998 (93) 005-42-87',
+    phoneHref: '+998930054287',
+  };
 
   return (
     <Layout>
@@ -514,7 +520,48 @@ const About: React.FC = () => {
                 <h3 className="font-display font-semibold text-lg text-foreground">
                   {person.name}
                 </h3>
-                <p className="text-muted-foreground text-sm">{person.role}</p>
+                <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+                  <div>
+                    Telegram:{' '}
+                    <a
+                      href={contactInfo.telegramUrl}
+                      className="text-primary hover:underline"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {contactInfo.telegramHandle}
+                    </a>
+                  </div>
+                  <div>
+                    GitHub:{' '}
+                    <a
+                      href={contactInfo.githubUrl}
+                      className="text-primary hover:underline"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {contactInfo.githubUrl}
+                    </a>
+                  </div>
+                  <div>
+                    Email:{' '}
+                    <a
+                      href={`mailto:${contactInfo.email}`}
+                      className="text-primary hover:underline"
+                    >
+                      {contactInfo.email}
+                    </a>
+                  </div>
+                  <div>
+                    Tel:{' '}
+                    <a
+                      href={`tel:${contactInfo.phoneHref}`}
+                      className="text-primary hover:underline"
+                    >
+                      {contactInfo.phoneDisplay}
+                    </a>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
