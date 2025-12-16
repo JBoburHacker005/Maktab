@@ -245,6 +245,8 @@ const Teachers: React.FC = () => {
     {
       name: 'Radjabova Munisa',
       subject: 'Biology',
+      // Eslatma: Vercel (Linux) fayl nomlarini katta-kichik harfga sezgir.
+      // public/teachers ichida rasm nomi "biologiya.jpg", shuning uchun shu yo'lni ishlatamiz.
       image: '/teachers/biologiya.jpg',
       telegram: '',
       phone: '+998 (88) 525-54-45',
@@ -252,6 +254,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Eshmuratova Munojat',
       subject: 'Biology',
+      // public/teachers ichida rasm nomi "biologiya2.jpg"
       image: '/teachers/biologiya2.jpg',
       telegram: '',
       phone: '+998 (97) 459-20-88',
