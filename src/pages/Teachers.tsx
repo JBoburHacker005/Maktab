@@ -158,7 +158,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Baxtiyorova Dinara',
       subject: 'Russian Literature',
-      image: '',
+      image: '/teachers/rus tili4.png',
       telegram: '',
       phone: '+998 (50) 250-98-68',
     },
@@ -209,7 +209,7 @@ const Teachers: React.FC = () => {
     {
       name: ' Hasanboy',
       subject: 'Art',
-      image: '',
+      image: '/teachers/art.png',
       telegram: '',
       phone: '',
     },

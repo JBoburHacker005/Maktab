@@ -53,6 +53,9 @@ const imagesToCopy = [
   // Biology new photos
   { src: 'teachers/munisa ustoz.JPG', dest: 'public/teachers/munisa ustoz.JPG' },
   { src: 'teachers/munojat ustoz.JPG', dest: 'public/teachers/munojat ustoz.JPG' },
+  // Russian literature & Art new photos
+  { src: 'teachers/rus tili4.png', dest: 'public/teachers/rus tili4.png' },
+  { src: 'teachers/art.png', dest: 'public/teachers/art.png' },
 ];
 
 imagesToCopy.forEach(({ src, dest }) => {
