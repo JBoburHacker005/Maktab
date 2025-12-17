@@ -45,7 +45,30 @@ const About: React.FC = () => {
       name: "",
       image: '',
     },
-
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
     {
       name: "",
       image: '',

@@ -12,8 +12,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { z } from 'zod';
 
 const authSchema = z.object({
-  email: z.string().email('Invalid email address').max(255),
-  password: z.string().min(6, 'Password must be at least 6 characters').max(100),
+  email: z.string().min(1, 'Login kiritilishi shart').max(255),
+  password: z.string().min(1, 'Parol kiritilishi shart').max(100),
 });
 
 const Auth: React.FC = () => {
@@ -35,6 +35,12 @@ const Auth: React.FC = () => {
   }, [user, navigate]);
 
   const validateForm = () => {
+    // Special case for "Bobur" login
+    if (email.trim() === 'Bobur' && password === 'boburbek') {
+      setErrors({});
+      return true;
+    }
+    
     try {
       authSchema.parse({ email, password });
       setErrors({});
@@ -136,13 +142,13 @@ const Auth: React.FC = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Login</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="email"
-                    type="email"
-                    placeholder="admin@example.com"
+                    type="text"
+                    placeholder="Bobur"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
