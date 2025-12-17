@@ -71,3 +71,42 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Admin Panel Setup
+
+To create an admin user for the admin panel:
+
+1. **Go to Supabase Dashboard**
+   - Navigate to your Supabase project
+   - Go to **Authentication** > **Users**
+   - Click **"Add user"** > **"Create new user"**
+
+2. **Create the user with these credentials:**
+   - **Email**: `jbobur005@gmail.com`
+   - **Password**: `boburbek005`
+   - **Auto Confirm User**: Yes (check this box)
+   - Click **"Create user"**
+
+3. **Assign Admin Role**
+   - Go to **SQL Editor** in Supabase Dashboard
+   - Run this SQL query:
+   ```sql
+   INSERT INTO public.user_roles (user_id, role)
+   SELECT id, 'admin'::app_role
+   FROM auth.users
+   WHERE email = 'jbobur005@gmail.com'
+   ON CONFLICT (user_id, role) DO NOTHING;
+   ```
+
+4. **Login to Admin Panel**
+   - Navigate to `/auth` page in your application
+   - Login with:
+     - Email: `jbobur005@gmail.com`
+     - Password: `boburbek005`
+
+Alternatively, you can run the migration file:
+```sh
+supabase migration up
+```
+
+This will automatically assign the admin role to the user if they exist in the database.

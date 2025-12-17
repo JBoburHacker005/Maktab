@@ -1,10 +1,11 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Newspaper, Calendar, Images, Users, Building2, TrendingUp } from 'lucide-react';
+import { Newspaper, Calendar, Images, Users, Building2, TrendingUp, History } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
+import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const { role } = useAuth();
@@ -118,6 +119,29 @@ const Dashboard: React.FC = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Super Admin Only: Audit Log */}
+        {role === 'super_admin' && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Super Admin</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Link
+                to="/admin/audit-logs"
+                className="flex items-center gap-3 p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
+              >
+                <History className="w-6 h-6 text-primary" />
+                <div>
+                  <div className="font-medium">Audit Log</div>
+                  <div className="text-sm text-muted-foreground">
+                    Saytga kiritilgan barcha o'zgartirishlar tarixi
+                  </div>
+                </div>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </AdminLayout>
   );

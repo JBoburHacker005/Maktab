@@ -14,6 +14,7 @@ import {
   Sun,
   Moon,
   ChevronRight,
+  History,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -59,6 +60,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { href: '/admin/gallery', icon: Images, label: 'Galereya' },
     { href: '/admin/teachers', icon: Users, label: 'O\'qituvchilar' },
     { href: '/admin/departments', icon: Building2, label: 'Bo\'limlar' },
+    ...(role === 'super_admin' ? [{ href: '/admin/audit-logs', icon: History, label: 'Audit Log' }] : []),
   ];
 
   const languages = [

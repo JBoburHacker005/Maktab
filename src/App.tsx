@@ -21,6 +21,7 @@ import EventsAdmin from "./pages/admin/EventsAdmin";
 import GalleryAdmin from "./pages/admin/GalleryAdmin";
 import TeachersAdmin from "./pages/admin/TeachersAdmin";
 import DepartmentsAdmin from "./pages/admin/DepartmentsAdmin";
+import AuditLogs from "./pages/admin/AuditLogs";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/admin/gallery" element={<ProtectedRoute><GalleryAdmin /></ProtectedRoute>} />
               <Route path="/admin/teachers" element={<ProtectedRoute><TeachersAdmin /></ProtectedRoute>} />
               <Route path="/admin/departments" element={<ProtectedRoute><DepartmentsAdmin /></ProtectedRoute>} />
+              <Route path="/admin/audit-logs" element={<ProtectedRoute><AuditLogs /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
