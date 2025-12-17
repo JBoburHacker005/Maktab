@@ -23,21 +23,21 @@ interface TelegramAdmin {
 }
 
 const TelegramAdmins: React.FC = () => {
-  const { role, user } = useAuth();
+  const { role } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [telegramUsername, setTelegramUsername] = useState('');
 
-  // Only super_admin can access
-  if (role !== 'super_admin') {
+  // Har qanday admin (role mavjud bo'lsa) Telegram adminlarini boshqara oladi
+  if (!role) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <h2 className="text-xl font-display font-bold mb-2">Ruxsat yo'q</h2>
             <p className="text-muted-foreground">
-              Faqat super admin Telegram adminlarini boshqara oladi.
+              Sizda bu bo&apos;limga kirish huquqi mavjud emas.
             </p>
           </div>
         </div>
