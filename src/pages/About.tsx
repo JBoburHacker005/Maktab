@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3 } from 'lucide-react';
+import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3, Send, Github, Mail, PhoneCall } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, LabelList as RechartsLabelList } from 'recharts';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -16,12 +16,73 @@ const About: React.FC = () => {
     { icon: GraduationCap, value: '95%', label: t('universityAdmission100') },
   ];
 
+  const leadership = [
+    {
+      name: 'Jovliyev Bobur',
+      image: '/teachers/Bobur.jpg',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "Norimov G'anijon",
+      image: '/teachers/Ganijon.JPG',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+    {
+      name: "",
+      image: '',
+    },
+  ];
+
   const teacherCategoryData = [
     { label: 'Mutaxassis', value: 1 },
     { label: 'Ikkinchi toifa', value: 2 },
     { label: 'Birinchi toifa', value: 5 },
     { label: 'Oliy toifa', value: 19 },
   ];
+
+  const contactInfo = {
+    telegramHandle: '@Jovliyev_Bobur',
+    telegramUrl: 'https://t.me/Jovliyev_Bobur',
+    githubUrl: 'https://github.com/JBoburHacker005/',
+    email: 'jbobur005@gmail.com',
+    phoneDisplay: '+998 (93) 005-42-87',
+    phoneHref: '+998930054287',
+  };
 
   return (
     <Layout>
@@ -495,6 +556,81 @@ const About: React.FC = () => {
         </div>
       </section>
 
+      {/* Leadership */}
+      <section className="py-20 lg:py-28 bg-muted/50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground">
+              {t('leadershipTitle')}
+            </h2>
+            <p className="text-muted-foreground mt-3">
+              {t('leadershipSubtitle')}
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-3 gap-6 lg:gap-8 max-w-4xl mx-auto">
+            {leadership.map((person, index) => (
+              <motion.div
+                key={person.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden ring-4 ring-primary/20">
+                  <img
+                    src={person.image}
+                    alt={person.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="font-display font-semibold text-lg text-foreground">
+                  {person.name}
+                </h3>
+                <div className="mt-3 flex items-center justify-center gap-2">
+                  <a
+                    href={contactInfo.telegramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="Telegram"
+                  >
+                    <Send className="w-5 h-5" />
+                  </a>
+                  <a
+                    href={contactInfo.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="GitHub"
+                  >
+                    <Github className="w-5 h-5" />
+                  </a>
+                  <a
+                    href={`mailto:${contactInfo.email}`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="Email"
+                  >
+                    <Mail className="w-5 h-5" />
+                  </a>
+                  <a
+                    href={`tel:${contactInfo.phoneHref}`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
+                    aria-label="Phone"
+                  >
+                    <PhoneCall className="w-5 h-5" />
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 };
