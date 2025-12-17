@@ -37,7 +37,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     // Admin panel always uses dark mode
     document.documentElement.classList.add('dark');
     localStorage.setItem('theme', 'dark');
-    setIsDark(true);
   }, []);
 
   const handleSignOut = async () => {
@@ -52,9 +51,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { href: '/admin/gallery', icon: Images, label: 'Galereya' },
     { href: '/admin/teachers', icon: Users, label: 'O\'qituvchilar' },
     { href: '/admin/departments', icon: Building2, label: 'Bo\'limlar' },
-    ...(role === 'super_admin' ? [
-      { href: '/admin/audit-logs', icon: History, label: 'Audit Log' },
+    // Har qanday rolega ega admin (admin yoki super_admin) Telegram bo'limlariga kira oladi
+    ...(role ? [
       { href: '/admin/telegram-admins', icon: Bot, label: 'Telegram Adminlar' },
+      ...(role === 'super_admin'
+        ? [{ href: '/admin/audit-logs', icon: History, label: 'Audit Log' }]
+        : []),
     ] : []),
   ];
 
