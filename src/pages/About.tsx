@@ -22,12 +22,12 @@ const About: React.FC = () => {
       image: '/teachers/Bobur.jpg',
     },
     {
-      name: "",
-      image: '',
-    },
-    {
       name: "Norimov G'anijon",
       image: '/teachers/Ganijon.JPG',
+    },
+    {
+      name: "",
+      image: '',
     },
     {
       name: "",
