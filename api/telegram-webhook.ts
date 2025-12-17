@@ -74,56 +74,12 @@ const translations = {
   },
 };
 
-// Check if user is admin by username
-async function isAdminByUsername(username: string): Promise<boolean> {
-  try {
-    if (!username) return false;
-    
-    const cleanUsername = username.replace('@', '').toLowerCase();
-    
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .ilike('telegram_username', cleanUsername)
-      .maybeSingle();
-
-    if (error || !data) return false;
-    return data.role === 'admin' || data.role === 'super_admin';
-  } catch {
-    return false;
-  }
-}
-
-// Check if user is admin by user_id (fallback)
-async function isAdminByUserId(telegramUserId: number): Promise<boolean> {
-  try {
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('telegram_user_id', telegramUserId)
-      .maybeSingle();
-
-    if (error || !data) return false;
-    return data.role === 'admin' || data.role === 'super_admin';
-  } catch {
-    return false;
-  }
-}
-
-// Main admin check function
-async function isAdmin(user: any): Promise<boolean> {
-  // First try username
-  if (user.username) {
-    const isAdminByUser = await isAdminByUsername(user.username);
-    if (isAdminByUser) return true;
-  }
-  
-  // Fallback to user_id
-  if (user.id) {
-    return await isAdminByUserId(user.id);
-  }
-  
-  return false;
+// Access control:
+// Ilgari bu bot faqat user_roles jadvalidagi adminlar uchun ishlardi.
+// Endi foydalanuvchi so'roviga ko'ra, botdan har qanday Telegram foydalanuvchisi
+// foydalanishi mumkin. Shuning uchun isAdmin har doim true qaytaradi.
+async function isAdmin(_user: any): Promise<boolean> {
+  return true;
 }
 
 // Get user language preference
