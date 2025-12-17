@@ -5,7 +5,12 @@ const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+// Supabase env kirilmagan bo'lsa ham /start javob bera olishi uchun
+// clientni faqat URL va KEY bor bo'lsa yaratamiz.
+const supabase =
+  SUPABASE_URL && SUPABASE_SERVICE_KEY
+    ? createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    : null;
 
 // Language translations
 const translations = {
@@ -84,6 +89,8 @@ async function isAdmin(_user: any): Promise<boolean> {
 
 // Get user language preference
 async function getUserLanguage(telegramUserId: number): Promise<'uz' | 'en' | 'ru'> {
+  // Supabase yo'q bo'lsa, sukut bo'yicha 'uz'
+  if (!supabase) return 'uz';
   try {
     const { data } = await supabase
       .from('telegram_user_preferences')
@@ -99,6 +106,7 @@ async function getUserLanguage(telegramUserId: number): Promise<'uz' | 'en' | 'r
 
 // Save user language preference
 async function saveUserLanguage(telegramUserId: number, language: 'uz' | 'en' | 'ru') {
+  if (!supabase) return;
   await supabase
     .from('telegram_user_preferences')
     .upsert({
@@ -168,6 +176,10 @@ async function showPanels(chatId: number, language: 'uz' | 'en' | 'ru') {
 async function handleCallback(chatId: number, user: any, data: string, messageId: number) {
   const isUserAdmin = await isAdmin(user);
   if (!isUserAdmin) return;
+  if (!supabase) {
+    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\\\'q).');
+    return;
+  }
   
   const telegramUserId = user.id;
 
@@ -313,6 +325,10 @@ async function handleCallback(chatId: number, user: any, data: string, messageId
 async function handleText(chatId: number, user: any, text: string) {
   const isUserAdmin = await isAdmin(user);
   if (!isUserAdmin) return;
+  if (!supabase) {
+    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\\\'q).');
+    return;
+  }
   
   const telegramUserId = user.id;
 
@@ -451,6 +467,10 @@ async function handleText(chatId: number, user: any, text: string) {
 async function handlePhoto(chatId: number, user: any, photo: any[]) {
   const isUserAdmin = await isAdmin(user);
   if (!isUserAdmin) return;
+  if (!supabase) {
+    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\\\'q).');
+    return;
+  }
   
   const telegramUserId = user.id;
 
