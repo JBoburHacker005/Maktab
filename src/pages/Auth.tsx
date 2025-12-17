@@ -66,7 +66,7 @@ const Auth: React.FC = () => {
 
       if (error) {
         let message = error.message;
-        if (message.includes('Invalid login')) {
+        if (message.includes('Invalid login') || message.includes('Invalid credentials')) {
           message = 'Email yoki parol noto\'g\'ri';
         } else if (message.includes('already registered')) {
           message = 'Bu email allaqachon ro\'yxatdan o\'tgan';
@@ -77,7 +77,12 @@ const Auth: React.FC = () => {
           description: message,
         });
       } else {
-        if (!isLogin) {
+        if (isLogin) {
+          // Wait a bit for role to be fetched, then navigate
+          setTimeout(() => {
+            navigate('/admin');
+          }, 500);
+        } else {
           toast({
             title: 'Muvaffaqiyatli!',
             description: 'Ro\'yxatdan o\'tdingiz. Tizimga kirishingiz mumkin.',

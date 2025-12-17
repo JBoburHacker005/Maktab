@@ -78,7 +78,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!error && data?.user) {
+      // Fetch role after successful login
+      const fetchedRole = await fetchUserRole(data.user.id);
+      setRole(fetchedRole);
+    }
     return { error: error ? new Error(error.message) : null };
   };
 

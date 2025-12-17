@@ -11,8 +11,6 @@ import {
   LogOut,
   Menu,
   X,
-  Sun,
-  Moon,
   ChevronRight,
   History,
 } from 'lucide-react';
@@ -28,10 +26,6 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    return saved === 'dark';
-  });
 
   const { user, role, signOut } = useAuth();
   const { language, setLanguage, t } = useLanguage();
@@ -39,14 +33,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
+    // Admin panel always uses dark mode
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+    setIsDark(true);
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();
@@ -77,9 +68,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           <Menu className="w-5 h-5" />
         </Button>
         <span className="font-display font-bold text-lg">Admin Panel</span>
-        <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)}>
-          {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </Button>
       </header>
 
       {/* Sidebar Overlay */}
@@ -161,13 +149,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               ))}
             </div>
 
-            {/* Theme Toggle (Desktop) */}
-            <div className="hidden lg:flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Tema</span>
-              <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)}>
-                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </Button>
-            </div>
 
             {/* User & Sign Out */}
             <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
