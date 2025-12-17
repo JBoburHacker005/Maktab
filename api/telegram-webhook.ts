@@ -125,13 +125,8 @@ async function sendMessage(chatId: number, text: string, replyMarkup?: any) {
 
 // Handle /start command
 async function handleStart(chatId: number, user: any) {
-  const isUserAdmin = await isAdmin(user);
-  
-  if (!isUserAdmin) {
-    // Silent - do nothing for non-admins
-    return;
-  }
-  
+  // Endi botdan hamma foydalanuvchi foydalanishi mumkin,
+  // shu sababli admin tekshiruvi olib tashlandi.
   const telegramUserId = user.id;
 
   const t = translations[await getUserLanguage(telegramUserId)];
@@ -551,8 +546,8 @@ export default async function handler(req: Request) {
         body: JSON.stringify({ callback_query_id: update.callback_query.id }),
       });
     }
-    // Handle /start command
-    else if (update.message?.text === '/start') {
+    // Handle /start command (masalan: "/start" yoki "/start 123")
+    else if (update.message?.text && update.message.text.startsWith('/start')) {
       await handleStart(update.message.chat.id, update.message.from);
     }
     // Handle text messages
