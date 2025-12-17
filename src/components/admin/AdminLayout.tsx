@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -29,12 +28,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { user, role, signOut } = useAuth();
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Admin panel always uses dark mode
+    // Admin panel har doim dark mode’da
     document.documentElement.classList.add('dark');
     localStorage.setItem('theme', 'dark');
   }, []);
@@ -49,15 +48,17 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { href: '/admin/news', icon: Newspaper, label: 'Yangiliklar' },
     { href: '/admin/events', icon: Calendar, label: 'Tadbirlar' },
     { href: '/admin/gallery', icon: Images, label: 'Galereya' },
-    { href: '/admin/teachers', icon: Users, label: 'O\'qituvchilar' },
-    { href: '/admin/departments', icon: Building2, label: 'Bo\'limlar' },
-    // Har qanday rolega ega admin (admin yoki super_admin) Telegram bo'limlariga kira oladi
-    ...(role ? [
-      { href: '/admin/telegram-admins', icon: Bot, label: 'Telegram Adminlar' },
-      ...(role === 'super_admin'
-        ? [{ href: '/admin/audit-logs', icon: History, label: 'Audit Log' }]
-        : []),
-    ] : []),
+    { href: '/admin/teachers', icon: Users, label: "O'qituvchilar" },
+    { href: '/admin/departments', icon: Building2, label: "Bo'limlar" },
+    // Har qanday admin (admin yoki super_admin) Telegram Adminlar’ni ko‘radi
+    ...(role
+      ? [
+          { href: '/admin/telegram-admins', icon: Bot, label: 'Telegram Adminlar' },
+          ...(role === 'super_admin'
+            ? [{ href: '/admin/audit-logs', icon: History, label: 'Audit Log' }]
+            : []),
+        ]
+      : []),
   ];
 
   const languages = [
@@ -88,7 +89,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       <aside
         className={cn(
           'fixed top-0 left-0 z-50 h-full w-64 bg-card border-r border-border transition-transform duration-300 lg:translate-x-0',
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         <div className="flex flex-col h-full">
@@ -124,7 +125,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
                     isActive
                       ? 'bg-primary text-primary-foreground shadow-md'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted',
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -147,14 +148,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     'flex-1 px-2 py-1 text-xs font-medium rounded-md transition-all duration-200',
                     language === lang.code
                       ? 'bg-background text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
+                      : 'text-muted-foreground hover:text-foreground',
                   )}
                 >
                   {lang.label}
                 </button>
               ))}
             </div>
-
 
             {/* User & Sign Out */}
             <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
