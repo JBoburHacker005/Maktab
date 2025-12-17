@@ -90,11 +90,17 @@ const Auth: React.FC = () => {
           setIsLogin(true);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
+      let message = 'Kutilmagan xatolik yuz berdi';
+      if (err?.message?.includes('Failed to fetch') || err?.message?.includes('NetworkError')) {
+        message = 'Internet aloqasi yoki Supabase sozlamalari muammosi. Iltimos, .env faylini tekshiring.';
+      } else if (err?.message) {
+        message = err.message;
+      }
       toast({
         variant: 'destructive',
         title: 'Xatolik',
-        description: 'Kutilmagan xatolik yuz berdi',
+        description: message,
       });
     } finally {
       setIsLoading(false);
