@@ -51,6 +51,7 @@ const imagesToCopy = [
   { src: 'teachers/IMG_9304.JPG', dest: 'public/teachers/IMG_9304.JPG' },
   { src: 'teachers/huquq.JPG', dest: 'public/teachers/huquq.JPG' },
   { src: 'teachers/psixolog.jpg', dest: 'public/teachers/psixolog.jpg' },
+  { src: 'teachers/psix.jpg', dest: 'public/teachers/psix.jpg' },
   // Biology new photos
   { src: 'teachers/munisa ustoz.JPG', dest: 'public/teachers/munisa ustoz.JPG' },
   { src: 'teachers/munojat ustoz.JPG', dest: 'public/teachers/munojat ustoz.JPG' },
