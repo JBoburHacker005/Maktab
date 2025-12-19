@@ -1,16 +1,7 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "functions": {
-    "api/telegram-webhook.ts": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "routes": [
-    {
-      "src": "/api/telegram-webhook",
-      "dest": "/api/telegram-webhook.ts"
-    },
     {
       "src": "/png/(.*)",
       "dest": "/png/$1"

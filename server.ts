@@ -1,12 +1,30 @@
-// Railway uchun Express server
-// Bu fayl faqat Railway deployment uchun ishlatiladi
+// Railway uchun Express server (Backend API + Telegram Bot)
+// Bu fayl Railway deployment uchun ishlatiladi
 import express from 'express';
+import cors from 'cors';
 import { createClient } from '@supabase/supabase-js';
 
 const app = express();
-app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+// CORS sozlash - Vercel frontend uchun
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:5173',
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
+  'https://*.vercel.app',
+].filter(Boolean);
+
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? allowedOrigins 
+    : '*', // Development da barcha originlarga ruxsat
+  credentials: true,
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// PORT - Railway avtomatik beradi
+const PORT = process.env.PORT || 5000;
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -561,7 +579,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Railway server running on port ${PORT}`);
+// Server ishga tushirish
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Backend server running on port ${PORT}`);
+  console.log(`📍 Health check: http://localhost:${PORT}/health`);
+  console.log(`🤖 Telegram webhook: http://localhost:${PORT}/api/telegram-webhook`);
 });
 
