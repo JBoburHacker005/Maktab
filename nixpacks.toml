@@ -1,13 +1,13 @@
 # Railway uchun Nixpacks konfiguratsiyasi (Backend uchun)
+# Backend uchun faqat dependencies o'rnatish va server ishga tushirish kerak
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = ["npm install"]
 
-# Backend uchun build kerak emas, faqat dependencies o'rnatish kifoya
-[phases.build]
-cmds = []
+# Build phase ni o'chirish - backend uchun kerak emas
+# [phases.build] - o'chirilgan
 
 [start]
 cmd = "npm start"
