@@ -1,12 +1,13 @@
-# Railway uchun Nixpacks konfiguratsiyasi
+# Railway uchun Nixpacks konfiguratsiyasi (Backend uchun)
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = ["npm install"]
 
+# Backend uchun build kerak emas, faqat dependencies o'rnatish kifoya
 [phases.build]
-cmds = ["npm run build"]
+cmds = []
 
 [start]
 cmd = "npm start"

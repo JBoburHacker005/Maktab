@@ -200,7 +200,7 @@ const TelegramAdmins: React.FC = () => {
                     onChange={(e) => setTelegramUsername(e.target.value)}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Username ni Telegram profilida topishingiz mumkin (Settings > Username)
+                    Username ni Telegram profilida topishingiz mumkin (Settings &gt; Username)
                   </p>
                 </div>
                 <Button
