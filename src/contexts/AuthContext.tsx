@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const fetchedRole = await fetchUserRole(data.user.id);
         setRole(fetchedRole);
       }
-      return { error: error ? new Error(error.message) : null };
+    return { error: error ? new Error(error.message) : null };
     } catch (err: any) {
       const errorMessage = err?.message || 'Failed to fetch';
       return { error: new Error(errorMessage) };

@@ -118,17 +118,31 @@ async function saveUserLanguage(telegramUserId: number, language: 'uz' | 'en' | 
 
 // Send message via Telegram API
 async function sendMessage(chatId: number, text: string, replyMarkup?: any) {
+  if (!BOT_TOKEN) {
+    console.error('BOT_TOKEN is missing!');
+    return;
+  }
+  
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-  await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text,
-      reply_markup: replyMarkup,
-      parse_mode: 'HTML',
-    }),
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        reply_markup: replyMarkup,
+        parse_mode: 'HTML',
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Telegram API error:', errorData);
+    }
+  } catch (error) {
+    console.error('Failed to send message:', error);
+  }
 }
 
 // Handle /start command
@@ -137,7 +151,9 @@ async function handleStart(chatId: number, user: any) {
   // shu sababli admin tekshiruvi olib tashlandi.
   const telegramUserId = user.id;
 
-  const t = translations[await getUserLanguage(telegramUserId)];
+  // Agar Supabase yo'q bo'lsa, sukut bo'yicha 'uz' tilini ishlatamiz
+  const language = await getUserLanguage(telegramUserId);
+  const t = translations[language];
   
   await sendMessage(chatId, t.welcome + '\n\n' + t.selectLanguage, {
     inline_keyboard: [
@@ -174,10 +190,9 @@ async function showPanels(chatId: number, language: 'uz' | 'en' | 'ru') {
 
 // Handle callback queries
 async function handleCallback(chatId: number, user: any, data: string, messageId: number) {
-  const isUserAdmin = await isAdmin(user);
-  if (!isUserAdmin) return;
+  // Endi barcha foydalanuvchilar foydalanishi mumkin
   if (!supabase) {
-    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\\\'q).');
+    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\'q).');
     return;
   }
   
@@ -323,10 +338,9 @@ async function handleCallback(chatId: number, user: any, data: string, messageId
 
 // Handle text messages (for form inputs)
 async function handleText(chatId: number, user: any, text: string) {
-  const isUserAdmin = await isAdmin(user);
-  if (!isUserAdmin) return;
+  // Endi barcha foydalanuvchilar foydalanishi mumkin
   if (!supabase) {
-    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\\\'q).');
+    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\'q).');
     return;
   }
   
@@ -465,10 +479,9 @@ async function handleText(chatId: number, user: any, text: string) {
 
 // Handle photo messages
 async function handlePhoto(chatId: number, user: any, photo: any[]) {
-  const isUserAdmin = await isAdmin(user);
-  if (!isUserAdmin) return;
+  // Endi barcha foydalanuvchilar foydalanishi mumkin
   if (!supabase) {
-    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\\\'q).');
+    await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\'q).');
     return;
   }
   
@@ -549,6 +562,11 @@ async function handlePhoto(chatId: number, user: any, photo: any[]) {
 export default async function handler(req: Request) {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
+  }
+
+  if (!BOT_TOKEN) {
+    console.error('BOT_TOKEN is missing!');
+    return Response.json({ error: 'Bot token not configured' }, { status: 500 });
   }
 
   try {

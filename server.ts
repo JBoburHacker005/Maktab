@@ -133,17 +133,31 @@ async function saveUserLanguage(telegramUserId: number, language: 'uz' | 'en' | 
 }
 
 async function sendMessage(chatId: number, text: string, replyMarkup?: any) {
+  if (!BOT_TOKEN) {
+    console.error('BOT_TOKEN is missing!');
+    return;
+  }
+  
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-  await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text,
-      reply_markup: replyMarkup,
-      parse_mode: 'HTML',
-    }),
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        reply_markup: replyMarkup,
+        parse_mode: 'HTML',
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Telegram API error:', errorData);
+    }
+  } catch (error) {
+    console.error('Failed to send message:', error);
+  }
 }
 
 async function handleStart(chatId: number, user: any) {
@@ -183,8 +197,7 @@ async function showPanels(chatId: number, language: 'uz' | 'en' | 'ru') {
 }
 
 async function handleCallback(chatId: number, user: any, data: string, messageId: number) {
-  const isUserAdmin = await isAdmin(user);
-  if (!isUserAdmin) return;
+  // Endi barcha foydalanuvchilar foydalanishi mumkin
   if (!supabase) {
     await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\'q).');
     return;
@@ -327,8 +340,7 @@ async function handleCallback(chatId: number, user: any, data: string, messageId
 }
 
 async function handleText(chatId: number, user: any, text: string) {
-  const isUserAdmin = await isAdmin(user);
-  if (!isUserAdmin) return;
+  // Endi barcha foydalanuvchilar foydalanishi mumkin
   if (!supabase) {
     await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\'q).');
     return;
@@ -462,8 +474,7 @@ async function handleText(chatId: number, user: any, text: string) {
 }
 
 async function handlePhoto(chatId: number, user: any, photo: any[]) {
-  const isUserAdmin = await isAdmin(user);
-  if (!isUserAdmin) return;
+  // Endi barcha foydalanuvchilar foydalanishi mumkin
   if (!supabase) {
     await sendMessage(chatId, 'Server sozlanmagan (Supabase env yo\'q).');
     return;
