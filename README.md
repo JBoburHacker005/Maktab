@@ -100,12 +100,6 @@ To create an admin user for the admin panel:
    ON CONFLICT (user_id, role) DO NOTHING;
    ```
 
-4. **Login to Admin Panel**
-   - Navigate to `/auth` page in your application
-   - Login with:
-     - Email: `jbobur005@gmail.com`
-     - Password: `boburbek005`
-
 Alternatively, you can run the migration file:
 ```sh
 supabase migration up
