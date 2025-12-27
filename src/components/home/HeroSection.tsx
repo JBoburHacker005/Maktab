@@ -17,15 +17,6 @@ const HeroSection: React.FC = () => {
 
   return (
     <section className="relative min-h-[90vh] flex items-center bg-gradient-hero overflow-hidden">
-      {/* Background Image with Backdrop */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/maktab/photo_2025-12-13_13-22-52.jpg)',
-        }}
-      />
-      <div className="absolute inset-0 bg-background/40 backdrop-blur-sm" />
-      
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
