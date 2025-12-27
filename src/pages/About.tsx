@@ -26,20 +26,56 @@ const About: React.FC = () => {
       image: '/teachers/Ganijon.JPG',
     },
     {
-      name: "",
-      image: '',
+      name: "Komiljonov Bobur",
+      image: '/teachers/Komiljonov Bobur.jpg',
     },
     {
-      name: "",
-      image: '',
+      name: "Ilxomova Charosxon",
+      image: '/teachers/ILXOMOVA CHAROS.jpg',
     },
     {
-      name: "",
-      image: '',
+      name: "Ibragimova Ramzila",
+      image: '/teachers/Ramzila.jpg',
     },
     {
-      name: "",
-      image: '',
+      name: "Qalandarova Ruxsora",
+      image: '/teachers/RUXSORA.jpg',
+    },
+    {
+      name: "Sobirova Flyura",
+      image: '/teachers/FLYURA.jpg',
+    },
+    {
+      name: "Xudoyberganova Asalxon",
+      image: '/teachers/Asalxon.jpg',
+    },
+    {
+      name: "Komilova Xurshidabonu",
+      image: '/teachers/XURSHIDA.jpg',
+    },
+    {
+      name: "Karimova Charosxon",
+      image: '/teachers/KARIMOVA CHAROS.jpg',
+    },
+    {
+      name: "Safarboyev Mehrojbek",
+      image: '/teachers/Mexroj.jpg',
+    },
+    {
+      name: "Sadullayeva Yulduzxon",
+      image: '/teachers/Yulduz.jpg',
+    },
+    {
+      name: "Kuvandikov Muzrobbek",
+      image: '/teachers/Muzrob.jpg',
+    },
+    {
+      name: "Jumaniyozov Muhammadjon",
+      image: '/teachers/Muhammad.jpg',
+    },
+    {
+      name: "Eshchonov Xamidjon",
+      image: '/teachers/XAMIDJON.jpg',
     },
   ];
 
