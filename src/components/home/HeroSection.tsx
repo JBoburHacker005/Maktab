@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
           backgroundImage: 'url(/maktab/photo_2025-12-13_13-22-52.jpg)',
         }}
       />
-      <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-background/40 backdrop-blur-sm" />
       
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
