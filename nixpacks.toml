@@ -3,7 +3,10 @@
 nixPkgs = ["nodejs-20_x"]
 
 [phases.install]
-cmds = ["npm install"]
+cmds = [
+  "rm -f package-lock.json || true",
+  "npm install --legacy-peer-deps"
+]
 
 [phases.build]
 cmds = []
