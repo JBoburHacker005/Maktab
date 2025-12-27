@@ -583,7 +583,7 @@ const About: React.FC = () => {
               {t('leadershipSubtitle')}
             </p>
           </motion.div>
-          <div className="grid sm:grid-cols-3 gap-6 lg:gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8 max-w-7xl mx-auto">
             {leadership.map((person, index) => (
               <motion.div
                 key={person.name}
