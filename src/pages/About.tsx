@@ -534,7 +534,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Achievements */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -616,40 +616,6 @@ const About: React.FC = () => {
                 <h3 className="font-display font-semibold text-lg text-foreground">
                   {person.name}
                 </h3>
-                <div className="mt-3 flex items-center justify-center gap-2">
-                  <a
-                    href={contactInfo.telegramUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Telegram"
-                  >
-                    <Send className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={contactInfo.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="GitHub"
-                  >
-                    <Github className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`mailto:${contactInfo.email}`}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Email"
-                  >
-                    <Mail className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`tel:${contactInfo.phoneHref}`}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#111827] text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Phone"
-                  >
-                    <PhoneCall className="w-5 h-5" />
-                  </a>
-                </div>
               </motion.div>
             ))}
           </div>
