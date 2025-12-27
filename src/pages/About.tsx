@@ -103,7 +103,7 @@ const About: React.FC = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: 'url(/maktab/photo_2025-12-13_13-23-10.jpg)',
+            backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
@@ -306,7 +306,7 @@ const About: React.FC = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: 'url(/maktab/rasm5.png)',
+            backgroundImage: 'url(/maktab/photo_2025-12-13_13-23-10.jpg)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
