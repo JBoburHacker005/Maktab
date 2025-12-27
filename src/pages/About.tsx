@@ -180,7 +180,7 @@ const About: React.FC = () => {
             backgroundImage: 'url(/maktab/photo_2025-12-13_13-23-10.jpg)',
           }}
         />
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
+        <div className="absolute inset-0 bg-background/40 backdrop-blur-sm" />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12">
