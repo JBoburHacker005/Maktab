@@ -30,3 +30,6 @@ dist-ssr
 
 # Bun lockfile (Railway uchun npm ishlatamiz)
 bun.lockb
+
+# Railway/Nixpacks generated files
+.nixpacks
