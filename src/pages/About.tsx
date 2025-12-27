@@ -568,8 +568,17 @@ const About: React.FC = () => {
       </section>
 
       {/* Leadership */}
-      <section className="py-20 lg:py-28 bg-muted/50">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+        {/* Background Image with Backdrop */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/maktab/rasm.png)',
+          }}
+        />
+        <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
