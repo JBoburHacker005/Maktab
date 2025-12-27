@@ -1,6 +1,7 @@
 # Nixpacks configuration for Railway
+# Node.js version will be detected from .nvmrc or .node-version
 [phases.setup]
-nixPkgs = ["nodejs-20_x"]
+nixPkgs = []
 
 [phases.install]
 cmds = [
