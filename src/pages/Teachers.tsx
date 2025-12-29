@@ -295,11 +295,10 @@ const Teachers: React.FC = () => {
               {t('teachers')}
             </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mt-3 mb-6">
-              Meet Our Teachers
+              {t('meetOurTeachersTitle')}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Our dedicated faculty members bring expertise, passion, and a commitment 
-              to nurturing every student's potential.
+              {t('meetOurTeachersDesc')}
             </p>
           </motion.div>
         </div>
@@ -311,7 +310,7 @@ const Teachers: React.FC = () => {
           {/* Leadership */}
           <div className="mb-14">
             <div className="mb-6 text-center">
-              <h2 className="font-display text-3xl font-bold text-foreground">Rahbariyat</h2>
+              <h2 className="font-display text-3xl font-bold text-foreground">{t('leadershipTitle')}</h2>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {leaders.map((leader, index) => (
@@ -364,7 +363,7 @@ const Teachers: React.FC = () => {
 
           {/* Teachers heading */}
           <div className="mb-8 text-center">
-            <h2 className="font-display text-3xl font-bold text-foreground">O'qituvchilar</h2>
+            <h2 className="font-display text-3xl font-bold text-foreground">{t('teachersStaff')}</h2>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

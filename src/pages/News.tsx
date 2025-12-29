@@ -9,7 +9,13 @@ const News: React.FC = () => {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const categories = ['all', 'Academic', 'Sports', 'Events', 'Awards'];
+  const categories = [
+    { key: 'all', label: t('all') },
+    { key: 'Academic', label: t('newsCategoryAcademic') },
+    { key: 'Sports', label: t('newsCategorySports') },
+    { key: 'Events', label: t('newsCategoryEvents') },
+    { key: 'Awards', label: t('newsCategoryAwards') },
+  ];
 
   const news = [
     {
@@ -65,6 +71,11 @@ const News: React.FC = () => {
   const filteredNews = selectedCategory === 'all' 
     ? news 
     : news.filter(item => item.category === selectedCategory);
+  
+  const getCategoryLabel = (categoryKey: string) => {
+    const cat = categories.find(c => c.key === categoryKey);
+    return cat ? cat.label : categoryKey;
+  };
 
   return (
     <Layout>
@@ -89,11 +100,10 @@ const News: React.FC = () => {
               {t('news')}
             </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mt-3 mb-6">
-              Latest News & Updates
+              {t('latestNewsTitle')}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Stay informed about the latest happenings, achievements, and announcements 
-              from Tuproqqal'a tuman Ixtisoslashtirilgan maktabi.
+              {t('latestNewsDesc')}
             </p>
           </motion.div>
         </div>
@@ -105,15 +115,15 @@ const News: React.FC = () => {
           <div className="flex flex-wrap gap-2 justify-center">
             {categories.map((category) => (
               <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
+                key={category.key}
+                onClick={() => setSelectedCategory(category.key)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  selectedCategory === category
+                  selectedCategory === category.key
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
-                {category === 'all' ? 'All' : category}
+                {category.label}
               </button>
             ))}
           </div>
@@ -144,7 +154,7 @@ const News: React.FC = () => {
                   <div className="flex items-center gap-4 mb-3">
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
                       <Tag className="w-3 h-3" />
-                      {item.category}
+                      {getCategoryLabel(item.category)}
                     </span>
                     <span className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="w-3 h-3" />
@@ -158,7 +168,7 @@ const News: React.FC = () => {
                     {item.excerpt}
                   </p>
                   <Button variant="link" className="p-0 h-auto text-primary">
-                    Read More <ArrowRight className="w-4 h-4 ml-1" />
+                    {t('readMore')} <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
               </motion.article>

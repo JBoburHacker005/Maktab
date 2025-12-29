@@ -205,6 +205,75 @@ const translations: Translations = {
   viceDirectorSpiritual: { en: 'Vice Director (Spiritual-Educational)', uz: "Direktor o'rinbosari (ma'naviy-ma'rifiy)", ru: 'Заместитель директора (духовно-просветительский)' },
   directorAdvisor: { en: 'Director Advisor', uz: 'Direktor maslahatchisi', ru: 'Советник директора' },
   viceDirectorAcademic: { en: 'Vice Director (Academic)', uz: "Direktor o'rinbosari (o'quv ishlari)", ru: 'Заместитель директора (учебная часть)' },
+  
+  // Footer
+  footerDescription: { en: 'Empowering minds, shaping futures. We provide world-class education with a focus on innovation and excellence.', uz: 'Aqllarni kuchaytirish, kelajakni shakllantirish. Biz innovatsiya va mukammallikka e\'tibor qaratgan holda jahon darajasidagi ta\'limni taqdim etamiz.', ru: 'Расширяем возможности ума, формируем будущее. Мы предоставляем образование мирового класса с акцентом на инновации и совершенство.' },
+  newsletterDescription: { en: 'Subscribe to our newsletter for updates and news.', uz: 'Yangiliklar va yangilanishlar uchun axborotnomamizga obuna bo\'ling.', ru: 'Подпишитесь на нашу рассылку, чтобы получать обновления и новости.' },
+  privacyPolicy: { en: 'Privacy Policy', uz: 'Maxfiylik siyosati', ru: 'Политика конфиденциальности' },
+  termsOfService: { en: 'Terms of Service', uz: 'Xizmat shartlari', ru: 'Условия использования' },
+  creator: { en: 'Creator:', uz: 'Yaratuvchi:', ru: 'Создатель:' },
+  
+  // About page additional translations
+  teacherCategoryAnalysis: { en: 'According to the analysis results:', uz: 'Tahlil natijalariga ko\'ra:', ru: 'Согласно результатам анализа:' },
+  teacherCategorySpecialist: { en: 'teacher holds the Specialist category,', uz: 'o\'qituvchi Mutaxassis toifasiga ega,', ru: 'учитель имеет категорию Специалист,' },
+  teacherCategorySecond: { en: 'teachers are in the Second category,', uz: 'o\'qituvchi Ikkinchi toifada,', ru: 'учителя во Второй категории,' },
+  teacherCategoryFirst: { en: 'teachers are in the First category,', uz: 'o\'qituvchi Birinchi toifada,', ru: 'учителя в Первой категории,' },
+  teacherCategoryHighest: { en: 'teachers hold the Highest category.', uz: 'o\'qituvchi Oliy toifaga ega.', ru: 'учителя имеют Высшую категорию.' },
+  teacherCategoryConclusion: { en: 'These results clearly indicate that the school has a high proportion of experienced and highly qualified teachers. In particular, the large number of teachers with the highest qualification category significantly contributes to improving the effectiveness of the educational process and has a positive impact on students\' academic performance and achievements.', uz: 'Bu natijalar maktabda tajribali va yuqori malakali o\'qituvchilarning yuqori ulushiga ega ekanligini aniq ko\'rsatadi. Xususan, eng yuqori malaka toifasiga ega o\'qituvchilarning ko\'p soni ta\'lim jarayonining samaradorligini oshirishga sezilarli hissa qo\'shadi va o\'quvchilarning akademik ko\'rsatkichlari va yutuqlariga ijobiy ta\'sir ko\'rsatadi.', ru: 'Эти результаты ясно показывают, что в школе высокая доля опытных и высококвалифицированных учителей. В частности, большое количество учителей с высшей квалификационной категорией значительно способствует повышению эффективности образовательного процесса и положительно влияет на академические показатели и достижения учащихся.' },
+  
+  // Contact page
+  messageSent: { en: 'Message Sent!', uz: 'Xabar yuborildi!', ru: 'Сообщение отправлено!' },
+  messageSentDesc: { en: 'We\'ll get back to you as soon as possible.', uz: 'Imkon qadar tezroq javob beramiz.', ru: 'Мы ответим вам как можно скорее.' },
+  sending: { en: 'Sending...', uz: 'Yuborilmoqda...', ru: 'Отправка...' },
+  placeholderName: { en: 'John Doe', uz: 'Ism Familiya', ru: 'Имя Фамилия' },
+  placeholderEmail: { en: 'john@example.com', uz: 'email@misol.uz', ru: 'email@example.com' },
+  placeholderSubject: { en: 'How can we help?', uz: 'Qanday yordam bera olamiz?', ru: 'Чем мы можем помочь?' },
+  placeholderMessage: { en: 'Your message here...', uz: 'Xabaringizni yozing...', ru: 'Ваше сообщение...' },
+  
+  // News page
+  latestNewsTitle: { en: 'Latest News & Updates', uz: 'So\'nggi yangiliklar va yangilanishlar', ru: 'Последние новости и обновления' },
+  latestNewsDesc: { en: 'Stay informed about the latest happenings, achievements, and announcements from Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi.', uz: 'Tuproqqal\'a tuman Ixtisoslashtirilgan maktabidagi so\'nggi voqealar, yutuqlar va e\'lonlardan xabardor bo\'ling.', ru: 'Будьте в курсе последних событий, достижений и объявлений Tuproqqal\'a tuman Ixtisoslashtirilган maktabi.' },
+  newsCategoryAcademic: { en: 'Academic', uz: 'Akademik', ru: 'Академический' },
+  newsCategorySports: { en: 'Sports', uz: 'Sport', ru: 'Спорт' },
+  newsCategoryEvents: { en: 'Events', uz: 'Tadbirlar', ru: 'Мероприятия' },
+  newsCategoryAwards: { en: 'Awards', uz: 'Mukofotlar', ru: 'Награды' },
+  
+  // Events page
+  upcomingEventsTitle: { en: 'Upcoming Events', uz: 'Kelgusi tadbirlar', ru: 'Предстоящие мероприятия' },
+  upcomingEventsDesc: { en: 'Mark your calendar for exciting events, performances, and activities happening at Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi.', uz: 'Tuproqqal\'a tuman Ixtisoslashtirilgan maktabida bo\'ladigan qiziqarli tadbirlar, chiqishlar va faoliyatlar uchun taqvimingizni belgilang.', ru: 'Отметьте в календаре захватывающие события, выступления и мероприятия в Tuproqqal\'a tuman Ixtisoslashtirilган maktabi.' },
+  
+  // Gallery page
+  photoGalleryTitle: { en: 'Photo Gallery', uz: 'Foto galereya', ru: 'Фотогалерея' },
+  photoGalleryDesc: { en: 'Take a visual tour of our campus, facilities, and the vibrant life at Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi.', uz: 'Kampusimiz, inshootlarimiz va Tuproqqal\'a tuman Ixtisoslashtirilgan maktabidagi hayot bilan tanishing.', ru: 'Совершите визуальную экскурсию по нашему кампусу, объектам и яркой жизни в Tuproqqal\'a tuman Ixtisoslashtirilган maktabi.' },
+  
+  // Teachers page
+  meetOurTeachersTitle: { en: 'Meet Our Teachers', uz: 'O\'qituvchilarimiz bilan tanishing', ru: 'Познакомьтесь с нашими учителями' },
+  meetOurTeachersDesc: { en: 'Our dedicated faculty members bring expertise, passion, and a commitment to nurturing every student\'s potential.', uz: 'Fidoyi o\'qituvchilarimiz tajriba, ehtiros va har bir o\'quvchining salohiyatini rivojlantirish majburiyatini olib keladi.', ru: 'Наши преданные преподаватели приносят опыт, страсть и стремление развивать потенциал каждого ученика.' },
+  leadershipTitle: { en: 'Leadership', uz: 'Rahbariyat', ru: 'Руководство' },
+  teachersTitle: { en: 'Teachers', uz: 'O\'qituvchilar', ru: 'Учителя' },
+  
+  // Departments page
+  academicExcellence: { en: 'Academic Excellence', uz: 'Akademik mukammallik', ru: 'Академическое совершенство' },
+  academicExcellenceDesc: { en: 'Explore our diverse range of departments, each dedicated to providing exceptional education and fostering student success.', uz: 'Har biri ajoyib ta\'limni taqdim etish va o\'quvchilar muvaffaqiyatini rivojlantirishga bag\'ishlangan turli bo\'limlarimizni o\'rganing.', ru: 'Изучите наш разнообразный спектр отделений, каждое из которых посвящено предоставлению исключительного образования и развитию успеха студентов.' },
+  music: { en: 'Music', uz: 'Musiqa', ru: 'Музыка' },
+  researchLab: { en: 'Research Lab', uz: 'Tadqiqot laboratoriyasi', ru: 'Исследовательская лаборатория' },
+  
+  // School name (for navbar)
+  schoolName: { en: 'Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi', uz: 'Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi', ru: 'Tuproqqal\'a tuman Ixtisoslashtirilган maktabi' },
+  
+  // About page - Additional hardcoded texts
+  spiritualEducationalSportsTitle: { en: 'Spiritual, Educational, and Sports Activities', uz: 'Ma\'naviy, ta\'limiy va sport tadbirlari', ru: 'Духовные, образовательные и спортивные мероприятия' },
+  psychologicalSupportTitle: { en: 'Psychological Support', uz: 'Psixologik yordam', ru: 'Психологическая поддержка' },
+  qualityOfEducationTitle: { en: 'Quality of Education and Achievements', uz: 'Ta\'lim sifati va yutuqlar', ru: 'Качество образования и достижения' },
+  clubsAndDevelopmentTitle: { en: 'Clubs and Development', uz: 'To\'garaklar va rivojlanish', ru: 'Кружки и развитие' },
+  teacherQualificationCategoriesTitle: { en: 'Teacher Qualification Categories', uz: 'O\'qituvchilar malaka toifalari', ru: 'Квалификационные категории учителей' },
+  teacherCategoryAnalysisTitle: { en: 'According to the analysis results:', uz: 'Tahlil natijalariga ko\'ra:', ru: 'Согласно результатам анализа:' },
+  teacherCategorySpecialistText: { en: 'teacher holds the Specialist category,', uz: 'o\'qituvchi Mutaxassis toifasiga ega,', ru: 'учитель имеет категорию Специалист,' },
+  teacherCategorySecondText: { en: 'teachers are in the Second category,', uz: 'o\'qituvchi Ikkinchi toifada,', ru: 'учителя во Второй категории,' },
+  teacherCategoryFirstText: { en: 'teachers are in the First category,', uz: 'o\'qituvchi Birinchi toifada,', ru: 'учителя в Первой категории,' },
+  teacherCategoryHighestText: { en: 'teachers hold the Highest category.', uz: 'o\'qituvchi Oliy toifaga ega.', ru: 'учителя имеют Высшую категорию.' },
+  teacherCategoryConclusionText: { en: 'These results clearly indicate that the school has a high proportion of experienced and highly qualified teachers. In particular, the large number of teachers with the highest qualification category significantly contributes to improving the effectiveness of the educational process and has a positive impact on students\' academic performance and achievements.', uz: 'Bu natijalar maktabda tajribali va yuqori malakali o\'qituvchilarning yuqori ulushiga ega ekanligini aniq ko\'rsatadi. Xususan, eng yuqori malaka toifasiga ega o\'qituvchilarning ko\'p soni ta\'lim jarayonining samaradorligini oshirishga sezilarli hissa qo\'shadi va o\'quvchilarning akademik ko\'rsatkichlari va yutuqlariga ijobiy ta\'sir ko\'rsatadi.', ru: 'Эти результаты ясно показывают, что в школе высокая доля опытных и высококвалифицированных учителей. В частности, большое количество учителей с высшей квалификационной категорией значительно способствует повышению эффективности образовательного процесса и положительно влияет на академические показатели и достижения учащихся.' },
+  chartTooltipLabel: { en: 'Count', uz: 'Soni', ru: 'Количество' },
 };
 
 interface LanguageContextType {
@@ -216,7 +285,19 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>(() => {
+    // Load language from localStorage or default to 'uz'
+    const saved = localStorage.getItem('language');
+    if (saved && (saved === 'en' || saved === 'uz' || saved === 'ru')) {
+      return saved as Language;
+    }
+    return 'uz';
+  });
+
+  const handleSetLanguage = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);
+  };
 
   const t = (key: string): string => {
     if (translations[key]) {
@@ -226,7 +307,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

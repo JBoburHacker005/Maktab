@@ -98,11 +98,10 @@ const Events: React.FC = () => {
               {t('events')}
             </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mt-3 mb-6">
-              Upcoming Events
+              {t('upcomingEventsTitle')}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Mark your calendar for exciting events, performances, and activities 
-              happening at Tuproqqal'a tuman Ixtisoslashtirilgan maktabi.
+              {t('upcomingEventsDesc')}
             </p>
           </motion.div>
         </div>

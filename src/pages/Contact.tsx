@@ -25,8 +25,8 @@ const Contact: React.FC = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     toast({
-      title: 'Message Sent!',
-      description: 'We\'ll get back to you as soon as possible.',
+      title: t('messageSent'),
+      description: t('messageSentDesc'),
     });
 
     setFormData({ name: '', email: '', subject: '', message: '' });
@@ -119,7 +119,7 @@ const Contact: React.FC = () => {
                       onChange={handleChange}
                       required
                       className="w-full h-12 px-4 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                      placeholder="John Doe"
+                      placeholder={t('placeholderName')}
                     />
                   </div>
                   <div>
@@ -134,7 +134,7 @@ const Contact: React.FC = () => {
                       onChange={handleChange}
                       required
                       className="w-full h-12 px-4 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                      placeholder="john@example.com"
+                      placeholder={t('placeholderEmail')}
                     />
                   </div>
                 </div>
@@ -150,7 +150,7 @@ const Contact: React.FC = () => {
                     onChange={handleChange}
                     required
                     className="w-full h-12 px-4 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                    placeholder="How can we help?"
+                    placeholder={t('placeholderSubject')}
                   />
                 </div>
                 <div>
@@ -165,14 +165,14 @@ const Contact: React.FC = () => {
                     required
                     rows={5}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all resize-none"
-                    placeholder="Your message here..."
+                    placeholder={t('placeholderMessage')}
                   />
                 </div>
                 <Button type="submit" variant="hero" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                      Sending...
+                      {t('sending')}
                     </>
                   ) : (
                     <>

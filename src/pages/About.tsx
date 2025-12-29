@@ -194,10 +194,10 @@ const About: React.FC = () => {
                 <Activity className="w-7 h-7 text-primary-foreground" />
               </div>
               <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                Spiritual, Educational, and Sports Activities
+                {t('spiritualEducationalSportsTitle')}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Great attention is paid to the physical and moral development of students at the school. Winners of national and international competitions in sports such as karate and Turon martial arts are being trained. In addition, festive events, contests, and military-sports competitions are regularly organized.
+                {t('spiritualEducationalSportsDesc')}
               </p>
             </motion.div>
 
@@ -211,10 +211,10 @@ const About: React.FC = () => {
                 <Heart className="w-7 h-7 text-primary-foreground" />
               </div>
               <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                Psychological Support
+                {t('psychologicalSupportTitle')}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Throughout the academic year, the school psychologist conducts more than 45 psychological training sessions aimed at developing students' teamwork, leadership, and social adaptation skills.
+                {t('psychologicalSupportDesc')}
               </p>
             </motion.div>
           </div>
@@ -235,10 +235,10 @@ const About: React.FC = () => {
                 <Award className="w-7 h-7 text-primary-foreground" />
               </div>
               <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                Quality of Education and Achievements
+                {t('qualityOfEducationTitle')}
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                Highly qualified teachers holding national and international certifications work at the school. Our students actively and successfully participate in regional, national, and international academic olympiads, competitions, and sports events, consistently achieving prize-winning places.
+                {t('qualityOfEducationDesc')}
               </p>
               
               <div className="grid md:grid-cols-3 gap-6">
@@ -252,10 +252,10 @@ const About: React.FC = () => {
                     <Trophy className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground mb-2">
-                    Winners of regional and national olympiads
+                    {t('winnersOfOlympiads')}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    in mathematics and other subjects
+                    {t('inMathematicsAndOther')}
                   </p>
                 </motion.div>
 
@@ -270,10 +270,10 @@ const About: React.FC = () => {
                     <FileText className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground mb-2">
-                    Students holding certificates
+                    {t('studentsHoldingCertificates')}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    IELTS, CEFR, and national certificates
+                    {t('ieltsCefrCertificates')}
                   </p>
                 </motion.div>
 
@@ -288,10 +288,10 @@ const About: React.FC = () => {
                     <GraduationCap className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground mb-2">
-                    100% University Admission
+                    {t('universityAdmission100')}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    In the 2024/2025 academic year, 100% of graduates were admitted to higher education institutions
+                    {t('universityAdmissionDesc')}
                   </p>
                 </motion.div>
               </div>
@@ -323,10 +323,10 @@ const About: React.FC = () => {
                 <Users className="w-7 h-7 text-primary-foreground" />
               </div>
               <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-4">
-                Clubs and Development
+                {t('clubsAndDevelopmentTitle')}
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                At the school, the following clubs operate with the aim of developing students' interests and talents:
+                {t('clubsAndDevelopmentDesc')}
               </p>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -340,7 +340,7 @@ const About: React.FC = () => {
                     <Laptop className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">
-                    Computer Literacy
+                    {t('computerLiteracy')}
                   </h3>
                 </motion.div>
 
@@ -355,7 +355,7 @@ const About: React.FC = () => {
                     <Leaf className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">
-                    Biology
+                    {t('biology')}
                   </h3>
                 </motion.div>
 
@@ -370,7 +370,7 @@ const About: React.FC = () => {
                     <Brain className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">
-                    Zakovat (Intellectual Club)
+                    {t('zakovatClub')}
                   </h3>
                 </motion.div>
 
@@ -385,7 +385,7 @@ const About: React.FC = () => {
                     <FlaskConical className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">
-                    Young Chemists
+                    {t('youngChemists')}
                   </h3>
                 </motion.div>
 
@@ -400,7 +400,7 @@ const About: React.FC = () => {
                     <Atom className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">
-                    Young Physicists
+                    {t('youngPhysicists')}
                   </h3>
                 </motion.div>
 
@@ -415,7 +415,7 @@ const About: React.FC = () => {
                     <Calculator className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">
-                    Mathematicians
+                    {t('mathematicians')}
                   </h3>
                 </motion.div>
               </div>
@@ -440,21 +440,21 @@ const About: React.FC = () => {
                   <BarChart3 className="w-7 h-7 text-primary-foreground" />
                 </div>
                 <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-6">
-                  Teacher Qualification Categories
+                  {t('teacherQualificationCategoriesTitle')}
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    In the 2024–2025 academic year, an analysis was conducted of the professional qualification categories of teachers working at the Tuproqqal'a District Specialized School. These indicators demonstrate the high level of teachers' qualifications and the quality of education.
+                    {t('teacherQualificationDesc')}
                   </p>
-                  <p className="font-semibold text-foreground">According to the analysis results:</p>
+                  <p className="font-semibold text-foreground">{t('teacherCategoryAnalysisTitle')}</p>
                   <ul className="space-y-2 list-disc list-inside">
-                    <li>1 teacher holds the Specialist category,</li>
-                    <li>2 teachers are in the Second category,</li>
-                    <li>5 teachers are in the First category,</li>
-                    <li>19 teachers hold the Highest category.</li>
+                    <li>1 {t('teacherCategorySpecialistText')}</li>
+                    <li>2 {t('teacherCategorySecondText')}</li>
+                    <li>5 {t('teacherCategoryFirstText')}</li>
+                    <li>19 {t('teacherCategoryHighestText')}</li>
                   </ul>
                   <p>
-                    These results clearly indicate that the school has a high proportion of experienced and highly qualified teachers. In particular, the large number of teachers with the highest qualification category significantly contributes to improving the effectiveness of the educational process and has a positive impact on students' academic performance and achievements.
+                    {t('teacherCategoryConclusionText')}
                   </p>
                 </div>
               </div>
@@ -499,7 +499,7 @@ const About: React.FC = () => {
                             color: '#f9fafb',
                             fontSize: 13,
                           }}
-                          formatter={(val: number) => [`${val} ta`, 'Soni']}
+                          formatter={(val: number) => [`${val}`, t('chartTooltipLabel')]}
                         />
                         <Bar
                           dataKey="value"

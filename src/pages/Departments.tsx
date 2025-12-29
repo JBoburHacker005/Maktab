@@ -46,13 +46,13 @@ const Departments: React.FC = () => {
     },
     {
       icon: Music,
-      name: 'Music',
+      name: t('music'),
       description: 'Musical education developing rhythm, harmony, and performance skills across instruments.',
       subjects: ['Piano', 'Guitar', 'Orchestra', 'Music Theory'],
     },
     {
       icon: FlaskConical,
-      name: 'Research Lab',
+      name: t('researchLab'),
       description: 'Advanced research opportunities for students interested in scientific exploration.',
       subjects: ['Research Methods', 'Data Analysis', 'Lab Techniques', 'Project Work'],
     },
@@ -81,11 +81,10 @@ const Departments: React.FC = () => {
               {t('departments')}
             </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mt-3 mb-6">
-              Academic Excellence
+              {t('academicExcellence')}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Explore our diverse range of departments, each dedicated to providing 
-              exceptional education and fostering student success.
+              {t('academicExcellenceDesc')}
             </p>
           </motion.div>
         </div>

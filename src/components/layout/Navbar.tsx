@@ -79,11 +79,11 @@ const Navbar: React.FC = () => {
             <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow overflow-hidden">
               <img src="/favicon.ico.png" alt="School logo" className="w-8 h-8 object-contain" />
             </div>
-            <span className="font-display font-bold text-lg text-foreground hidden lg:block">Tuproqqal'a tuman Ixtisoslashtirilgan maktabi</span>
+            <span className="font-display font-bold text-lg text-foreground hidden lg:block">{t('schoolName')}</span>
           </Link>
 
           {/* Mobile School Name */}
-          <span className="font-display font-bold text-sm text-foreground flex-1 text-center lg:hidden px-2">Tuproqqal'a tuman Ixtisoslashtirilgan maktabi</span>
+          <span className="font-display font-bold text-sm text-foreground flex-1 text-center lg:hidden px-2">{t('schoolName')}</span>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">

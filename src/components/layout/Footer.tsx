@@ -34,10 +34,10 @@ const Footer: React.FC = () => {
               <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center overflow-hidden">
                 <img src="/favicon.ico.png" alt="Tuproqqal'a tuman Ixtisoslashtirilgan maktabi logo" className="w-8 h-8 object-contain" />
               </div>
-              <span className="font-display font-bold text-lg">Tuproqqal'a tuman Ixtisoslashtirilgan maktabi</span>
+              <span className="font-display font-bold text-lg">{t('schoolName')}</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Empowering minds, shaping futures. We provide world-class education with a focus on innovation and excellence.
+              {t('footerDescription')}
             </p>
             <div className="flex items-center gap-2">
               {socialLinks.map((social) => (
@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-display font-semibold text-lg mb-4">{t('newsletter')}</h4>
             <p className="text-muted-foreground text-sm mb-4">
-              Subscribe to our newsletter for updates and news.
+              {t('newsletterDescription')}
             </p>
             <div className="flex gap-2">
               <input
@@ -121,13 +121,13 @@ const Footer: React.FC = () => {
 
           {/* Center: Policies */}
           <div className="flex-1 flex items-center justify-center gap-4 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-primary transition-colors">{t('privacyPolicy')}</a>
+            <a href="#" className="hover:text-primary transition-colors">{t('termsOfService')}</a>
           </div>
 
           {/* Right: Creator */}
           <div className="flex items-center justify-center sm:justify-end gap-2 text-sm text-muted-foreground w-full sm:w-auto">
-            <span className="font-medium text-[#1d4ed8]">Creator:</span>
+            <span className="font-medium text-[#1d4ed8]">{t('creator')}</span>
             <div className="flex items-center gap-2">
               <span
                 className="text-foreground font-semibold"
