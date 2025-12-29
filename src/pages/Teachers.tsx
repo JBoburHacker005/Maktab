@@ -145,7 +145,7 @@ const Teachers: React.FC = () => {
       name: 'Bekturdiyev Gʹayrat',
       subject: 'Russian Literature',
       image: '/teachers/rus tili2.gif',
-      telegram: '',
+      telegram: '@G_Bekturdiyev',
       phone: '+998 (99) 747-21-13 ',
     },
     {
@@ -196,7 +196,7 @@ const Teachers: React.FC = () => {
       name: 'Raxmonov Alisher',
       subject: 'Physical Education',
       image: '/teachers/jt.JPG',
-      telegram: 'T.me/+998997574754',
+      telegram: '@alisher_raxmonov',
       phone: '+998 (99) 757-47-54',
     },
     {
@@ -231,15 +231,15 @@ const Teachers: React.FC = () => {
       name: 'Azatova Laylo',
       subject: 'Uzbek Literature',
       image: '/teachers/Ona tili 2.JPG',
-      telegram: '',
-      phone: '',
+      telegram: '@Laylo_Azatova',
+      phone: '+998 (99)096-35-16',
     },
     {
       name: 'Arkayeva Iroda',
       subject: 'Uzbek Literature',
       image: '/teachers/IMG_9304.JPG',
-      telegram: '',
-      phone: '',
+      telegram: '+998 (97) 517-35-40',
+      phone: '@iroda2907l',
     },
     // Biology - 1 total (keep original)
     {
