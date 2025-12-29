@@ -196,8 +196,8 @@ const Teachers: React.FC = () => {
       name: 'Raxmonov Alisher',
       subject: 'Physical Education',
       image: '/teachers/jt.JPG',
-      telegram: '',
-      phone: '',
+      telegram: 'T.me/+998997574754',
+      phone: '+998 (99) 757-47-54',
     },
     {
       name: 'Roʹzibayev Azizbek',
