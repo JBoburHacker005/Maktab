@@ -39,6 +39,7 @@ const NewsAdmin: React.FC = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<NewsRow | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
@@ -117,6 +118,28 @@ const NewsAdmin: React.FC = () => {
     },
   });
 
+  const clearAllMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from('news').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+      setClearAllDialogOpen(false);
+      toast({
+        title: t('deleted'),
+        description: t('deleted'),
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: 'destructive',
+        title: t('error'),
+        description: error.message,
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -145,24 +168,33 @@ const NewsAdmin: React.FC = () => {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-display font-bold">{t('adminNews')}</h1>
             <p className="text-muted-foreground">{t('news')}</p>
           </div>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => setEditingItem(null)}>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('add')}
+          <div className="flex items-center gap-2">
+            {news && news.length > 0 && (
+              <Button
+                variant="destructive"
+                onClick={() => setClearAllDialogOpen(true)}
+              >
+                {t('delete')} all
               </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingItem ? t('edit') : t('add')}
-                </DialogTitle>
-              </DialogHeader>
+            )}
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={() => setEditingItem(null)}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('add')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingItem ? t('edit') : t('add')}
+                  </DialogTitle>
+                </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
@@ -273,6 +305,7 @@ const NewsAdmin: React.FC = () => {
               </form>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
 
         {isLoading ? (
@@ -359,6 +392,26 @@ const NewsAdmin: React.FC = () => {
                 onClick={() => deletingId && deleteMutation.mutate(deletingId)}
               >
                 {t('delete')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={clearAllDialogOpen} onOpenChange={setClearAllDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t('cannotUndo')}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => clearAllMutation.mutate()}
+                disabled={clearAllMutation.isPending}
+              >
+                {t('delete')} all
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
