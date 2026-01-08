@@ -28,6 +28,7 @@ import { supabase } from '@/integrations/supabase/client';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Tables, TablesInsert, TablesUpdate } from '@/integrations/supabase/types';
+import AddGalleryImages from './AddGalleryImages';
 
 type GalleryRow = Tables<'gallery'>;
 type GalleryInsert = TablesInsert<'gallery'>;
@@ -180,7 +181,9 @@ const GalleryAdmin: React.FC = () => {
             <h1 className="text-2xl font-display font-bold">{t('adminGallery')}</h1>
             <p className="text-muted-foreground">{t('gallery')}</p>
           </div>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <div className="flex items-center gap-2">
+            <AddGalleryImages />
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
