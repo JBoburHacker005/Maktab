@@ -13,7 +13,8 @@
     "copy-teacher-images": "node copy-teacher-images.js",
     "start": "tsx server.ts",
     "server": "tsx server.ts",
-    "railway:start": "tsx server.ts"
+    "railway:start": "tsx server.ts",
+    "fetch-news": "tsx scripts/fetch_news.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
