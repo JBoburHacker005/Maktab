@@ -9,8 +9,22 @@ const AddNewsButton: React.FC = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const addNewsMutation = useMutation({
+  const clearAndAddMutation = useMutation({
     mutationFn: async () => {
+      // Avval barcha yangiliklarni o'chirish
+      console.log('🗑️ Eski yangiliklarni o\'chirish...');
+      const { error: deleteError } = await supabase
+        .from('news')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      if (deleteError) {
+        throw new Error(`O'chirishda xatolik: ${deleteError.message}`);
+      }
+      
+      console.log('✅ Eski yangiliklarni o\'chirildi');
+      
+      // Keyin yangi yangilikni qo'shish
       const newsData = {
         title_uz: '2-sentabr — Yangi o\'quv yilining ilk qo\'ng\'irog\'i!',
         title_ru: '2 сентября — Первый звонок нового учебного года!',
@@ -48,26 +62,20 @@ Today at our school, under the motto "For the Homeland, for the Nation, for the 
         created_at: new Date('2025-09-02T10:00:00+05:00').toISOString(),
       };
 
-      // Check if news already exists
-      const { data: existing } = await supabase
-        .from('news')
-        .select('id')
-        .eq('title_uz', newsData.title_uz)
-        .limit(1)
-        .maybeSingle();
-
-      if (existing) {
-        throw new Error('Bu yangilik allaqachon mavjud!');
+      // Yangi yangilikni qo'shish
+      console.log('➕ Yangi yangilikni qo\'shish...');
+      const { error: insertError } = await supabase.from('news').insert([newsData]);
+      if (insertError) {
+        throw new Error(`Qo'shishda xatolik: ${insertError.message}`);
       }
-
-      const { error } = await supabase.from('news').insert([newsData]);
-      if (error) throw error;
+      
+      console.log('✅ Yangi yangilik qo\'shildi!');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
       toast({
         title: 'Muvaffaqiyatli!',
-        description: 'Yangilik qo\'shildi!',
+        description: 'Eski yangiliklarni o\'chirildi va yangi yangilik qo\'shildi!',
       });
     },
     onError: (error: Error) => {
@@ -81,14 +89,14 @@ Today at our school, under the motto "For the Homeland, for the Nation, for the 
 
   return (
     <Button
-      onClick={() => addNewsMutation.mutate()}
-      disabled={addNewsMutation.isPending}
+      onClick={() => clearAndAddMutation.mutate()}
+      disabled={clearAndAddMutation.isPending}
       className="bg-green-600 hover:bg-green-700"
     >
-      {addNewsMutation.isPending && (
+      {clearAndAddMutation.isPending && (
         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
       )}
-      Yangilikni qo'shish (2-sentabr)
+      Eski yangiliklarni o'chirib, yangisini qo'shish
     </Button>
   );
 };
