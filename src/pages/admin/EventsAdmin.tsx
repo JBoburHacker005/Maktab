@@ -50,7 +50,7 @@ const EventsAdmin: React.FC = () => {
       const { data, error } = await supabase
         .from('events')
         .select('*')
-        .order('event_date', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data as EventRow[];
