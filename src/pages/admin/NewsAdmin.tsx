@@ -29,6 +29,7 @@ import { supabase } from '@/integrations/supabase/client';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Tables, TablesInsert, TablesUpdate } from '@/integrations/supabase/types';
+import AddNewsButton from './AddNewsButton';
 
 type NewsRow = Tables<'news'>;
 type NewsInsert = TablesInsert<'news'>;
@@ -174,6 +175,7 @@ const NewsAdmin: React.FC = () => {
             <p className="text-muted-foreground">{t('news')}</p>
           </div>
           <div className="flex items-center gap-2">
+            <AddNewsButton />
             {news && news.length > 0 && (
               <Button
                 variant="destructive"
