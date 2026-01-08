@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
@@ -7,62 +7,137 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Events: React.FC = () => {
   const { t } = useLanguage();
 
-  const events = [
+  const allEvents = [
     {
       id: 1,
-      title: 'Winter Concert',
-      description: 'Join us for an enchanting evening of musical performances by our talented students.',
-      date: '2024-12-20',
-      time: '6:00 PM',
-      location: 'School Auditorium',
+      title: 'Bilimlar kuni',
+      description:
+        'Yangi o‘quv yilining boshlanishiga bag‘ishlangan tantanali tadbir.',
+      date: '2025-09-02',
+      time: '10:00 AM',
+      location: 'School Yard',
       type: 'Cultural',
     },
     {
       id: 2,
-      title: 'Science Fair 2024',
-      description: 'Explore innovative projects and experiments created by our budding scientists.',
-      date: '2024-12-22',
-      time: '9:00 AM',
-      location: 'STEM Building',
-      type: 'Academic',
+      title: 'Ustoz va Murabbiylar kuni',
+      description:
+        'Ustozlarga hurmat va ehtirom ko‘rsatish maqsadida tashkil etilgan bayram.',
+      date: '2025-09-30',
+      time: '10:00 AM',
+      location: 'Main Hall',
+      type: 'Cultural',
     },
     {
       id: 3,
-      title: 'Parent-Teacher Conference',
-      description: "Meet with teachers to discuss your child's progress and development.",
-      date: '2025-01-10',
-      time: '2:00 PM',
-      location: 'Classrooms',
-      type: 'Meeting',
+      title: 'O‘zbek tiliga davlat tili maqomi berilgan kun',
+      description:
+        'Davlat tilining nufuzi va ahamiyatiga bag‘ishlangan ma’naviy tadbir.',
+      date: '2025-10-21',
+      time: '10:00 AM',
+      location: 'Assembly Hall',
+      type: 'Cultural',
     },
     {
       id: 4,
-      title: 'Career Day',
-      description: 'Professionals from various fields share insights about career opportunities.',
-      date: '2025-01-15',
+      title: 'Olimpiada g‘oliblarini taqdirlash',
+      description:
+        'Fan olimpiadalarida yuqori natijalarga erishgan o‘quvchilarni taqdirlash marosimi.',
+      date: '2025-11-11',
       time: '10:00 AM',
       location: 'Main Hall',
-      type: 'Career',
+      type: 'Academic',
     },
     {
       id: 5,
-      title: 'Inter-School Sports Tournament',
-      description: 'Cheer for our teams as they compete against schools from across the region.',
-      date: '2025-01-25',
-      time: '8:00 AM',
-      location: 'Sports Complex',
-      type: 'Sports',
+      title: 'Davlat Bayrog‘i qabul qilingan kun',
+      description:
+        'Vatan ramzlariga hurmat va vatanparvarlik ruhidagi tadbir.',
+      date: '2025-11-18',
+      time: '10:00 AM',
+      location: 'School Yard',
+      type: 'Cultural',
     },
     {
       id: 6,
-      title: 'Art Exhibition Opening',
-      description: 'Celebrate creativity at our annual student art exhibition showcasing diverse artworks.',
-      date: '2025-02-01',
-      time: '5:00 PM',
-      location: 'Art Gallery',
+      title: 'Konstitutsiya qabul qilingan kun',
+      description:
+        'Huquqiy bilimlarni oshirishga qaratilgan ma’rifiy tadbir.',
+      date: '2025-12-07',
+      time: '10:00 AM',
+      location: 'Assembly Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 7,
+      title: 'Davlat Madhiyasi qabul qilingan kun',
+      description:
+        'Vatanparvarlik va milliy g‘ururni mustahkamlovchi tadbir.',
+      date: '2025-12-10',
+      time: '10:00 AM',
+      location: 'School Yard',
+      type: 'Cultural',
+    },
+    {
+      id: 8,
+      title: '"Zakovat" intellektual o‘yini',
+      description:
+        'Bilim, mantiq va tezkor fikrlashni sinovdan o‘tkazuvchi musobaqa.',
+      date: '2025-12-12',
+      time: '10:00 AM',
+      location: 'Classrooms',
+      type: 'Academic',
+    },
+    {
+      id: 9,
+      title: 'Matematika fani tadbiri',
+      description:
+        'Aniq fanlarga qiziqishni oshirishga qaratilgan bellashuvlar.',
+      date: '2025-12-16',
+      time: '10:00 AM',
+      location: 'STEM Room',
+      type: 'Academic',
+    },
+    {
+      id: 10,
+      title: 'Kimyo fani tadbiri',
+      description:
+        'Qiziqarli tajribalar va ilmiy ko‘rgazmalar.',
+      date: '2025-12-18',
+      time: '10:00 AM',
+      location: 'Laboratory',
+      type: 'Academic',
+    },
+    {
+      id: 11,
+      title: 'Fizika fani tadbiri',
+      description:
+        'Fizika fanining amaliy ahamiyatiga bag‘ishlangan tadbir.',
+      date: '2025-12-20',
+      time: '10:00 AM',
+      location: 'Laboratory',
+      type: 'Academic',
+    },
+    {
+      id: 12,
+      title: 'Yangi yil tadbiri',
+      description:
+        'Bayramona sahna ko‘rinishlari va tantanali yangi yil dasturi.',
+      date: '2025-12-26',
+      time: '10:00 AM',
+      location: 'Main Hall',
       type: 'Cultural',
     },
   ];
+
+  // Sanasi bo'yicha kamayish tartibida tartiblash (eng yangi birinchi) - [::-1] ekvivalenti
+  const events = useMemo(() => {
+    return [...allEvents].sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateB - dateA; // Kamayish tartibida (eng yangi birinchi)
+    });
+  }, []);
 
   const getTypeColor = (type: string) => {
     const colors: Record<string, string> = {
