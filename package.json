@@ -14,7 +14,8 @@
     "start": "tsx server.ts",
     "server": "tsx server.ts",
     "railway:start": "tsx server.ts",
-    "fetch-news": "tsx scripts/fetch_news.ts"
+    "fetch-news": "tsx scripts/fetch_news.ts",
+    "add-news": "tsx scripts/add_single_news.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
