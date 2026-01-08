@@ -67,7 +67,7 @@ Today at our school, under the motto "For the Homeland, for the Nation, for the 
 
 🌿 At the event, ideas of patriotism, loyalty to the nation, and faith in our people's future were expressed. In the new academic year, we wish all our students strong health, thirst for knowledge, and great achievements!`,
   category: 'Events',
-  image_url: null, // Rasm URL ni keyinroq qo'shishingiz mumkin
+  image_url: '/photo_2025-09-02_09-42-21.jpg', // Rasm URL
   published: true,
   created_at: new Date('2025-09-02T10:00:00+05:00').toISOString(),
 };
