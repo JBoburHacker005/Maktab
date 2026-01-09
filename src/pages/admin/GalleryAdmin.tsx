@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Eye, EyeOff, Loader2, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,6 +44,18 @@ const GalleryAdmin: React.FC = () => {
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('open') === 'new') {
+      setDialogOpen(true);
+      // Clean up the query param
+      setSearchParams(params => {
+        params.delete('open');
+        return params;
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: gallery, isLoading } = useQuery({
     queryKey: ['admin-gallery'],
@@ -144,7 +157,7 @@ const GalleryAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const imageUrl = previewUrl || (formData.get('image_url') as string);
     if (!imageUrl) {
       toast({
@@ -184,175 +197,175 @@ const GalleryAdmin: React.FC = () => {
           <div className="flex items-center gap-2">
             <AddGalleryImages />
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('add')}
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-lg">
-              <DialogHeader>
-                <DialogTitle>{t('add')}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label>{t('imageUrl')}</Label>
-                  <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
-                    {previewUrl ? (
-                      <img
-                        src={previewUrl}
-                        alt="Preview"
-                        className="w-full h-40 object-cover rounded-lg mb-2"
-                      />
-                    ) : (
-                      <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                    )}
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      disabled={uploading}
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <Label
-                      htmlFor="file-upload"
-                      className="cursor-pointer text-primary hover:underline"
-                    >
-                      {uploading ? 'Loading...' : 'Select image'}
-                    </Label>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="image_url">Or enter URL</Label>
-                  <Input
-                    id="image_url"
-                    name="image_url"
-                    placeholder="https://..."
-                    disabled={!!previewUrl}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('add')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-lg">
+                <DialogHeader>
+                  <DialogTitle>{t('add')}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title_uz">{t('titleUz')}</Label>
-                    <Input id="title_uz" name="title_uz" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="title_ru">{t('titleRu')}</Label>
-                    <Input id="title_ru" name="title_ru" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="title_en">{t('titleEn')}</Label>
-                    <Input id="title_en" name="title_en" required />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="category">{t('category')}</Label>
-                  <Input id="category" name="category" defaultValue="general" />
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Switch id="published" name="published" />
-                  <Label htmlFor="published">{t('publish')}</Label>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      setDialogOpen(false);
-                      setPreviewUrl('');
-                    }}
-                  >
-                    {t('cancel')}
-                  </Button>
-                  <Button type="submit" disabled={saveMutation.isPending || uploading}>
-                    {saveMutation.isPending && (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
-                    {t('save')}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {gallery?.map((item) => (
-              <Card key={item.id} className="overflow-hidden group">
-                <div className="relative aspect-square">
-                  <img
-                    src={item.image_url}
-                    alt={getTitle(item)}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      onClick={() =>
-                        togglePublished.mutate({
-                          id: item.id,
-                          published: !item.published,
-                        })
-                      }
-                    >
-                      {item.published ? (
-                        <Eye className="w-4 h-4" />
+                    <Label>{t('imageUrl')}</Label>
+                    <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
+                      {previewUrl ? (
+                        <img
+                          src={previewUrl}
+                          alt="Preview"
+                          className="w-full h-40 object-cover rounded-lg mb-2"
+                        />
                       ) : (
-                        <EyeOff className="w-4 h-4" />
+                        <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
                       )}
-                    </Button>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        disabled={uploading}
+                        className="hidden"
+                        id="file-upload"
+                      />
+                      <Label
+                        htmlFor="file-upload"
+                        className="cursor-pointer text-primary hover:underline"
+                      >
+                        {uploading ? 'Loading...' : 'Select image'}
+                      </Label>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="image_url">Or enter URL</Label>
+                    <Input
+                      id="image_url"
+                      name="image_url"
+                      placeholder="https://..."
+                      disabled={!!previewUrl}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title_uz">{t('titleUz')}</Label>
+                      <Input id="title_uz" name="title_uz" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_ru">{t('titleRu')}</Label>
+                      <Input id="title_ru" name="title_ru" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_en">{t('titleEn')}</Label>
+                      <Input id="title_en" name="title_en" required />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="category">{t('category')}</Label>
+                    <Input id="category" name="category" defaultValue="general" />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Switch id="published" name="published" />
+                    <Label htmlFor="published">{t('publish')}</Label>
+                  </div>
+
+                  <div className="flex justify-end gap-2">
                     <Button
-                      variant="destructive"
-                      size="icon"
+                      type="button"
+                      variant="outline"
                       onClick={() => {
-                        setDeletingId(item.id);
-                        setDeleteDialogOpen(true);
+                        setDialogOpen(false);
+                        setPreviewUrl('');
                       }}
                     >
-                      <Trash2 className="w-4 h-4" />
+                      {t('cancel')}
+                    </Button>
+                    <Button type="submit" disabled={saveMutation.isPending || uploading}>
+                      {saveMutation.isPending && (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      )}
+                      {t('save')}
                     </Button>
                   </div>
-                </div>
-                <CardContent className="p-3">
-                  <p className="text-sm font-medium truncate">{getTitle(item)}</p>
-                  <p className="text-xs text-muted-foreground">{item.category}</p>
-                </CardContent>
-              </Card>
-            ))}
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
-        )}
 
-        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t('cannotUndo')}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => deletingId && deleteMutation.mutate(deletingId)}
-              >
-                {t('delete')}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {gallery?.map((item) => (
+                <Card key={item.id} className="overflow-hidden group">
+                  <div className="relative aspect-square">
+                    <img
+                      src={item.image_url}
+                      alt={getTitle(item)}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        onClick={() =>
+                          togglePublished.mutate({
+                            id: item.id,
+                            published: !item.published,
+                          })
+                        }
+                      >
+                        {item.published ? (
+                          <Eye className="w-4 h-4" />
+                        ) : (
+                          <EyeOff className="w-4 h-4" />
+                        )}
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => {
+                          setDeletingId(item.id);
+                          setDeleteDialogOpen(true);
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <CardContent className="p-3">
+                    <p className="text-sm font-medium truncate">{getTitle(item)}</p>
+                    <p className="text-xs text-muted-foreground">{item.category}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t('cannotUndo')}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => deletingId && deleteMutation.mutate(deletingId)}
+                >
+                  {t('delete')}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
     </AdminLayout>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2, MapPin, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,6 +44,19 @@ const EventsAdmin: React.FC = () => {
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('open') === 'new') {
+      setEditingItem(null);
+      setDialogOpen(true);
+      // Clean up the query param
+      setSearchParams(params => {
+        params.delete('open');
+        return params;
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: events, isLoading } = useQuery({
     queryKey: ['admin-events'],
@@ -120,7 +134,7 @@ const EventsAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const item: EventInsert = {
       title_uz: formData.get('title_uz') as string,
       title_ru: formData.get('title_ru') as string,

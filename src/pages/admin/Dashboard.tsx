@@ -81,41 +81,41 @@ const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              <a
-                href="/admin/news"
+              <Link
+                to="/admin/news?open=new"
                 className="flex flex-col items-center gap-2 p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
               >
                 <Newspaper className="w-6 h-6 text-blue-500" />
                 <span className="text-sm font-medium">Yangilik qo'shish</span>
-              </a>
-              <a
-                href="/admin/events"
+              </Link>
+              <Link
+                to="/admin/events?open=new"
                 className="flex flex-col items-center gap-2 p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
               >
                 <Calendar className="w-6 h-6 text-green-500" />
                 <span className="text-sm font-medium">Tadbir qo'shish</span>
-              </a>
-              <a
-                href="/admin/gallery"
+              </Link>
+              <Link
+                to="/admin/gallery?open=new"
                 className="flex flex-col items-center gap-2 p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
               >
                 <Images className="w-6 h-6 text-purple-500" />
                 <span className="text-sm font-medium">Rasm qo'shish</span>
-              </a>
-              <a
-                href="/admin/teachers"
+              </Link>
+              <Link
+                to="/admin/teachers?open=new"
                 className="flex flex-col items-center gap-2 p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
               >
                 <Users className="w-6 h-6 text-orange-500" />
                 <span className="text-sm font-medium">O'qituvchi qo'shish</span>
-              </a>
-              <a
-                href="/admin/departments"
+              </Link>
+              <Link
+                to="/admin/departments?open=new"
                 className="flex flex-col items-center gap-2 p-4 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
               >
                 <Building2 className="w-6 h-6 text-pink-500" />
                 <span className="text-sm font-medium">Bo'lim qo'shish</span>
-              </a>
+              </Link>
             </div>
           </CardContent>
         </Card>

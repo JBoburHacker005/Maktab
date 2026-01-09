@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,6 +44,19 @@ const DepartmentsAdmin: React.FC = () => {
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('open') === 'new') {
+      setEditingItem(null);
+      setDialogOpen(true);
+      // Clean up the query param
+      setSearchParams(params => {
+        params.delete('open');
+        return params;
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: departments, isLoading } = useQuery({
     queryKey: ['admin-departments'],
@@ -120,7 +134,7 @@ const DepartmentsAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const item: DepartmentInsert = {
       name_uz: formData.get('name_uz') as string,
       name_ru: formData.get('name_ru') as string,

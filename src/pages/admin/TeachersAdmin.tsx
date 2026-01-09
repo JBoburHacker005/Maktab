@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2, Mail, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -44,6 +45,19 @@ const TeachersAdmin: React.FC = () => {
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('open') === 'new') {
+      setEditingItem(null);
+      setDialogOpen(true);
+      // Clean up the query param
+      setSearchParams(params => {
+        params.delete('open');
+        return params;
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: teachers, isLoading } = useQuery({
     queryKey: ['admin-teachers'],
@@ -121,7 +135,7 @@ const TeachersAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const item: TeacherInsert = {
       name: formData.get('name') as string,
       subject_uz: formData.get('subject_uz') as string,

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,19 @@ const NewsAdmin: React.FC = () => {
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('open') === 'new') {
+      setEditingItem(null);
+      setDialogOpen(true);
+      // Clean up the query param
+      setSearchParams(params => {
+        params.delete('open');
+        return params;
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: news, isLoading } = useQuery({
     queryKey: ['admin-news'],
@@ -144,7 +158,7 @@ const NewsAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const item: NewsInsert = {
       title_uz: formData.get('title_uz') as string,
       title_ru: formData.get('title_ru') as string,
@@ -197,116 +211,116 @@ const NewsAdmin: React.FC = () => {
                     {editingItem ? t('edit') : t('add')}
                   </DialogTitle>
                 </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title_uz">{t('titleUz')}</Label>
+                      <Input
+                        id="title_uz"
+                        name="title_uz"
+                        defaultValue={editingItem?.title_uz}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_ru">{t('titleRu')}</Label>
+                      <Input
+                        id="title_ru"
+                        name="title_ru"
+                        defaultValue={editingItem?.title_ru}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_en">{t('titleEn')}</Label>
+                      <Input
+                        id="title_en"
+                        name="title_en"
+                        defaultValue={editingItem?.title_en}
+                        required
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="title_uz">{t('titleUz')}</Label>
-                    <Input
-                      id="title_uz"
-                      name="title_uz"
-                      defaultValue={editingItem?.title_uz}
+                    <Label htmlFor="content_uz">{t('descriptionUz')}</Label>
+                    <Textarea
+                      id="content_uz"
+                      name="content_uz"
+                      rows={4}
+                      defaultValue={editingItem?.content_uz}
                       required
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="title_ru">{t('titleRu')}</Label>
-                    <Input
-                      id="title_ru"
-                      name="title_ru"
-                      defaultValue={editingItem?.title_ru}
+                    <Label htmlFor="content_ru">{t('descriptionRu')}</Label>
+                    <Textarea
+                      id="content_ru"
+                      name="content_ru"
+                      rows={4}
+                      defaultValue={editingItem?.content_ru}
                       required
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="title_en">{t('titleEn')}</Label>
-                    <Input
-                      id="title_en"
-                      name="title_en"
-                      defaultValue={editingItem?.title_en}
+                    <Label htmlFor="content_en">{t('descriptionEn')}</Label>
+                    <Textarea
+                      id="content_en"
+                      name="content_en"
+                      rows={4}
+                      defaultValue={editingItem?.content_en}
                       required
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="content_uz">{t('descriptionUz')}</Label>
-                  <Textarea
-                    id="content_uz"
-                    name="content_uz"
-                    rows={4}
-                    defaultValue={editingItem?.content_uz}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="content_ru">{t('descriptionRu')}</Label>
-                  <Textarea
-                    id="content_ru"
-                    name="content_ru"
-                    rows={4}
-                    defaultValue={editingItem?.content_ru}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="content_en">{t('descriptionEn')}</Label>
-                  <Textarea
-                    id="content_en"
-                    name="content_en"
-                    rows={4}
-                    defaultValue={editingItem?.content_en}
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="category">{t('category')}</Label>
-                    <Input
-                      id="category"
-                      name="category"
-                      defaultValue={editingItem?.category || 'general'}
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="category">{t('category')}</Label>
+                      <Input
+                        id="category"
+                        name="category"
+                        defaultValue={editingItem?.category || 'general'}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="image_url">{t('imageUrl')}</Label>
+                      <Input
+                        id="image_url"
+                        name="image_url"
+                        defaultValue={editingItem?.image_url || ''}
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="image_url">{t('imageUrl')}</Label>
-                    <Input
-                      id="image_url"
-                      name="image_url"
-                      defaultValue={editingItem?.image_url || ''}
+
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="published"
+                      name="published"
+                      defaultChecked={editingItem?.published ?? false}
                     />
+                    <Label htmlFor="published">{t('publish')}</Label>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <Switch
-                    id="published"
-                    name="published"
-                    defaultChecked={editingItem?.published ?? false}
-                  />
-                  <Label htmlFor="published">{t('publish')}</Label>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setDialogOpen(false)}
-                  >
-                    {t('cancel')}
-                  </Button>
-                  <Button type="submit" disabled={saveMutation.isPending}>
-                    {saveMutation.isPending && (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
-                    {t('save')}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setDialogOpen(false)}
+                    >
+                      {t('cancel')}
+                    </Button>
+                    <Button type="submit" disabled={saveMutation.isPending}>
+                      {saveMutation.isPending && (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      )}
+                      {t('save')}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
