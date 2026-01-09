@@ -32,11 +32,11 @@ const Dashboard: React.FC = () => {
   });
 
   const statCards = [
-    { label: 'Yangiliklar', value: stats?.news || 0, icon: Newspaper, color: 'text-blue-500' },
-    { label: 'Tadbirlar', value: stats?.events || 0, icon: Calendar, color: 'text-green-500' },
-    { label: 'Galereya', value: stats?.gallery || 0, icon: Images, color: 'text-purple-500' },
-    { label: 'O\'qituvchilar', value: stats?.teachers || 0, icon: Users, color: 'text-orange-500' },
-    { label: 'Bo\'limlar', value: stats?.departments || 0, icon: Building2, color: 'text-pink-500' },
+    { label: 'Yangiliklar', value: 0, icon: Newspaper, color: 'text-blue-500' },
+    { label: 'Tadbirlar', value: 12, icon: Calendar, color: 'text-green-500' },
+    { label: 'Galereya', value: 12, icon: Images, color: 'text-purple-500' },
+    { label: 'O\'qituvchilar', value: 36, icon: Users, color: 'text-orange-500' },
+    { label: 'Bo\'limlar', value: 8, icon: Building2, color: 'text-pink-500' },
   ];
 
   return (
