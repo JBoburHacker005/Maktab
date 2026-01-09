@@ -63,14 +63,14 @@ const Departments: React.FC = () => {
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

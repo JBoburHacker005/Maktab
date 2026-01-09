@@ -7,137 +7,39 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Events: React.FC = () => {
   const { t } = useLanguage();
 
-  const allEvents = [
-    {
-      id: 1,
-      title: 'Bilimlar kuni',
-      description:
-        'Yangi o‘quv yilining boshlanishiga bag‘ishlangan tantanali tadbir.',
-      date: '2025-09-02',
-      time: '10:00 AM',
-      location: 'School Yard',
-      type: 'Cultural',
-    },
-    {
-      id: 2,
-      title: 'Ustoz va Murabbiylar kuni',
-      description:
-        'Ustozlarga hurmat va ehtirom ko‘rsatish maqsadida tashkil etilgan bayram.',
-      date: '2025-09-30',
-      time: '10:00 AM',
-      location: 'Main Hall',
-      type: 'Cultural',
-    },
-    {
-      id: 3,
-      title: 'O‘zbek tiliga davlat tili maqomi berilgan kun',
-      description:
-        'Davlat tilining nufuzi va ahamiyatiga bag‘ishlangan ma’naviy tadbir.',
-      date: '2025-10-21',
-      time: '10:00 AM',
-      location: 'Assembly Hall',
-      type: 'Cultural',
-    },
-    {
-      id: 4,
-      title: 'Olimpiada g‘oliblarini taqdirlash',
-      description:
-        'Fan olimpiadalarida yuqori natijalarga erishgan o‘quvchilarni taqdirlash marosimi.',
-      date: '2025-11-11',
-      time: '10:00 AM',
-      location: 'Main Hall',
-      type: 'Academic',
-    },
-    {
-      id: 5,
-      title: 'Davlat Bayrog‘i qabul qilingan kun',
-      description:
-        'Vatan ramzlariga hurmat va vatanparvarlik ruhidagi tadbir.',
-      date: '2025-11-18',
-      time: '10:00 AM',
-      location: 'School Yard',
-      type: 'Cultural',
-    },
-    {
-      id: 6,
-      title: 'Konstitutsiya qabul qilingan kun',
-      description:
-        'Huquqiy bilimlarni oshirishga qaratilgan ma’rifiy tadbir.',
-      date: '2025-12-07',
-      time: '10:00 AM',
-      location: 'Assembly Hall',
-      type: 'Cultural',
-    },
-    {
-      id: 7,
-      title: 'Davlat Madhiyasi qabul qilingan kun',
-      description:
-        'Vatanparvarlik va milliy g‘ururni mustahkamlovchi tadbir.',
-      date: '2025-12-10',
-      time: '10:00 AM',
-      location: 'School Yard',
-      type: 'Cultural',
-    },
-    {
-      id: 8,
-      title: '"Zakovat" intellektual o‘yini',
-      description:
-        'Bilim, mantiq va tezkor fikrlashni sinovdan o‘tkazuvchi musobaqa.',
-      date: '2025-12-12',
-      time: '10:00 AM',
-      location: 'Classrooms',
-      type: 'Academic',
-    },
-    {
-      id: 9,
-      title: 'Matematika fani tadbiri',
-      description:
-        'Aniq fanlarga qiziqishni oshirishga qaratilgan bellashuvlar.',
-      date: '2025-12-16',
-      time: '10:00 AM',
-      location: 'STEM Room',
-      type: 'Academic',
-    },
-    {
-      id: 10,
-      title: 'Kimyo fani tadbiri',
-      description:
-        'Qiziqarli tajribalar va ilmiy ko‘rgazmalar.',
-      date: '2025-12-18',
-      time: '10:00 AM',
-      location: 'Laboratory',
-      type: 'Academic',
-    },
-    {
-      id: 11,
-      title: 'Fizika fani tadbiri',
-      description:
-        'Fizika fanining amaliy ahamiyatiga bag‘ishlangan tadbir.',
-      date: '2025-12-20',
-      time: '10:00 AM',
-      location: 'Laboratory',
-      type: 'Academic',
-    },
-    {
-      id: 12,
-      title: 'Yangi yil tadbiri',
-      description:
-        'Bayramona sahna ko‘rinishlari va tantanali yangi yil dasturi.',
-      date: '2025-12-26',
-      time: '10:00 AM',
-      location: 'Main Hall',
-      type: 'Cultural',
-    },
-  ];
+  const { language } = useLanguage();
 
-  // Sanasi bo'yicha kamayish tartibida tartiblash (eng yangi birinchi) - [::-1] ekvivalenti
+  const { data: eventsList, isLoading } = useQuery({
+    queryKey: ['events'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('published', true)
+        .order('event_date', { ascending: false }); // Sort by date descending (newest first)
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const events = useMemo(() => {
-    return [...allEvents].sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return dateB - dateA; // Kamayish tartibida (eng yangi birinchi)
+    return (eventsList || []).map(item => {
+      const dateObj = new Date(item.event_date);
+      // Format time from the date object
+      const time = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      return {
+        id: item.id,
+        title: language === 'uz' ? item.title_uz : (language === 'ru' ? item.title_ru : item.title_en),
+        description: language === 'uz' ? item.description_uz : (language === 'ru' ? item.description_ru : item.description_en),
+        date: item.event_date,
+        time: time,
+        location: item.location || 'School',
+        type: 'Cultural', // Default type as DB doesn't have it
+      };
     });
-  }, []);
+  }, [eventsList, language]);
 
   const getTypeColor = (type: string) => {
     const colors: Record<string, string> = {
@@ -155,14 +57,14 @@ const Events: React.FC = () => {
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -197,9 +99,8 @@ const Events: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className={`relative flex flex-col md:flex-row gap-8 mb-12 ${
-                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                  }`}
+                  className={`relative flex flex-col md:flex-row gap-8 mb-12 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                    }`}
                 >
                   {/* Timeline Dot */}
                   <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background md:-translate-x-1/2 z-10" />

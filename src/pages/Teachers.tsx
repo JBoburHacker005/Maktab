@@ -277,14 +277,14 @@ const Teachers: React.FC = () => {
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -292,125 +292,135 @@ const Teachers: React.FC = () => {
             className="max-w-3xl mx-auto text-center"
           >
             <span className="text-primary font-medium text-sm uppercase tracking-wider">
-              {t('teachers')}
+              {t('ourTeam')}
             </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mt-3 mb-6">
-              {t('meetOurTeachersTitle')}
+              {t('meetTeachers')}
             </h1>
             <p className="text-lg text-muted-foreground">
-              {t('meetOurTeachersDesc')}
+              {t('meetTeachersDesc')}
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Leadership */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-display font-bold mb-4">{t('schoolLeadership')}</h2>
+            <div className="w-20 h-1.5 bg-primary mx-auto rounded-full" />
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {leaders.map((leader, index) => (
+              <motion.div
+                key={leader.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group relative overflow-hidden rounded-2xl bg-card border border-border/50 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={leader.image}
+                    alt={leader.name}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80" />
+
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="font-display font-bold text-xl mb-1">{leader.name}</h3>
+                    <p className="text-primary-foreground/90 font-medium mb-4">{leader.role}</p>
+
+                    <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                      <a
+                        href={`tel:${leader.phone}`}
+                        className="flex items-center gap-2 text-sm hover:text-primary-foreground transition-colors"
+                      >
+                        <Phone className="w-4 h-4" />
+                        {leader.phone}
+                      </a>
+                      <a
+                        href={`https://t.me/${leader.telegram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm hover:text-primary-foreground transition-colors"
+                      >
+                        <Send className="w-4 h-4" />
+                        {leader.telegram}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Teachers Grid */}
       <section className="py-20 lg:py-28">
         <div className="container mx-auto px-4">
-          {/* Leadership */}
-          <div className="mb-14">
-            <div className="mb-6 text-center">
-              <h2 className="font-display text-3xl font-bold text-foreground">{t('leadershipTitle')}</h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {leaders.map((leader, index) => (
-                <motion.div
-                  key={leader.name}
-                  initial={{ opacity: 0, y: 25 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className="p-6 rounded-2xl bg-card border border-primary/20 shadow-[0_10px_40px_-20px_rgba(59,130,246,0.6)] text-center"
-                >
-                  <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-4 ring-primary/20">
-                    <img
-                      src={leader.image}
-                      alt={leader.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <h3 className="font-display font-semibold text-lg text-foreground mb-1">
-                    {leader.name}
-                  </h3>
-                  <p className="text-primary text-sm font-medium mb-3">{leader.role}</p>
-                  <div className="flex justify-center gap-2">
-                    {leader.telegram && (
-                      <a
-                        href={leader.telegram.startsWith('http') ? leader.telegram : `https://t.me/${leader.telegram.replace('@', '')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition"
-                        title="Telegram"
-                      >
-                        <Send className="w-4 h-4" />
-                      </a>
-                    )}
-                    {leader.phone && (
-                      <a
-                        href={`tel:${leader.phone}`}
-                        className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition"
-                        title="Phone"
-                      >
-                        <Phone className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Teachers heading */}
-          <div className="mb-8 text-center">
-            <h2 className="font-display text-3xl font-bold text-foreground">{t('teachersStaff')}</h2>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-display font-bold mb-4">{t('ourTeachers')}</h2>
+            <div className="w-20 h-1.5 bg-primary mx-auto rounded-full" />
+          </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {teachers.map((teacher, index) => (
               <motion.div
-                key={teacher.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="group p-6 rounded-2xl bg-card border border-border/50 text-center hover:shadow-xl transition-all duration-300"
+                className="group bg-card rounded-xl border border-border/50 overflow-hidden hover:shadow-lg transition-all duration-300"
               >
-                <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden ring-4 ring-primary/10 group-hover:ring-primary/30 transition-all">
+                <div className="aspect-square overflow-hidden relative">
                   <img
                     src={teacher.image}
                     alt={teacher.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
                   />
+
+                  {/* Overlay with Contact Info */}
+                  <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="text-center p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <a
+                        href={`tel:${teacher.phone}`}
+                        className="flex items-center justify-center gap-2 text-primary-foreground mb-3 hover:opacity-80 transition-opacity"
+                      >
+                        <Phone className="w-4 h-4" />
+                        <span className="text-sm font-medium">{teacher.phone}</span>
+                      </a>
+                      <a
+                        href={`https://t.me/${teacher.telegram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 text-primary-foreground hover:opacity-80 transition-opacity"
+                      >
+                        <Send className="w-4 h-4" />
+                        <span className="text-sm font-medium">{teacher.telegram}</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-display font-semibold text-lg text-foreground mb-1">
-                  {teacher.name}
-                </h3>
-                <p className="text-primary text-sm font-medium mb-4">
-                  {teacher.subject}
-                </p>
-                <div className="flex justify-center gap-2">
-                  {teacher.telegram && (
-                    <a
-                      href={teacher.telegram.startsWith('http') ? teacher.telegram : `https://t.me/${teacher.telegram.replace('@', '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                      title="Telegram"
-                    >
-                      <Send className="w-4 h-4" />
-                    </a>
-                  )}
-                  {teacher.phone && (
-                    <a
-                      href={`tel:${teacher.phone}`}
-                      className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                      title="Phone"
-                    >
-                      <Phone className="w-4 h-4" />
-                    </a>
-                  )}
+
+                <div className="p-4 text-center">
+                  <h3 className="font-bold text-foreground mb-1">{teacher.name}</h3>
+                  <p className="text-sm text-primary font-medium">{teacher.subject}</p>
                 </div>
               </motion.div>
             ))}
