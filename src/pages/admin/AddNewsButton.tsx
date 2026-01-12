@@ -115,15 +115,17 @@ const AddNewsButton: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
       queryClient.invalidateQueries({ queryKey: ['news'] });
       toast({
-        title: 'Success!',
-        description: `Cleaned and imported ${count} news items from Telegram.`,
+        title: 'Muvaffaqiyatli!',
+        description: `Telegramdan ${count} ta yangilik import qilindi.`,
       });
+      // Force reload to ensure images/layout refresh
+      setTimeout(() => window.location.reload(), 1500);
     },
     onError: (error: Error) => {
       console.error(error);
       toast({
         variant: 'destructive',
-        title: 'Error',
+        title: 'Xatolik',
         description: error.message,
       });
     },
@@ -140,7 +142,7 @@ const AddNewsButton: React.FC = () => {
       ) : (
         <Download className="w-4 h-4 mr-2" />
       )}
-      Import from Telegram
+      Telegramdan Import Qilish
     </Button>
   );
 };
