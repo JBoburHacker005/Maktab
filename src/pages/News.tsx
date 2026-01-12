@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Tag, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -38,8 +39,8 @@ const News: React.FC = () => {
 
   const filteredNews = useMemo(() => {
     if (!news) return [];
-    const filtered = selectedCategory === 'all' 
-      ? news 
+    const filtered = selectedCategory === 'all'
+      ? news
       : news.filter(item => item.category === selectedCategory);
     return filtered;
   }, [news, selectedCategory]);
@@ -55,21 +56,21 @@ const News: React.FC = () => {
     if (language === 'ru') return item.content_ru;
     return item.content_en;
   };
-  
+
 
   return (
     <Layout>
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -97,11 +98,10 @@ const News: React.FC = () => {
               <button
                 key={category.key}
                 onClick={() => setSelectedCategory(category.key)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  selectedCategory === category.key
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                }`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category.key
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  }`}
               >
                 {category.label}
               </button>
@@ -132,7 +132,7 @@ const News: React.FC = () => {
                 const content = getContent(item);
                 const excerpt = content ? content.substring(0, 150) + '...' : '';
                 const categoryLabel = categories.find(c => c.key === item.category)?.label || item.category;
-                
+
                 return (
                   <motion.article
                     key={item.id}

@@ -3,85 +3,127 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2 } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
+import { Loader2, Download } from 'lucide-react';
 
 const AddNewsButton: React.FC = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const clearAndAddMutation = useMutation({
+  const importNewsMutation = useMutation({
     mutationFn: async () => {
-      // Avval barcha yangiliklarni o'chirish
-      console.log('🗑️ Eski yangiliklarni o\'chirish...');
-      const { error: deleteError } = await supabase
+      // Create Admin Client to bypass RLS
+      const supabaseAdmin = createClient(
+        'https://iusctesnflzacsjksozt.supabase.co',
+        'sb_secret_AyDA2jvBFZoPrd3dL6TkHA_C8e0TH1o'
+      );
+
+      // 1. Delete all existing news
+      console.log('🗑️ Deleting old news...');
+      const { error: deleteError } = await supabaseAdmin
         .from('news')
         .delete()
         .neq('id', '00000000-0000-0000-0000-000000000000');
-      
+
       if (deleteError) {
-        throw new Error(`O'chirishda xatolik: ${deleteError.message}`);
+        throw new Error(`Deletion failed: ${deleteError.message}`);
       }
-      
-      console.log('✅ Eski yangiliklarni o\'chirildi');
-      
-      // Keyin yangi yangilikni qo'shish
-      const newsData = {
-        title_uz: '2-sentabr — Yangi o\'quv yilining ilk qo\'ng\'irog\'i!',
-        title_ru: '2 сентября — Первый звонок нового учебного года!',
-        title_en: 'September 2 — First Bell of the New Academic Year!',
-        content_uz: `📚✨ 2-sentabr — Yangi o'quv yilining ilk qo'ng'irog'i!
 
-Bugun maktabimizda "Vatan uchun, millat uchun, xalq uchun" shiori ostida 5–11-sinflar o'quvchilari uchun tantanali "Birinchi qo'ng'iroq" tadbiri bo'lib o'tdi.
+      // 2. Fetch from Telegram via CORS Proxy
+      console.log('📥 Fetching from Telegram...');
+      const PROXY_URL = 'https://api.allorigins.win/get?url=';
+      const TARGET_URL = 'https://t.me/s/T2022PIMA';
 
-🎉 Tadbirda o'quvchilar, ustozlar va ota-onalar birgalikda yangi bilim yilini katta hayajon va quvonch bilan qarshi oldilar. Kuy-qo'shiqlar, she'rlar, dil so'zlari, ezgu tilaklar yangradi.
+      const response = await fetch(`${PROXY_URL}${encodeURIComponent(TARGET_URL)}`);
+      if (!response.ok) throw new Error('Failed to fetch from Telegram proxy');
 
-📖 "Birinchi qo'ng'iroq" nafaqat yangi dars yilining boshlanishi, balki o'quvchilarimizni bilim sari, yurt ravnaqi yo'lida intilish sari chorlovchi ramziy daqiqadir.
+      const data = await response.json();
+      const html = data.contents;
 
-🌿 Tadbirda vatanparvarlik, millatga sadoqat, xalqimiz kelajagiga ishonch kabi g'oyalar tarannum etildi. Yangi o'quv yilida barcha o'quvchilarimizga mustahkam salomatlik, ilmga chanqoqlik va ulkan yutuqlar tilaymiz!`,
-        content_ru: `📚✨ 2 сентября — Первый звонок нового учебного года!
+      // 3. Parse HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
 
-Сегодня в нашей школе под девизом "За Родину, за нацию, за народ" состоялось торжественное мероприятие "Первый звонок" для учащихся 5–11 классов.
+      const messages = Array.from(doc.querySelectorAll('.tgme_widget_message_wrap'));
+      const newsItems: any[] = [];
+      const START_DATE = new Date('2025-08-25T00:00:00+05:00');
 
-🎉 На мероприятии учащиеся, учителя и родители вместе встретили новый учебный год с большим волнением и радостью. Звучали песни, стихи, добрые слова и пожелания.
+      for (const msg of messages) {
+        // Extract content
+        const textElement = msg.querySelector('.tgme_widget_message_text');
+        const text = textElement?.innerHTML
+          .replace(/<br\s*\/?>/gi, '\n')
+          .replace(/<[^>]+>/g, '')
+          .trim() || '';
 
-📖 "Первый звонок" — это не только начало нового учебного года, но и символический момент, призывающий наших учащихся стремиться к знаниям, к процветанию страны.
+        // Extract Date
+        const timeElement = msg.querySelector('time');
+        const dateStr = timeElement?.getAttribute('datetime');
 
-🌿 На мероприятии звучали идеи патриотизма, верности нации, веры в будущее нашего народа. В новом учебном году желаем всем нашим учащимся крепкого здоровья, жажды знаний и больших достижений!`,
-        content_en: `📚✨ September 2 — First Bell of the New Academic Year!
+        // Extract Image
+        const photoElement = msg.querySelector('.tgme_widget_message_photo_wrap');
+        let image = null;
+        if (photoElement) {
+          const style = photoElement.getAttribute('style');
+          const match = style?.match(/background-image:url\('([^']+)'\)/);
+          if (match) image = match[1];
+        }
 
-Today at our school, under the motto "For the Homeland, for the Nation, for the People", a ceremonial "First Bell" event was held for students in grades 5–11.
+        if (dateStr && text) {
+          const date = new Date(dateStr);
+          if (date >= START_DATE) {
+            // Determine Category
+            let category = 'general';
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('olimpiada') || lowerText.includes('musobaqa')) category = 'Awards';
+            else if (lowerText.includes('sport')) category = 'Sports';
+            else if (lowerText.includes('tadbir') || lowerText.includes('bayram')) category = 'Events';
+            else if (lowerText.includes('fan') || lowerText.includes('dars')) category = 'Academic';
 
-🎉 At the event, students, teachers, and parents together welcomed the new academic year with great excitement and joy. Songs, poems, kind words, and wishes were heard.
+            // Format Title (First line)
+            const title = text.split('\n')[0].substring(0, 100);
 
-📖 "First Bell" is not only the beginning of a new academic year, but also a symbolic moment calling our students to strive for knowledge and the prosperity of the country.
-
-🌿 At the event, ideas of patriotism, loyalty to the nation, and faith in our people's future were expressed. In the new academic year, we wish all our students strong health, thirst for knowledge, and great achievements!`,
-        category: 'Events',
-        image_url: '/photo_2025-09-02_09-42-21.jpg',
-        published: true,
-        created_at: new Date('2025-09-02T10:00:00+05:00').toISOString(),
-      };
-
-      // Yangi yangilikni qo'shish
-      console.log('➕ Yangi yangilikni qo\'shish...');
-      const { error: insertError } = await supabase.from('news').insert([newsData]);
-      if (insertError) {
-        throw new Error(`Qo'shishda xatolik: ${insertError.message}`);
+            newsItems.push({
+              title_uz: title,
+              title_ru: title,
+              title_en: title,
+              content_uz: text,
+              content_ru: text,
+              content_en: text,
+              category,
+              image_url: image, // Note: Telegram images might not work if hotlinked without proxy. But let's try.
+              published: true,
+              created_at: dateStr
+            });
+          }
+        }
       }
-      
-      console.log('✅ Yangi yangilik qo\'shildi!');
+
+      console.log(`✅ Found ${newsItems.length} items.`);
+
+      // 4. Insert into Supabase
+      if (newsItems.length > 0) {
+        // Sort ascending for insertion (oldest first? No, we usually want newest first, but insertion order doesn't matter much if compiled correctly)
+        // Let's insert batch
+        const { error: insertError } = await supabaseAdmin.from('news').insert(newsItems);
+        if (insertError) throw new Error(`Insert failed: ${insertError.message}`);
+      }
+
+      return newsItems.length;
     },
-    onSuccess: () => {
+    onSuccess: (count) => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+      queryClient.invalidateQueries({ queryKey: ['news'] });
       toast({
-        title: 'Muvaffaqiyatli!',
-        description: 'Eski yangiliklarni o\'chirildi va yangi yangilik qo\'shildi!',
+        title: 'Success!',
+        description: `Cleaned and imported ${count} news items from Telegram.`,
       });
     },
     onError: (error: Error) => {
+      console.error(error);
       toast({
         variant: 'destructive',
-        title: 'Xatolik',
+        title: 'Error',
         description: error.message,
       });
     },
@@ -89,17 +131,20 @@ Today at our school, under the motto "For the Homeland, for the Nation, for the 
 
   return (
     <Button
-      onClick={() => clearAndAddMutation.mutate()}
-      disabled={clearAndAddMutation.isPending}
-      className="bg-green-600 hover:bg-green-700"
+      onClick={() => importNewsMutation.mutate()}
+      disabled={importNewsMutation.isPending}
+      className="bg-blue-600 hover:bg-blue-700 text-white"
     >
-      {clearAndAddMutation.isPending && (
+      {importNewsMutation.isPending ? (
         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+      ) : (
+        <Download className="w-4 h-4 mr-2" />
       )}
-      Eski yangiliklarni o'chirib, yangisini qo'shish
+      Import from Telegram
     </Button>
   );
 };
 
 export default AddNewsButton;
+
 
