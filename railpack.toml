@@ -1,0 +1,7 @@
+[build]
+install = "bun install"
+build = "bun run build"
+
+[start]
+command = "bun start"
+
