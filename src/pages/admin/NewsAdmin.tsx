@@ -41,6 +41,7 @@ const NewsAdmin: React.FC = () => {
   const [editingItem, setEditingItem] = useState<NewsRow | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
+  const [published, setPublished] = useState(false);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
@@ -74,8 +75,8 @@ const NewsAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
-      setDialogOpen(false);
-      setEditingItem(null);
+      queryClient.invalidateQueries({ queryKey: ['news'] }); // Invalidate public news query too
+      handleCloseDialog();
       toast({
         title: t('success'),
         description: editingItem ? t('updated') : t('added'),
@@ -97,6 +98,7 @@ const NewsAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+      queryClient.invalidateQueries({ queryKey: ['news'] }); // Invalidate public news query too
       setDeleteDialogOpen(false);
       setDeletingId(null);
       toast({
@@ -126,6 +128,7 @@ const NewsAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+      queryClient.invalidateQueries({ queryKey: ['news'] }); // Invalidate public news query too
       setClearAllDialogOpen(false);
       toast({
         title: t('deleted'),
@@ -154,10 +157,27 @@ const NewsAdmin: React.FC = () => {
       content_en: formData.get('content_en') as string,
       category: formData.get('category') as string || 'general',
       image_url: formData.get('image_url') as string || null,
-      published: formData.get('published') === 'on',
+      published: published,
     };
 
     saveMutation.mutate(item);
+  };
+
+  const handleOpenDialog = (item?: NewsRow) => {
+    if (item) {
+      setEditingItem(item);
+      setPublished(item.published ?? false);
+    } else {
+      setEditingItem(null);
+      setPublished(false);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setEditingItem(null);
+    setPublished(false);
   };
 
   const getTitle = (item: NewsRow) => {
@@ -184,9 +204,9 @@ const NewsAdmin: React.FC = () => {
                 {t('delete')} all
               </Button>
             )}
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
               <DialogTrigger asChild>
-                <Button onClick={() => setEditingItem(null)}>
+                <Button onClick={() => handleOpenDialog()}>
                   <Plus className="w-4 h-4 mr-2" />
                   {t('add')}
                 </Button>
@@ -283,8 +303,8 @@ const NewsAdmin: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Switch
                     id="published"
-                    name="published"
-                    defaultChecked={editingItem?.published ?? false}
+                    checked={published}
+                    onCheckedChange={setPublished}
                   />
                   <Label htmlFor="published">{t('publish')}</Label>
                 </div>
@@ -293,7 +313,7 @@ const NewsAdmin: React.FC = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => setDialogOpen(false)}
+                    onClick={handleCloseDialog}
                   >
                     {t('cancel')}
                   </Button>
@@ -356,10 +376,7 @@ const NewsAdmin: React.FC = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => {
-                        setEditingItem(item);
-                        setDialogOpen(true);
-                      }}
+                      onClick={() => handleOpenDialog(item)}
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
