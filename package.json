@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "vercel-build": "npm run copy-teacher-images && vite build",
-    "build": "npm run copy-teacher-images && vite build",
+    "vercel-build": "bun run copy-teacher-images && vite build",
+    "build": "bun run copy-teacher-images && vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

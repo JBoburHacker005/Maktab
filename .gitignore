@@ -29,8 +29,8 @@ dist-ssr
 .env.local
 .env.*.local
 
-# Bun lockfile (Railway uchun npm ishlatamiz)
-bun.lockb
+# Bun lockfile should be committed for Railway
+# bun.lockb
 
 # Railway/Nixpacks generated files
 .nixpacks
