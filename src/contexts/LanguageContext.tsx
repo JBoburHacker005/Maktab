@@ -238,6 +238,7 @@ const translations: Translations = {
   newsCategoryEvents: { en: 'Events', uz: 'Tadbirlar', ru: 'Мероприятия' },
   newsCategoryAwards: { en: 'Awards', uz: 'Mukofotlar', ru: 'Награды' },
   noNews: { en: 'No news available', uz: 'Yangiliklar mavjud emas', ru: 'Новостей нет' },
+  noEvents: { en: 'No events available', uz: 'Tadbirlar mavjud emas', ru: 'Мероприятий нет' },
   
   // Events page
   upcomingEventsTitle: { en: 'Upcoming Events', uz: 'Kelgusi tadbirlar', ru: 'Предстоящие мероприятия' },

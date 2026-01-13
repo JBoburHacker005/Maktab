@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Phone, Send } from 'lucide-react';
+import { Phone, Send, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
+import { Tables } from '@/integrations/supabase/types';
+
+type TeachersRow = Tables<'teachers'>;
 
 const Teachers: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  // Supabase'dan o'qituvchilarni olish
+  const { data: supabaseTeachers, isLoading } = useQuery({
+    queryKey: ['teachers', language],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('teachers')
+        .select('*')
+        .eq('published', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data as TeachersRow[];
+    },
+  });
 
   const leaders = [
     {
@@ -272,6 +292,48 @@ const Teachers: React.FC = () => {
     },
   ];
 
+  // O'qituvchilarni birlashtirish
+  const allTeachers = useMemo(() => {
+    const teachersList: Array<{
+      name: string;
+      subject: string;
+      image: string;
+      telegram?: string;
+      phone?: string;
+    }> = [];
+
+    // Supabase'dan olingan o'qituvchilar
+    if (supabaseTeachers && supabaseTeachers.length > 0) {
+      supabaseTeachers.forEach((teacher) => {
+        const name = language === 'uz' ? teacher.name_uz : language === 'ru' ? teacher.name_ru : teacher.name_en;
+        const subject = language === 'uz' ? teacher.subject_uz : language === 'ru' ? teacher.subject_ru : teacher.subject_en;
+        
+        teachersList.push({
+          name: name || '',
+          subject: subject || '',
+          image: teacher.image_url || '/placeholder.svg',
+          telegram: teacher.telegram_handle || undefined,
+          phone: teacher.phone || undefined,
+        });
+      });
+    }
+
+    // Hardcoded o'qituvchilar (fallback yoki qo'shimcha)
+    if (teachersList.length === 0) {
+      return teachers;
+    }
+
+    // Hardcoded o'qituvchilarni qo'shish (duplikatlarni oldini olish)
+    teachers.forEach((teacher) => {
+      const exists = teachersList.some(t => t.name === teacher.name);
+      if (!exists) {
+        teachersList.push(teacher);
+      }
+    });
+
+    return teachersList;
+  }, [supabaseTeachers, language]);
+
   return (
     <Layout>
       {/* Hero */}
@@ -366,8 +428,13 @@ const Teachers: React.FC = () => {
             <h2 className="font-display text-3xl font-bold text-foreground">{t('teachersStaff')}</h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {teachers.map((teacher, index) => (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {allTeachers.map((teacher, index) => (
               <motion.div
                 key={teacher.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -413,8 +480,9 @@ const Teachers: React.FC = () => {
                   )}
                 </div>
               </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </Layout>

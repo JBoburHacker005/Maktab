@@ -1,13 +1,34 @@
 import React, { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock, MapPin, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
+import { Tables } from '@/integrations/supabase/types';
+
+type EventsRow = Tables<'events'>;
 
 const Events: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
-  const allEvents = [
+  // Supabase'dan tadbirlarni olish
+  const { data: supabaseEvents, isLoading } = useQuery({
+    queryKey: ['events', language],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('published', true)
+        .order('event_date', { ascending: false });
+
+      if (error) throw error;
+      return data as EventsRow[];
+    },
+  });
+
+  // Hardcoded tadbirlar (fallback)
+  const hardcodedEvents = [
     {
       id: 1,
       title: 'Bilimlar kuni',
@@ -130,14 +151,61 @@ const Events: React.FC = () => {
     },
   ];
 
-  // Sanasi bo'yicha kamayish tartibida tartiblash (eng yangi birinchi) - [::-1] ekvivalenti
+  // Tadbirlarni birlashtirish va tartiblash
   const events = useMemo(() => {
-    return [...allEvents].sort((a, b) => {
+    const allEventsList: Array<{
+      id: string | number;
+      title: string;
+      description: string;
+      date: string;
+      time: string;
+      location: string;
+      type: string;
+    }> = [];
+
+    // Supabase'dan olingan tadbirlar
+    if (supabaseEvents && supabaseEvents.length > 0) {
+      supabaseEvents.forEach((event) => {
+        const title = language === 'uz' ? event.title_uz : language === 'ru' ? event.title_ru : event.title_en;
+        const description = language === 'uz' ? event.description_uz : language === 'ru' ? event.description_ru : event.description_en;
+        const eventDate = event.event_date ? new Date(event.event_date).toISOString().split('T')[0] : '';
+        const eventTime = event.event_time || '10:00 AM';
+        const location = event.location || 'School';
+        
+        allEventsList.push({
+          id: event.id,
+          title,
+          description: description || '',
+          date: eventDate,
+          time: eventTime,
+          location,
+          type: event.category || 'Cultural',
+        });
+      });
+    }
+
+    // Hardcoded tadbirlar (fallback yoki qo'shimcha)
+    if (allEventsList.length === 0) {
+      hardcodedEvents.forEach((event) => {
+        allEventsList.push({
+          id: event.id,
+          title: event.title,
+          description: event.description,
+          date: event.date,
+          time: event.time,
+          location: event.location,
+          type: event.type,
+        });
+      });
+    }
+
+    // Sanasi bo'yicha kamayish tartibida tartiblash (eng yangi birinchi)
+    return allEventsList.sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
       return dateB - dateA; // Kamayish tartibida (eng yangi birinchi)
     });
-  }, []);
+  }, [supabaseEvents, language]);
 
   const getTypeColor = (type: string) => {
     const colors: Record<string, string> = {
@@ -185,12 +253,21 @@ const Events: React.FC = () => {
       {/* Events Timeline */}
       <section className="py-20 lg:py-28">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2" />
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : events.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">{t('noEvents') || 'No events available'}</p>
+            </div>
+          ) : (
+            <div className="max-w-4xl mx-auto">
+              <div className="relative">
+                {/* Timeline Line */}
+                <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2" />
 
-              {events.map((event, index) => (
+                {events.map((event, index) => (
                 <motion.div
                   key={event.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -241,9 +318,10 @@ const Events: React.FC = () => {
                     </div>
                   </div>
                 </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </Layout>

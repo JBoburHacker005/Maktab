@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Tag, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -39,9 +38,9 @@ const News: React.FC = () => {
 
   const filteredNews = useMemo(() => {
     if (!news) return [];
-    const filtered = selectedCategory === 'all'
-      ? news
-      : news.filter(item => item.category === selectedCategory);
+    const filtered = selectedCategory === 'all' 
+    ? news 
+    : news.filter(item => item.category === selectedCategory);
     return filtered;
   }, [news, selectedCategory]);
 
@@ -56,21 +55,21 @@ const News: React.FC = () => {
     if (language === 'ru') return item.content_ru;
     return item.content_en;
   };
-
+  
 
   return (
     <Layout>
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div
+        <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-
+        
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -98,10 +97,11 @@ const News: React.FC = () => {
               <button
                 key={category.key}
                 onClick={() => setSelectedCategory(category.key)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category.key
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === category.key
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                }`}
               >
                 {category.label}
               </button>
@@ -126,59 +126,59 @@ const News: React.FC = () => {
               <p className="text-muted-foreground">{t('noNews')}</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredNews.map((item, index) => {
                 const title = getTitle(item);
                 const content = getContent(item);
                 const excerpt = content ? content.substring(0, 150) + '...' : '';
                 const categoryLabel = categories.find(c => c.key === item.category)?.label || item.category;
-
+                
                 return (
-                  <motion.article
-                    key={item.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:shadow-xl transition-all duration-300"
-                  >
+              <motion.article
+                key={item.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:shadow-xl transition-all duration-300"
+              >
                     {item.image_url && (
-                      <div className="aspect-video overflow-hidden">
-                        <img
+                <div className="aspect-video overflow-hidden">
+                  <img
                           src={item.image_url.startsWith('http') ? item.image_url : item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`}
                           alt={title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=News';
                           }}
-                        />
-                      </div>
+                  />
+                </div>
                     )}
-                    <div className="p-6">
-                      <div className="flex items-center gap-4 mb-3">
-                        <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
-                          <Tag className="w-3 h-3" />
+                <div className="p-6">
+                  <div className="flex items-center gap-4 mb-3">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+                      <Tag className="w-3 h-3" />
                           {categoryLabel}
-                        </span>
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Calendar className="w-3 h-3" />
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Calendar className="w-3 h-3" />
                           {new Date(item.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <h3 className="font-display font-semibold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
+                    </span>
+                  </div>
+                  <h3 className="font-display font-semibold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
                         {title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {excerpt}
-                      </p>
-                      <Button variant="link" className="p-0 h-auto text-primary">
+                  </p>
+                  <Button variant="link" className="p-0 h-auto text-primary">
                         {t('readMore')} <ArrowRight className="w-4 h-4 ml-1" />
-                      </Button>
-                    </div>
-                  </motion.article>
+                  </Button>
+                </div>
+              </motion.article>
                 );
               })}
-            </div>
+          </div>
           )}
         </div>
       </section>
