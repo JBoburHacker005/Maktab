@@ -149,6 +149,16 @@ const Events: React.FC = () => {
       location: 'Main Hall',
       type: 'Cultural',
     },
+    {
+      id: 13,
+      title: '14-yanvar Vatan himoyachilari kuni',
+      description:
+        'Bayramona sahna ko‘rinishlari va tantanali Harbiy dasturlar.',
+      date: '2026-01-13',
+      time: '10:00 AM',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
   ];
 
   // Tadbirlarni birlashtirish va tartiblash
@@ -171,7 +181,7 @@ const Events: React.FC = () => {
         const eventDate = event.event_date ? new Date(event.event_date).toISOString().split('T')[0] : '';
         const eventTime = event.event_time || '10:00 AM';
         const location = event.location || 'School';
-        
+
         allEventsList.push({
           id: event.id,
           title,
@@ -223,14 +233,14 @@ const Events: React.FC = () => {
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -268,56 +278,55 @@ const Events: React.FC = () => {
                 <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2" />
 
                 {events.map((event, index) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`relative flex flex-col md:flex-row gap-8 mb-12 ${
-                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                  }`}
-                >
-                  {/* Timeline Dot */}
-                  <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background md:-translate-x-1/2 z-10" />
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`relative flex flex-col md:flex-row gap-8 mb-12 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                      }`}
+                  >
+                    {/* Timeline Dot */}
+                    <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background md:-translate-x-1/2 z-10" />
 
-                  {/* Date Card */}
-                  <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:text-left md:pl-12' : 'md:text-right md:pr-12'}`}>
-                    <div className="text-primary font-medium">
-                      {new Date(event.date).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Event Card */}
-                  <div className={`md:w-1/2 ml-8 md:ml-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <div className="p-6 rounded-2xl bg-card border border-border/50 hover:shadow-lg transition-shadow">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-3 ${getTypeColor(event.type)}`}>
-                        {event.type}
-                      </span>
-                      <h3 className="font-display font-semibold text-xl text-foreground mb-2">
-                        {event.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mb-4">
-                        {event.description}
-                      </p>
-                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {event.time}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {event.location}
-                        </span>
+                    {/* Date Card */}
+                    <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:text-left md:pl-12' : 'md:text-right md:pr-12'}`}>
+                      <div className="text-primary font-medium">
+                        {new Date(event.date).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
                       </div>
                     </div>
-                  </div>
-                </motion.div>
+
+                    {/* Event Card */}
+                    <div className={`md:w-1/2 ml-8 md:ml-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+                      <div className="p-6 rounded-2xl bg-card border border-border/50 hover:shadow-lg transition-shadow">
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-3 ${getTypeColor(event.type)}`}>
+                          {event.type}
+                        </span>
+                        <h3 className="font-display font-semibold text-xl text-foreground mb-2">
+                          {event.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm mb-4">
+                          {event.description}
+                        </p>
+                        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            {event.time}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-4 h-4" />
+                            {event.location}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
