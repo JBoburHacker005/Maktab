@@ -181,7 +181,8 @@ CREATE TABLE public.news (
   category TEXT NOT NULL DEFAULT 'general',
   image_url TEXT,
   author_id UUID REFERENCES auth.users(id),
-  published BOOLEAN DEFAULT false,
+  -- Default published to TRUE so newly created news are visible on the public site
+  published BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
@@ -232,7 +233,8 @@ CREATE TABLE public.events (
   location TEXT,
   event_date TIMESTAMP WITH TIME ZONE NOT NULL,
   image_url TEXT,
-  published BOOLEAN DEFAULT false,
+  -- Default published to TRUE so newly created events are visible on the public site
+  published BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
@@ -270,7 +272,8 @@ CREATE TABLE public.gallery (
   title_ru TEXT NOT NULL,
   image_url TEXT NOT NULL,
   category TEXT DEFAULT 'general',
-  published BOOLEAN DEFAULT false,
+  -- Default published to TRUE so newly created gallery items are visible on the public site
+  published BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
@@ -311,7 +314,8 @@ CREATE TABLE public.teachers (
   image_url TEXT,
   email TEXT,
   phone TEXT,
-  published BOOLEAN DEFAULT false,
+  -- Default published to TRUE so newly created teachers are visible on the public site
+  published BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
@@ -351,7 +355,8 @@ CREATE TABLE public.departments (
   description_en TEXT NOT NULL,
   description_ru TEXT NOT NULL,
   icon TEXT DEFAULT 'BookOpen',
-  published BOOLEAN DEFAULT false,
+  -- Default published to TRUE so newly created departments are visible on the public site
+  published BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );

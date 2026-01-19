@@ -65,10 +65,16 @@ imagesToCopy.forEach(({ src, dest }) => {
   const destPath = path.join(__dirname, dest);
   
   if (fs.existsSync(srcPath)) {
+    // Ensure destination directory exists
+    const destDir = path.dirname(destPath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
     fs.copyFileSync(srcPath, destPath);
     console.log(`✓ Copied ${src} to ${dest}`);
   } else {
-    console.error(`✗ Source file not found: ${src}`);
+    // Don't fail build if image is missing - just warn
+    console.warn(`⚠ Source file not found: ${src} (skipping)`);
   }
 });
 
