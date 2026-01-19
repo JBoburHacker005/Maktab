@@ -39,6 +39,8 @@ const GalleryAdmin: React.FC = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string>('');
+  // Default to published for NEW records so they appear on public pages
+  const [published, setPublished] = useState(true);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
@@ -106,6 +108,8 @@ const GalleryAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-gallery'] });
+      // Public gallery query key is ['gallery', language]
+      queryClient.invalidateQueries({ queryKey: ['gallery'] });
     },
   });
 
@@ -161,7 +165,7 @@ const GalleryAdmin: React.FC = () => {
       title_en: formData.get('title_en') as string,
       image_url: imageUrl,
       category: formData.get('category') as string || 'general',
-      published: formData.get('published') === 'on',
+      published,
     };
 
     saveMutation.mutate(item);
@@ -255,7 +259,12 @@ const GalleryAdmin: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Switch id="published" name="published" />
+                  <Switch
+                    id="published"
+                    name="published"
+                    checked={published}
+                    onCheckedChange={setPublished}
+                  />
                   <Label htmlFor="published">{t('publish')}</Label>
                 </div>
 

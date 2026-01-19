@@ -114,6 +114,7 @@ const EventsAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-events'] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
     },
   });
 
@@ -262,7 +263,8 @@ const EventsAdmin: React.FC = () => {
                   <Switch
                     id="published"
                     name="published"
-                    defaultChecked={editingItem?.published ?? false}
+                    // Default to published for NEW records so they appear on public pages
+                    defaultChecked={editingItem?.published ?? true}
                   />
                   <Label htmlFor="published">{t('publish')}</Label>
                 </div>

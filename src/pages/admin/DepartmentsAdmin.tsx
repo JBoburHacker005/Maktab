@@ -128,6 +128,7 @@ const DepartmentsAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
+      queryClient.invalidateQueries({ queryKey: ['departments'] });
     },
   });
 
@@ -260,7 +261,8 @@ const DepartmentsAdmin: React.FC = () => {
                   <Switch
                     id="published"
                     name="published"
-                    defaultChecked={editingItem?.published ?? false}
+                    // Default to published for NEW records so they appear on public pages
+                    defaultChecked={editingItem?.published ?? true}
                   />
                   <Label htmlFor="published">{t('publish')}</Label>
                 </div>

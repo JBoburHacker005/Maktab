@@ -41,7 +41,8 @@ const NewsAdmin: React.FC = () => {
   const [editingItem, setEditingItem] = useState<NewsRow | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
-  const [published, setPublished] = useState(false);
+  // Default to published for NEW records so they appear on public pages
+  const [published, setPublished] = useState(true);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
@@ -118,6 +119,7 @@ const NewsAdmin: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+      queryClient.invalidateQueries({ queryKey: ['news'] });
     },
   });
 
@@ -169,7 +171,7 @@ const NewsAdmin: React.FC = () => {
       setPublished(item.published ?? false);
     } else {
       setEditingItem(null);
-      setPublished(false);
+      setPublished(true);
     }
     setDialogOpen(true);
   };
@@ -177,7 +179,7 @@ const NewsAdmin: React.FC = () => {
   const handleCloseDialog = () => {
     setDialogOpen(false);
     setEditingItem(null);
-    setPublished(false);
+    setPublished(true);
   };
 
   const getTitle = (item: NewsRow) => {
