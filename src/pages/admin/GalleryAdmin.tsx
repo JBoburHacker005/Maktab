@@ -148,7 +148,7 @@ const GalleryAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     const imageUrl = previewUrl || (formData.get('image_url') as string);
     if (!imageUrl) {
       toast({
@@ -291,76 +291,77 @@ const GalleryAdmin: React.FC = () => {
             </Dialog>
           </div>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {gallery?.map((item) => (
-              <Card key={item.id} className="overflow-hidden group">
-                <div className="relative aspect-square">
-                  <img
-                    src={item.image_url}
-                    alt={getTitle(item)}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      onClick={() =>
-                        togglePublished.mutate({
-                          id: item.id,
-                          published: !item.published,
-                        })
-                      }
-                    >
-                      {item.published ? (
-                        <Eye className="w-4 h-4" />
-                      ) : (
-                        <EyeOff className="w-4 h-4" />
-                      )}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => {
-                        setDeletingId(item.id);
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {gallery?.map((item) => (
+                <Card key={item.id} className="overflow-hidden group">
+                  <div className="relative aspect-square">
+                    <img
+                      src={item.image_url}
+                      alt={getTitle(item)}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        onClick={() =>
+                          togglePublished.mutate({
+                            id: item.id,
+                            published: !item.published,
+                          })
+                        }
+                      >
+                        {item.published ? (
+                          <Eye className="w-4 h-4" />
+                        ) : (
+                          <EyeOff className="w-4 h-4" />
+                        )}
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => {
+                          setDeletingId(item.id);
+                          setDeleteDialogOpen(true);
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <CardContent className="p-3">
-                  <p className="text-sm font-medium truncate">{getTitle(item)}</p>
-                  <p className="text-xs text-muted-foreground">{item.category}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                  <CardContent className="p-3">
+                    <p className="text-sm font-medium truncate">{getTitle(item)}</p>
+                    <p className="text-xs text-muted-foreground">{item.category}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
-        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t('cannotUndo')}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => deletingId && deleteMutation.mutate(deletingId)}
-              >
-                {t('delete')}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+          <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t('cannotUndo')}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => deletingId && deleteMutation.mutate(deletingId)}
+                >
+                  {t('delete')}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
     </AdminLayout>
   );
 };
