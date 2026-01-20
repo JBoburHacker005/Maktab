@@ -21,6 +21,6 @@ EXPOSE 5000
 # Set environment to production
 ENV NODE_ENV=production
 
-# Start the server
-CMD ["bun", "start"]
+# Start the server using bun's native TypeScript support
+CMD ["bun", "run", "server.ts"]
 
