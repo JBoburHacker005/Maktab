@@ -361,7 +361,6 @@ const GalleryAdmin: React.FC = () => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      </div>
     </AdminLayout>
   );
 };
