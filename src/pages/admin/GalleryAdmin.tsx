@@ -188,108 +188,108 @@ const GalleryAdmin: React.FC = () => {
           <div className="flex items-center gap-2">
             <AddGalleryImages />
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('add')}
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-lg">
-              <DialogHeader>
-                <DialogTitle>{t('add')}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label>{t('imageUrl')}</Label>
-                  <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
-                    {previewUrl ? (
-                      <img
-                        src={previewUrl}
-                        alt="Preview"
-                        className="w-full h-40 object-cover rounded-lg mb-2"
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('add')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-lg">
+                <DialogHeader>
+                  <DialogTitle>{t('add')}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>{t('imageUrl')}</Label>
+                    <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
+                      {previewUrl ? (
+                        <img
+                          src={previewUrl}
+                          alt="Preview"
+                          className="w-full h-40 object-cover rounded-lg mb-2"
+                        />
+                      ) : (
+                        <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        disabled={uploading}
+                        className="hidden"
+                        id="file-upload"
                       />
-                    ) : (
-                      <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                    )}
+                      <Label
+                        htmlFor="file-upload"
+                        className="cursor-pointer text-primary hover:underline"
+                      >
+                        {uploading ? 'Loading...' : 'Select image'}
+                      </Label>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="image_url">Or enter URL</Label>
                     <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      disabled={uploading}
-                      className="hidden"
-                      id="file-upload"
+                      id="image_url"
+                      name="image_url"
+                      placeholder="https://..."
+                      disabled={!!previewUrl}
                     />
-                    <Label
-                      htmlFor="file-upload"
-                      className="cursor-pointer text-primary hover:underline"
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title_uz">{t('titleUz')}</Label>
+                      <Input id="title_uz" name="title_uz" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_ru">{t('titleRu')}</Label>
+                      <Input id="title_ru" name="title_ru" required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_en">{t('titleEn')}</Label>
+                      <Input id="title_en" name="title_en" required />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="category">{t('category')}</Label>
+                    <Input id="category" name="category" defaultValue="general" />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="published"
+                      name="published"
+                      checked={published}
+                      onCheckedChange={setPublished}
+                    />
+                    <Label htmlFor="published">{t('publish')}</Label>
+                  </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setDialogOpen(false);
+                        setPreviewUrl('');
+                      }}
                     >
-                      {uploading ? 'Loading...' : 'Select image'}
-                    </Label>
+                      {t('cancel')}
+                    </Button>
+                    <Button type="submit" disabled={saveMutation.isPending || uploading}>
+                      {saveMutation.isPending && (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      )}
+                      {t('save')}
+                    </Button>
                   </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="image_url">Or enter URL</Label>
-                  <Input
-                    id="image_url"
-                    name="image_url"
-                    placeholder="https://..."
-                    disabled={!!previewUrl}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="title_uz">{t('titleUz')}</Label>
-                    <Input id="title_uz" name="title_uz" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="title_ru">{t('titleRu')}</Label>
-                    <Input id="title_ru" name="title_ru" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="title_en">{t('titleEn')}</Label>
-                    <Input id="title_en" name="title_en" required />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="category">{t('category')}</Label>
-                  <Input id="category" name="category" defaultValue="general" />
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Switch
-                    id="published"
-                    name="published"
-                    checked={published}
-                    onCheckedChange={setPublished}
-                  />
-                  <Label htmlFor="published">{t('publish')}</Label>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      setDialogOpen(false);
-                      setPreviewUrl('');
-                    }}
-                  >
-                    {t('cancel')}
-                  </Button>
-                  <Button type="submit" disabled={saveMutation.isPending || uploading}>
-                    {saveMutation.isPending && (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
-                    {t('save')}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
 
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
