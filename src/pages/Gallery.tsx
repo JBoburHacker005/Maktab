@@ -29,7 +29,12 @@ const Gallery: React.FC = () => {
   });
 
   // Hardcoded rasmlar (fallback)
-  const hardcodedImages = [
+  // const hardcodedImages = [
+
+  // ];
+
+  // Maktab rasmlarini qo'shish
+  const maktabImages = [
     { src: '/png/a.png', alt: 'Campus life A' },
     { src: '/png/b.png', alt: 'Campus life B' },
     { src: '/png/c.png', alt: 'Campus life C' },
@@ -42,10 +47,6 @@ const Gallery: React.FC = () => {
     { src: '/png/j.png', alt: 'Campus life J' },
     { src: '/png/k.png', alt: 'Campus life K' },
     { src: '/png/l.png', alt: 'Campus life L' },
-  ];
-
-  // Maktab rasmlarini qo'shish
-  const maktabImages = [
     '/maktab/photo_2025-09-18_15-45-12.jpg',
     '/maktab/photo_2025-09-20_13-06-31.jpg',
     '/maktab/photo_2025-09-26_18-21-12.jpg',
@@ -75,7 +76,7 @@ const Gallery: React.FC = () => {
   // Barcha rasmlarni birlashtirish
   const allImages = useMemo(() => {
     const images: Array<{ src: string; alt: string }> = [];
-    
+
     // Supabase'dan olingan rasmlar
     if (gallery && gallery.length > 0) {
       gallery.forEach((item) => {
@@ -86,19 +87,19 @@ const Gallery: React.FC = () => {
         });
       });
     }
-    
+
     // Maktab rasmlari
     maktabImages.forEach((src) => {
       const fileName = src.split('/').pop() || '';
       const alt = fileName.replace(/\.(jpg|png)$/i, '').replace(/_/g, ' ').replace(/photo /g, '');
       images.push({ src, alt });
     });
-    
+
     // Hardcoded rasmlar (fallback)
     if (images.length === 0) {
       return hardcodedImages;
     }
-    
+
     return images;
   }, [gallery, language]);
 
@@ -107,14 +108,14 @@ const Gallery: React.FC = () => {
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -144,24 +145,24 @@ const Gallery: React.FC = () => {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {allImages.map((image, index) => (
-              <motion.div
-                key={image.src}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer"
-                onClick={() => setSelectedImage(image.src)}
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-colors flex items-center justify-center">
-                  <ZoomIn className="w-8 h-8 text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </motion.div>
+                <motion.div
+                  key={image.src}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => setSelectedImage(image.src)}
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-colors flex items-center justify-center">
+                    <ZoomIn className="w-8 h-8 text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </motion.div>
               ))}
             </div>
           )}
