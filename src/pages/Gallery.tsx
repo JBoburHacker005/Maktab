@@ -29,21 +29,22 @@ const Gallery: React.FC = () => {
   });
 
   // Hardcoded rasmlar (fallback)
-  // const hardcodedImages = [
-  //   { src: '/png/a.png', alt: 'Campus life A' },
-  //   { src: '/png/b.png', alt: 'Campus life B' },
-  //   { src: '/png/c.png', alt: 'Campus life C' },
-  //   { src: '/png/d.png', alt: 'Campus life D' },
-  //   { src: '/png/e.png', alt: 'Campus life E' },
-  //   { src: '/png/f.png', alt: 'Campus life F' },
-  //   { src: '/png/g.png', alt: 'Campus life G' },
-  //   { src: '/png/h.png', alt: 'Campus life H' },
-  //   { src: '/png/i.png', alt: 'Campus life I' },
-  //   { src: '/png/j.png', alt: 'Campus life J' },
-  //   { src: '/png/k.png', alt: 'Campus life K' },
-  //   { src: '/png/l.png', alt: 'Campus life L' },
-  // ];
+  const hardcodedImages = [
+    { src: '/png/a.png', alt: 'Campus life A' },
+    { src: '/png/b.png', alt: 'Campus life B' },
+    { src: '/png/c.png', alt: 'Campus life C' },
+    { src: '/png/d.png', alt: 'Campus life D' },
+    { src: '/png/e.png', alt: 'Campus life E' },
+    { src: '/png/f.png', alt: 'Campus life F' },
+    { src: '/png/g.png', alt: 'Campus life G' },
+    { src: '/png/h.png', alt: 'Campus life H' },
+    { src: '/png/i.png', alt: 'Campus life I' },
+    { src: '/png/j.png', alt: 'Campus life J' },
+    { src: '/png/k.png', alt: 'Campus life K' },
+    { src: '/png/l.png', alt: 'Campus life L' },
+  ];
 
+  // Maktab rasmlarini qo'shish
   // Maktab rasmlarini qo'shish
   const maktabImages = [
     '/png/a.png',
