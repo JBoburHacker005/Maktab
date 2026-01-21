@@ -1,16 +1,26 @@
+// ============================================
+// AUTH CONTEXT
+// ============================================
+// JWT-based authentication (Supabase ishlatilmaydi)
+// Admin login/logout funksiyalari
+// ============================================
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import { authApi, setToken, removeToken } from '@/lib/api';
 
 type AppRole = 'super_admin' | 'admin' | null;
 
+interface User {
+  id: string;
+  username: string;
+  role: AppRole;
+}
+
 interface AuthContextType {
   user: User | null;
-  session: Session | null;
   role: AppRole;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signIn: (username: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -18,128 +28,92 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [role, setRole] = useState<AppRole>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserRole = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching user role:', error);
-        return null;
-      }
-      return data?.role as AppRole || null;
-    } catch (err) {
-      console.error('Error in fetchUserRole:', err);
-      return null;
-    }
-  };
-
+  // Sahifa yuklanganda tokenni tekshirish
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+    const checkAuth = async () => {
+      const token = localStorage.getItem('admin_token');
 
-        // Defer role fetching with setTimeout to avoid deadlock
-        if (session?.user) {
-          setTimeout(() => {
-            fetchUserRole(session.user.id).then(setRole);
-          }, 0);
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await authApi.getMe();
+
+        if (response.success && response.data?.user) {
+          setUser(response.data.user);
+          setRole(response.data.user.role as AppRole);
         } else {
+          // Token yaroqsiz
+          removeToken();
+          setUser(null);
           setRole(null);
         }
-      }
-    );
-
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        fetchUserRole(session.user.id).then((fetchedRole) => {
-          setRole(fetchedRole);
-          setLoading(false);
-        });
-      } else {
+      } catch (error) {
+        console.error('Auth check error:', error);
+        removeToken();
+        setUser(null);
+        setRole(null);
+      } finally {
         setLoading(false);
       }
-    });
+    };
 
-    return () => subscription.unsubscribe();
+    checkAuth();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  /**
+   * Admin login
+   */
+  const signIn = async (username: string, password: string): Promise<{ error: Error | null }> => {
     try {
-      // Special case for "Bobur" login - bypass Supabase
-      if (email.trim() === 'Bobur' && password === 'boburbek') {
-        // Create a fake user object
-        const fakeUser = {
-          id: 'bobur-admin-id',
-          email: 'bobur@admin.local',
-          user_metadata: {},
-          app_metadata: {},
-          aud: 'authenticated',
-          created_at: new Date().toISOString(),
-        } as User;
-        
-        const fakeSession = {
-          access_token: 'fake-token',
-          refresh_token: 'fake-refresh',
-          expires_in: 3600,
-          expires_at: Math.floor(Date.now() / 1000) + 3600,
-          token_type: 'bearer',
-          user: fakeUser,
-        } as Session;
-        
-        setUser(fakeUser);
-        setSession(fakeSession);
-        setRole('super_admin'); // Set as super_admin
+      const response = await authApi.login(username, password);
+
+      if (response.success && response.data) {
+        const { user, token } = response.data;
+
+        // Token saqlash
+        setToken(token);
+
+        // User ma'lumotlarini saqlash
+        setUser({
+          id: user.id,
+          username: user.username,
+          role: user.role,
+        });
+        setRole(user.role as AppRole);
+
         return { error: null };
+      } else {
+        return { error: new Error(response.message || 'Login xatosi') };
       }
-      
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (!error && data?.user) {
-        // Fetch role after successful login
-        const fetchedRole = await fetchUserRole(data.user.id);
-        setRole(fetchedRole);
-      }
-    return { error: error ? new Error(error.message) : null };
-    } catch (err: any) {
-      const errorMessage = err?.message || 'Failed to fetch';
-      return { error: new Error(errorMessage) };
+    } catch (error: any) {
+      console.error('Login error:', error);
+      return { error: new Error(error.message || 'Login xatosi') };
     }
   };
 
-  const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl
-      }
-    });
-    return { error: error ? new Error(error.message) : null };
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setSession(null);
-    setRole(null);
+  /**
+   * Admin logout
+   */
+  const signOut = async (): Promise<void> => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      removeToken();
+      setUser(null);
+      setRole(null);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, role, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, role, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

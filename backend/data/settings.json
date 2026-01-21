@@ -1,0 +1,38 @@
+{
+    "hero": {
+        "title_uz": "Xush kelibsiz",
+        "title_ru": "Добро пожаловать",
+        "title_en": "Welcome",
+        "subtitle_uz": "Bizning maktabga",
+        "subtitle_ru": "В нашу школу",
+        "subtitle_en": "To our school",
+        "background_image": null
+    },
+    "header": {
+        "logo": null,
+        "phone": "+998 90 123 45 67",
+        "email": "info@maktab.uz"
+    },
+    "footer": {
+        "address_uz": "Toshkent shahri",
+        "address_ru": "Город Ташкент",
+        "address_en": "Tashkent city",
+        "social_links": {
+            "telegram": "",
+            "instagram": "",
+            "facebook": "",
+            "youtube": ""
+        }
+    },
+    "contact": {
+        "phone": "+998 90 123 45 67",
+        "email": "info@maktab.uz",
+        "address_uz": "Toshkent shahri",
+        "address_ru": "Город Ташкент",
+        "address_en": "Tashkent city",
+        "map_embed": "",
+        "working_hours_uz": "Dushanba - Shanba: 8:00 - 18:00",
+        "working_hours_ru": "Понедельник - Суббота: 8:00 - 18:00",
+        "working_hours_en": "Monday - Saturday: 8:00 - 18:00"
+    }
+}

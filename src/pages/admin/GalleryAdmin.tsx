@@ -1,8 +1,15 @@
+// ============================================
+// GALLERY ADMIN PAGE
+// ============================================
+// Galereya boshqaruvi
+// CRUD operatsiyalari
+// ============================================
+
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Trash2, Eye, EyeOff, Loader2, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -24,22 +31,26 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { galleryApi } from '@/lib/api';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Tables, TablesInsert, TablesUpdate } from '@/integrations/supabase/types';
-import AddGalleryImages from './AddGalleryImages';
 
-type GalleryRow = Tables<'gallery'>;
-type GalleryInsert = TablesInsert<'gallery'>;
+interface GalleryItem {
+  id: string;
+  title_uz: string;
+  title_ru: string;
+  title_en: string;
+  image_url: string;
+  category: string;
+  published: boolean;
+  created_at: string;
+}
 
 const GalleryAdmin: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string>('');
-  // Default to published for NEW records so they appear on public pages
   const [published, setPublished] = useState(true);
 
   const { toast } = useToast();
@@ -49,129 +60,100 @@ const GalleryAdmin: React.FC = () => {
   const { data: gallery, isLoading } = useQuery({
     queryKey: ['admin-gallery'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('gallery')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data as GalleryRow[];
+      const response = await galleryApi.getAll();
+      if (response.success) {
+        return response.data as GalleryItem[];
+      }
+      return [];
     },
   });
 
   const saveMutation = useMutation({
-    mutationFn: async (item: GalleryInsert) => {
-      const { error } = await supabase.from('gallery').insert([item]);
-      if (error) throw error;
+    mutationFn: async (item: Partial<GalleryItem>) => {
+      if (editingItem?.id) {
+        return galleryApi.update(editingItem.id, item);
+      } else {
+        return galleryApi.create(item);
+      }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-gallery'] });
-      setDialogOpen(false);
-      setPreviewUrl('');
-      toast({
-        title: t('success'),
-        description: t('added'),
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        variant: 'destructive',
-        title: t('error'),
-        description: error.message,
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-gallery'] });
+        queryClient.invalidateQueries({ queryKey: ['gallery'] });
+        handleCloseDialog();
+        toast({
+          title: t('success'),
+          description: editingItem ? t('updated') : t('added'),
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: t('error'),
+          description: response.message,
+        });
+      }
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('gallery').delete().eq('id', id);
-      if (error) throw error;
+      return galleryApi.delete(id);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-gallery'] });
-      setDeleteDialogOpen(false);
-      setDeletingId(null);
-      toast({
-        title: t('deleted'),
-        description: t('deleted'),
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-gallery'] });
+        queryClient.invalidateQueries({ queryKey: ['gallery'] });
+        setDeleteDialogOpen(false);
+        setDeletingId(null);
+        toast({ title: t('deleted'), description: t('deleted') });
+      }
     },
   });
 
   const togglePublished = useMutation({
     mutationFn: async ({ id, published }: { id: string; published: boolean }) => {
-      const { error } = await supabase
-        .from('gallery')
-        .update({ published })
-        .eq('id', id);
-      if (error) throw error;
+      return galleryApi.update(id, { published });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-gallery'] });
-      // Public gallery query key is ['gallery', language]
       queryClient.invalidateQueries({ queryKey: ['gallery'] });
     },
   });
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `gallery/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('uploads')
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage
-        .from('uploads')
-        .getPublicUrl(filePath);
-
-      setPreviewUrl(urlData.publicUrl);
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: t('error'),
-        description: error.message,
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const imageUrl = previewUrl || (formData.get('image_url') as string);
-    if (!imageUrl) {
-      toast({
-        variant: 'destructive',
-        title: t('error'),
-        description: 'Image URL is required',
-      });
-      return;
-    }
-
-    const item: GalleryInsert = {
+    const item = {
       title_uz: formData.get('title_uz') as string,
       title_ru: formData.get('title_ru') as string,
       title_en: formData.get('title_en') as string,
-      image_url: imageUrl,
+      image_url: formData.get('image_url') as string,
       category: formData.get('category') as string || 'general',
-      published,
+      published: published,
     };
 
     saveMutation.mutate(item);
   };
 
-  const getTitle = (item: GalleryRow) => {
+  const handleOpenDialog = (item?: GalleryItem) => {
+    if (item) {
+      setEditingItem(item);
+      setPublished(item.published ?? false);
+    } else {
+      setEditingItem(null);
+      setPublished(true);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setEditingItem(null);
+    setPublished(true);
+  };
+
+  const getTitle = (item: GalleryItem) => {
     if (language === 'uz') return item.title_uz;
     if (language === 'ru') return item.title_ru;
     return item.title_en;
@@ -180,116 +162,64 @@ const GalleryAdmin: React.FC = () => {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-display font-bold">{t('adminGallery')}</h1>
             <p className="text-muted-foreground">{t('gallery')}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <AddGalleryImages />
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  {t('add')}
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
-                <DialogHeader>
-                  <DialogTitle>{t('add')}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
+          <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
+            <DialogTrigger asChild>
+              <Button onClick={() => handleOpenDialog()}>
+                <Plus className="w-4 h-4 mr-2" />
+                {t('add')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>{editingItem ? t('edit') : t('add')}</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label>{t('imageUrl')}</Label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
-                      {previewUrl ? (
-                        <img
-                          src={previewUrl}
-                          alt="Preview"
-                          className="w-full h-40 object-cover rounded-lg mb-2"
-                        />
-                      ) : (
-                        <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                      )}
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        disabled={uploading}
-                        className="hidden"
-                        id="file-upload"
-                      />
-                      <Label
-                        htmlFor="file-upload"
-                        className="cursor-pointer text-primary hover:underline"
-                      >
-                        {uploading ? 'Loading...' : 'Select image'}
-                      </Label>
-                    </div>
+                    <Label htmlFor="title_uz">{t('titleUz')}</Label>
+                    <Input id="title_uz" name="title_uz" defaultValue={editingItem?.title_uz} required />
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="image_url">Or enter URL</Label>
-                    <Input
-                      id="image_url"
-                      name="image_url"
-                      placeholder="https://..."
-                      disabled={!!previewUrl}
-                    />
+                    <Label htmlFor="title_ru">{t('titleRu')}</Label>
+                    <Input id="title_ru" name="title_ru" defaultValue={editingItem?.title_ru} required />
                   </div>
-
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="title_uz">{t('titleUz')}</Label>
-                      <Input id="title_uz" name="title_uz" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="title_ru">{t('titleRu')}</Label>
-                      <Input id="title_ru" name="title_ru" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="title_en">{t('titleEn')}</Label>
-                      <Input id="title_en" name="title_en" required />
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="title_en">{t('titleEn')}</Label>
+                    <Input id="title_en" name="title_en" defaultValue={editingItem?.title_en} required />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="image_url">{t('imageUrl')} *</Label>
+                    <Input id="image_url" name="image_url" defaultValue={editingItem?.image_url} required />
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="category">{t('category')}</Label>
-                    <Input id="category" name="category" defaultValue="general" />
+                    <Input id="category" name="category" defaultValue={editingItem?.category || 'general'} />
                   </div>
+                </div>
 
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      id="published"
-                      name="published"
-                      checked={published}
-                      onCheckedChange={setPublished}
-                    />
-                    <Label htmlFor="published">{t('publish')}</Label>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <Switch id="published" checked={published} onCheckedChange={setPublished} />
+                  <Label htmlFor="published">{t('publish')}</Label>
+                </div>
 
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        setDialogOpen(false);
-                        setPreviewUrl('');
-                      }}
-                    >
-                      {t('cancel')}
-                    </Button>
-                    <Button type="submit" disabled={saveMutation.isPending || uploading}>
-                      {saveMutation.isPending && (
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      )}
-                      {t('save')}
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={handleCloseDialog}>{t('cancel')}</Button>
+                  <Button type="submit" disabled={saveMutation.isPending}>
+                    {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                    {t('save')}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {isLoading ? (
@@ -301,43 +231,21 @@ const GalleryAdmin: React.FC = () => {
             {gallery?.map((item) => (
               <Card key={item.id} className="overflow-hidden group">
                 <div className="relative aspect-square">
-                  <img
-                    src={item.image_url}
-                    alt={getTitle(item)}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <Button
-                      variant="secondary"
-                      size="icon"
-                      onClick={() =>
-                        togglePublished.mutate({
-                          id: item.id,
-                          published: !item.published,
-                        })
-                      }
-                    >
-                      {item.published ? (
-                        <Eye className="w-4 h-4" />
-                      ) : (
-                        <EyeOff className="w-4 h-4" />
-                      )}
+                  <img src={item.image_url} alt={getTitle(item)} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <Button variant="secondary" size="icon" onClick={() => handleOpenDialog(item)}>
+                      <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => {
-                        setDeletingId(item.id);
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash2 className="w-4 h-4" />
+                    <Button variant="secondary" size="icon" onClick={() => { setDeletingId(item.id); setDeleteDialogOpen(true); }}>
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
+                    <Button variant="secondary" size="icon" onClick={() => togglePublished.mutate({ id: item.id, published: !item.published })}>
+                      {item.published ? <Eye className="w-4 h-4 text-green-500" /> : <EyeOff className="w-4 h-4" />}
                     </Button>
                   </div>
                 </div>
-                <CardContent className="p-3">
+                <CardContent className="p-2">
                   <p className="text-sm font-medium truncate">{getTitle(item)}</p>
-                  <p className="text-xs text-muted-foreground">{item.category}</p>
                 </CardContent>
               </Card>
             ))}
@@ -348,17 +256,11 @@ const GalleryAdmin: React.FC = () => {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t('cannotUndo')}
-              </AlertDialogDescription>
+              <AlertDialogDescription>{t('cannotUndo')}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => deletingId && deleteMutation.mutate(deletingId)}
-              >
-                {t('delete')}
-              </AlertDialogAction>
+              <AlertDialogAction onClick={() => deletingId && deleteMutation.mutate(deletingId)}>{t('delete')}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

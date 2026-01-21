@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+// ============================================
+// DEPARTMENTS ADMIN PAGE
+// ============================================
+// Bo'limlar boshqaruvi
+// CRUD operatsiyalari
+// ============================================
+
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,105 +32,90 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { departmentsApi } from '@/lib/api';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Tables, TablesInsert, TablesUpdate } from '@/integrations/supabase/types';
 
-type DepartmentRow = Tables<'departments'>;
-type DepartmentInsert = TablesInsert<'departments'>;
-type DepartmentUpdate = TablesUpdate<'departments'>;
+interface DepartmentItem {
+  id: string;
+  name_uz: string;
+  name_ru: string;
+  name_en: string;
+  description_uz: string;
+  description_ru: string;
+  description_en: string;
+  icon: string;
+  published: boolean;
+  created_at: string;
+}
 
 const DepartmentsAdmin: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<DepartmentRow | null>(null);
+  const [editingItem, setEditingItem] = useState<DepartmentItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [published, setPublished] = useState(true);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get('open') === 'new') {
-      setEditingItem(null);
-      setDialogOpen(true);
-      // Clean up the query param
-      setSearchParams(params => {
-        params.delete('open');
-        return params;
-      });
-    }
-  }, [searchParams, setSearchParams]);
 
   const { data: departments, isLoading } = useQuery({
     queryKey: ['admin-departments'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('departments')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data as DepartmentRow[];
+      const response = await departmentsApi.getAll();
+      if (response.success) {
+        return response.data as DepartmentItem[];
+      }
+      return [];
     },
   });
 
   const saveMutation = useMutation({
-    mutationFn: async (item: DepartmentInsert | DepartmentUpdate) => {
+    mutationFn: async (item: Partial<DepartmentItem>) => {
       if (editingItem?.id) {
-        const { error } = await supabase
-          .from('departments')
-          .update(item as DepartmentUpdate)
-          .eq('id', editingItem.id);
-        if (error) throw error;
+        return departmentsApi.update(editingItem.id, item);
       } else {
-        const { error } = await supabase.from('departments').insert([item as DepartmentInsert]);
-        if (error) throw error;
+        return departmentsApi.create(item);
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
-      setDialogOpen(false);
-      setEditingItem(null);
-      toast({
-        title: t('success'),
-        description: editingItem ? t('updated') : t('added'),
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        variant: 'destructive',
-        title: t('error'),
-        description: error.message,
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
+        queryClient.invalidateQueries({ queryKey: ['departments'] });
+        handleCloseDialog();
+        toast({
+          title: t('success'),
+          description: editingItem ? t('updated') : t('added'),
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: t('error'),
+          description: response.message,
+        });
+      }
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('departments').delete().eq('id', id);
-      if (error) throw error;
+      return departmentsApi.delete(id);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
-      setDeleteDialogOpen(false);
-      setDeletingId(null);
-      toast({
-        title: t('deleted'),
-        description: t('deleted'),
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
+        queryClient.invalidateQueries({ queryKey: ['departments'] });
+        setDeleteDialogOpen(false);
+        setDeletingId(null);
+        toast({ title: t('deleted'), description: t('deleted') });
+      }
     },
   });
 
   const togglePublished = useMutation({
     mutationFn: async ({ id, published }: { id: string; published: boolean }) => {
-      const { error } = await supabase
-        .from('departments')
-        .update({ published })
-        .eq('id', id);
-      if (error) throw error;
+      return departmentsApi.update(id, { published });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
@@ -136,7 +127,7 @@ const DepartmentsAdmin: React.FC = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const item: DepartmentInsert = {
+    const item = {
       name_uz: formData.get('name_uz') as string,
       name_ru: formData.get('name_ru') as string,
       name_en: formData.get('name_en') as string,
@@ -144,141 +135,97 @@ const DepartmentsAdmin: React.FC = () => {
       description_ru: formData.get('description_ru') as string,
       description_en: formData.get('description_en') as string,
       icon: formData.get('icon') as string || 'BookOpen',
-      published: formData.get('published') === 'on',
+      published: published,
     };
 
     saveMutation.mutate(item);
   };
 
-  const getName = (item: DepartmentRow) => {
+  const handleOpenDialog = (item?: DepartmentItem) => {
+    if (item) {
+      setEditingItem(item);
+      setPublished(item.published ?? false);
+    } else {
+      setEditingItem(null);
+      setPublished(true);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setEditingItem(null);
+    setPublished(true);
+  };
+
+  const getName = (item: DepartmentItem) => {
     if (language === 'uz') return item.name_uz;
     if (language === 'ru') return item.name_ru;
     return item.name_en;
   };
 
-  const getDescription = (item: DepartmentRow) => {
-    if (language === 'uz') return item.description_uz;
-    if (language === 'ru') return item.description_ru;
-    return item.description_en;
-  };
-
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-display font-bold">{t('adminDepartments')}</h1>
             <p className="text-muted-foreground">{t('departments')}</p>
           </div>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
             <DialogTrigger asChild>
-              <Button onClick={() => setEditingItem(null)}>
+              <Button onClick={() => handleOpenDialog()}>
                 <Plus className="w-4 h-4 mr-2" />
                 {t('add')}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>
-                  {editingItem ? t('edit') : t('add')}
-                </DialogTitle>
+                <DialogTitle>{editingItem ? t('edit') : t('add')}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name_uz">{t('nameUz')}</Label>
-                    <Input
-                      id="name_uz"
-                      name="name_uz"
-                      defaultValue={editingItem?.name_uz}
-                      required
-                    />
+                    <Label htmlFor="name_uz">Nom (UZ) *</Label>
+                    <Input id="name_uz" name="name_uz" defaultValue={editingItem?.name_uz} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name_ru">{t('nameRu')}</Label>
-                    <Input
-                      id="name_ru"
-                      name="name_ru"
-                      defaultValue={editingItem?.name_ru}
-                      required
-                    />
+                    <Label htmlFor="name_ru">Nom (RU) *</Label>
+                    <Input id="name_ru" name="name_ru" defaultValue={editingItem?.name_ru} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name_en">{t('nameEn')}</Label>
-                    <Input
-                      id="name_en"
-                      name="name_en"
-                      defaultValue={editingItem?.name_en}
-                      required
-                    />
+                    <Label htmlFor="name_en">Nom (EN) *</Label>
+                    <Input id="name_en" name="name_en" defaultValue={editingItem?.name_en} required />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="description_uz">{t('descriptionUz')}</Label>
-                  <Textarea
-                    id="description_uz"
-                    name="description_uz"
-                    rows={3}
-                    defaultValue={editingItem?.description_uz}
-                    required
-                  />
+                  <Label htmlFor="description_uz">{t('descriptionUz')} *</Label>
+                  <Textarea id="description_uz" name="description_uz" rows={3} defaultValue={editingItem?.description_uz} required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description_ru">{t('descriptionRu')} *</Label>
+                  <Textarea id="description_ru" name="description_ru" rows={3} defaultValue={editingItem?.description_ru} required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description_en">{t('descriptionEn')} *</Label>
+                  <Textarea id="description_en" name="description_en" rows={3} defaultValue={editingItem?.description_en} required />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="description_ru">{t('descriptionRu')}</Label>
-                  <Textarea
-                    id="description_ru"
-                    name="description_ru"
-                    rows={3}
-                    defaultValue={editingItem?.description_ru}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description_en">{t('descriptionEn')}</Label>
-                  <Textarea
-                    id="description_en"
-                    name="description_en"
-                    rows={3}
-                    defaultValue={editingItem?.description_en}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="icon">{t('iconName')}</Label>
-                  <Input
-                    id="icon"
-                    name="icon"
-                    defaultValue={editingItem?.icon || 'BookOpen'}
-                    placeholder="BookOpen, Calculator, Atom..."
-                  />
+                  <Label htmlFor="icon">Icon (Lucide icon nomi)</Label>
+                  <Input id="icon" name="icon" defaultValue={editingItem?.icon || 'BookOpen'} placeholder="BookOpen, Users, Building2..." />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Switch
-                    id="published"
-                    name="published"
-                    // Default to published for NEW records so they appear on public pages
-                    defaultChecked={editingItem?.published ?? true}
-                  />
+                  <Switch id="published" checked={published} onCheckedChange={setPublished} />
                   <Label htmlFor="published">{t('publish')}</Label>
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setDialogOpen(false)}
-                  >
-                    {t('cancel')}
-                  </Button>
+                  <Button type="button" variant="outline" onClick={handleCloseDialog}>{t('cancel')}</Button>
                   <Button type="submit" disabled={saveMutation.isPending}>
-                    {saveMutation.isPending && (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
+                    {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                     {t('save')}
                   </Button>
                 </div>
@@ -294,56 +241,22 @@ const DepartmentsAdmin: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {departments?.map((item) => (
-              <Card key={item.id}>
+              <Card key={item.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                        📚
-                      </div>
-                      <CardTitle className="text-lg">{getName(item)}</CardTitle>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() =>
-                        togglePublished.mutate({
-                          id: item.id,
-                          published: !item.published,
-                        })
-                      }
-                    >
-                      {item.published ? (
-                        <Eye className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <EyeOff className="w-4 h-4 text-muted-foreground" />
-                      )}
+                    <CardTitle className="text-lg">{getName(item)}</CardTitle>
+                    <Button variant="ghost" size="icon" onClick={() => togglePublished.mutate({ id: item.id, published: !item.published })}>
+                      {item.published ? <Eye className="w-4 h-4 text-green-500" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                    {getDescription(item)}
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">Icon: {item.icon}</p>
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setEditingItem(item);
-                        setDialogOpen(true);
-                      }}
-                    >
+                    <Button variant="outline" size="sm" onClick={() => handleOpenDialog(item)}>
                       <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setDeletingId(item.id);
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
+                    <Button variant="outline" size="sm" onClick={() => { setDeletingId(item.id); setDeleteDialogOpen(true); }}>
                       <Trash2 className="w-4 h-4 text-destructive" />
                     </Button>
                   </div>
@@ -357,17 +270,11 @@ const DepartmentsAdmin: React.FC = () => {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t('cannotUndo')}
-              </AlertDialogDescription>
+              <AlertDialogDescription>{t('cannotUndo')}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => deletingId && deleteMutation.mutate(deletingId)}
-              >
-                {t('delete')}
-              </AlertDialogAction>
+              <AlertDialogAction onClick={() => deletingId && deleteMutation.mutate(deletingId)}>{t('delete')}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

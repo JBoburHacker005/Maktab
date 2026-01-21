@@ -1,14 +1,20 @@
+// ============================================
+// ADMIN DASHBOARD
+// ============================================
+// Admin panel asosiy sahifasi
+// Statistika va tezkor amallar
+// ============================================
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { 
-  Newspaper, 
-  Calendar, 
-  Images, 
-  Users, 
-  Building2, 
-  TrendingUp, 
-  History,
+import {
+  Newspaper,
+  Calendar,
+  Images,
+  Users,
+  Building2,
+  Settings,
   Plus,
   ArrowUpRight,
   ArrowDownRight,
@@ -18,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
+import { statsApi } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Link } from 'react-router-dom';
@@ -28,32 +34,14 @@ const Dashboard: React.FC = () => {
 
   const { data: stats, isLoading } = useQuery({
     queryKey: ['admin-stats'],
-    queryFn: async () => {
-      const [news, events, gallery, teachers, departments, recentNews] = await Promise.all([
-        supabase.from('news').select('id', { count: 'exact', head: true }),
-        supabase.from('events').select('id', { count: 'exact', head: true }),
-        supabase.from('gallery').select('id', { count: 'exact', head: true }),
-        supabase.from('teachers').select('id', { count: 'exact', head: true }),
-        supabase.from('departments').select('id', { count: 'exact', head: true }),
-        supabase.from('news').select('*').order('created_at', { ascending: false }).limit(5),
-      ]);
-
-      return {
-        news: news.count || 0,
-        events: events.count || 0,
-        gallery: gallery.count || 0,
-        teachers: teachers.count || 0,
-        departments: departments.count || 0,
-        recentNews: recentNews.data || [],
-      };
-    },
+    queryFn: () => statsApi.getStats(),
   });
 
   const statCards = [
-    { 
-      label: 'Yangiliklar', 
-      value: stats?.news || 0, 
-      icon: Newspaper, 
+    {
+      label: 'Yangiliklar',
+      value: stats?.news || 0,
+      icon: Newspaper,
       color: 'text-blue-500',
       bgColor: 'bg-blue-500/10',
       borderColor: 'border-blue-500/20',
@@ -61,10 +49,10 @@ const Dashboard: React.FC = () => {
       change: '+12%',
       changeType: 'up' as const,
     },
-    { 
-      label: 'Tadbirlar', 
-      value: stats?.events || 0, 
-      icon: Calendar, 
+    {
+      label: 'Tadbirlar',
+      value: stats?.events || 0,
+      icon: Calendar,
       color: 'text-green-500',
       bgColor: 'bg-green-500/10',
       borderColor: 'border-green-500/20',
@@ -72,10 +60,10 @@ const Dashboard: React.FC = () => {
       change: '+8%',
       changeType: 'up' as const,
     },
-    { 
-      label: 'Galereya', 
-      value: stats?.gallery || 0, 
-      icon: Images, 
+    {
+      label: 'Galereya',
+      value: stats?.gallery || 0,
+      icon: Images,
       color: 'text-purple-500',
       bgColor: 'bg-purple-500/10',
       borderColor: 'border-purple-500/20',
@@ -83,10 +71,10 @@ const Dashboard: React.FC = () => {
       change: '+5%',
       changeType: 'up' as const,
     },
-    { 
-      label: 'O\'qituvchilar', 
-      value: stats?.teachers || 0, 
-      icon: Users, 
+    {
+      label: 'O\'qituvchilar',
+      value: stats?.teachers || 0,
+      icon: Users,
       color: 'text-orange-500',
       bgColor: 'bg-orange-500/10',
       borderColor: 'border-orange-500/20',
@@ -94,10 +82,10 @@ const Dashboard: React.FC = () => {
       change: '+3%',
       changeType: 'up' as const,
     },
-    { 
-      label: 'Bo\'limlar', 
-      value: stats?.departments || 0, 
-      icon: Building2, 
+    {
+      label: 'Bo\'limlar',
+      value: stats?.departments || 0,
+      icon: Building2,
       color: 'text-pink-500',
       bgColor: 'bg-pink-500/10',
       borderColor: 'border-pink-500/20',
@@ -108,40 +96,40 @@ const Dashboard: React.FC = () => {
   ];
 
   const quickActions = [
-    { 
-      label: 'Yangilik qo\'shish', 
-      icon: Newspaper, 
+    {
+      label: 'Yangilik qo\'shish',
+      icon: Newspaper,
       href: '/admin/news?open=new',
       color: 'text-blue-500',
       bgColor: 'bg-blue-500/10 hover:bg-blue-500/20',
     },
-    { 
-      label: 'Tadbir qo\'shish', 
-      icon: Calendar, 
+    {
+      label: 'Tadbir qo\'shish',
+      icon: Calendar,
       href: '/admin/events?open=new',
       color: 'text-green-500',
       bgColor: 'bg-green-500/10 hover:bg-green-500/20',
     },
-    { 
-      label: 'Rasm qo\'shish', 
-      icon: Images, 
+    {
+      label: 'Rasm qo\'shish',
+      icon: Images,
       href: '/admin/gallery?open=new',
       color: 'text-purple-500',
       bgColor: 'bg-purple-500/10 hover:bg-purple-500/20',
     },
-    { 
-      label: 'O\'qituvchi qo\'shish', 
-      icon: Users, 
+    {
+      label: 'O\'qituvchi qo\'shish',
+      icon: Users,
       href: '/admin/teachers?open=new',
       color: 'text-orange-500',
       bgColor: 'bg-orange-500/10 hover:bg-orange-500/20',
     },
-    { 
-      label: 'Bo\'lim qo\'shish', 
-      icon: Building2, 
-      href: '/admin/departments?open=new',
-      color: 'text-pink-500',
-      bgColor: 'bg-pink-500/10 hover:bg-pink-500/20',
+    {
+      label: 'Sozlamalar',
+      icon: Settings,
+      href: '/admin/settings',
+      color: 'text-gray-500',
+      bgColor: 'bg-gray-500/10 hover:bg-gray-500/20',
     },
   ];
 
@@ -157,7 +145,7 @@ const Dashboard: React.FC = () => {
           <div>
             <h1 className="text-3xl font-display font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground mt-1">
-              Xush kelibsiz, <span className="font-semibold text-foreground">{user?.email || (role === 'super_admin' ? 'Super Admin' : 'Admin')}</span>!
+              Xush kelibsiz, <span className="font-semibold text-foreground">{user?.username || 'Admin'}</span>!
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -335,7 +323,7 @@ const Dashboard: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Super Admin Only: Audit Log */}
+        {/* Settings Link for Super Admin */}
         {role === 'super_admin' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -345,25 +333,25 @@ const Dashboard: React.FC = () => {
             <Card className="border-2 border-primary/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <History className="w-5 h-5 text-primary" />
-                  Super Admin Panel
+                  <Settings className="w-5 h-5 text-primary" />
+                  Sayt Sozlamalari
                 </CardTitle>
                 <CardDescription>
-                  Tizim o'zgartirishlarini kuzatish
+                  Hero, Header, Footer va Contact sozlamalari
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Link
-                  to="/admin/audit-logs"
+                  to="/admin/settings"
                   className="flex items-center gap-4 p-4 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/20 transition-all duration-200 group"
                 >
                   <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <History className="w-6 h-6 text-primary" />
+                    <Settings className="w-6 h-6 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold">Audit Log</div>
+                    <div className="font-semibold">Sozlamalar</div>
                     <div className="text-sm text-muted-foreground">
-                      Saytga kiritilgan barcha o'zgartirishlar tarixi
+                      Saytning asosiy sozlamalarini boshqaring
                     </div>
                   </div>
                   <ArrowUpRight className="w-5 h-5 text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />

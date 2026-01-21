@@ -1,3 +1,10 @@
+// ============================================
+// NEWS ADMIN PAGE
+// ============================================
+// Yangiliklar boshqaruvi
+// CRUD operatsiyalari
+// ============================================
+
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -25,63 +32,74 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { newsApi } from '@/lib/api';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Tables, TablesInsert, TablesUpdate } from '@/integrations/supabase/types';
-import AddNewsButton from './AddNewsButton';
 
-type NewsRow = Tables<'news'>;
-type NewsInsert = TablesInsert<'news'>;
-type NewsUpdate = TablesUpdate<'news'>;
+interface NewsItem {
+  id: string;
+  title_uz: string;
+  title_ru: string;
+  title_en: string;
+  content_uz: string;
+  content_ru: string;
+  content_en: string;
+  category: string;
+  image_url: string | null;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 const NewsAdmin: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<NewsRow | null>(null);
+  const [editingItem, setEditingItem] = useState<NewsItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
-  // Default to published for NEW records so they appear on public pages
   const [published, setPublished] = useState(true);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
   const queryClient = useQueryClient();
 
+  // Ma'lumotlarni olish
   const { data: news, isLoading } = useQuery({
     queryKey: ['admin-news'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data as NewsRow[];
+      const response = await newsApi.getAll();
+      if (response.success) {
+        return response.data as NewsItem[];
+      }
+      return [];
     },
   });
 
+  // Saqlash mutation
   const saveMutation = useMutation({
-    mutationFn: async (item: NewsInsert | NewsUpdate) => {
+    mutationFn: async (item: Partial<NewsItem>) => {
       if (editingItem?.id) {
-        const { error } = await supabase
-          .from('news')
-          .update(item as NewsUpdate)
-          .eq('id', editingItem.id);
-        if (error) throw error;
+        return newsApi.update(editingItem.id, item);
       } else {
-        const { error } = await supabase.from('news').insert([item as NewsInsert]);
-        if (error) throw error;
+        return newsApi.create(item);
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-news'] });
-      queryClient.invalidateQueries({ queryKey: ['news'] }); // Invalidate public news query too
-      handleCloseDialog();
-      toast({
-        title: t('success'),
-        description: editingItem ? t('updated') : t('added'),
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+        queryClient.invalidateQueries({ queryKey: ['news'] });
+        handleCloseDialog();
+        toast({
+          title: t('success'),
+          description: editingItem ? t('updated') : t('added'),
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: t('error'),
+          description: response.message,
+        });
+      }
     },
     onError: (error: Error) => {
       toast({
@@ -92,30 +110,29 @@ const NewsAdmin: React.FC = () => {
     },
   });
 
+  // O'chirish mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('news').delete().eq('id', id);
-      if (error) throw error;
+      return newsApi.delete(id);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-news'] });
-      queryClient.invalidateQueries({ queryKey: ['news'] }); // Invalidate public news query too
-      setDeleteDialogOpen(false);
-      setDeletingId(null);
-      toast({
-        title: t('deleted'),
-        description: t('deleted'),
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+        queryClient.invalidateQueries({ queryKey: ['news'] });
+        setDeleteDialogOpen(false);
+        setDeletingId(null);
+        toast({
+          title: t('deleted'),
+          description: t('deleted'),
+        });
+      }
     },
   });
 
+  // Published toggle mutation
   const togglePublished = useMutation({
     mutationFn: async ({ id, published }: { id: string; published: boolean }) => {
-      const { error } = await supabase
-        .from('news')
-        .update({ published })
-        .eq('id', id);
-      if (error) throw error;
+      return newsApi.update(id, { published });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
@@ -123,19 +140,21 @@ const NewsAdmin: React.FC = () => {
     },
   });
 
+  // Hammasini o'chirish mutation
   const clearAllMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from('news').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      if (error) throw error;
+      return newsApi.clearAll();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-news'] });
-      queryClient.invalidateQueries({ queryKey: ['news'] }); // Invalidate public news query too
-      setClearAllDialogOpen(false);
-      toast({
-        title: t('deleted'),
-        description: t('deleted'),
-      });
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-news'] });
+        queryClient.invalidateQueries({ queryKey: ['news'] });
+        setClearAllDialogOpen(false);
+        toast({
+          title: t('deleted'),
+          description: t('deleted'),
+        });
+      }
     },
     onError: (error: Error) => {
       toast({
@@ -149,8 +168,8 @@ const NewsAdmin: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
-    const item: NewsInsert = {
+
+    const item = {
       title_uz: formData.get('title_uz') as string,
       title_ru: formData.get('title_ru') as string,
       title_en: formData.get('title_en') as string,
@@ -165,7 +184,7 @@ const NewsAdmin: React.FC = () => {
     saveMutation.mutate(item);
   };
 
-  const handleOpenDialog = (item?: NewsRow) => {
+  const handleOpenDialog = (item?: NewsItem) => {
     if (item) {
       setEditingItem(item);
       setPublished(item.published ?? false);
@@ -182,7 +201,7 @@ const NewsAdmin: React.FC = () => {
     setPublished(true);
   };
 
-  const getTitle = (item: NewsRow) => {
+  const getTitle = (item: NewsItem) => {
     if (language === 'uz') return item.title_uz;
     if (language === 'ru') return item.title_ru;
     return item.title_en;
@@ -197,7 +216,6 @@ const NewsAdmin: React.FC = () => {
             <p className="text-muted-foreground">{t('news')}</p>
           </div>
           <div className="flex items-center gap-2">
-            <AddNewsButton />
             {news && news.length > 0 && (
               <Button
                 variant="destructive"
@@ -219,116 +237,116 @@ const NewsAdmin: React.FC = () => {
                     {editingItem ? t('edit') : t('add')}
                   </DialogTitle>
                 </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title_uz">{t('titleUz')}</Label>
+                      <Input
+                        id="title_uz"
+                        name="title_uz"
+                        defaultValue={editingItem?.title_uz}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_ru">{t('titleRu')}</Label>
+                      <Input
+                        id="title_ru"
+                        name="title_ru"
+                        defaultValue={editingItem?.title_ru}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title_en">{t('titleEn')}</Label>
+                      <Input
+                        id="title_en"
+                        name="title_en"
+                        defaultValue={editingItem?.title_en}
+                        required
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="title_uz">{t('titleUz')}</Label>
-                    <Input
-                      id="title_uz"
-                      name="title_uz"
-                      defaultValue={editingItem?.title_uz}
+                    <Label htmlFor="content_uz">{t('descriptionUz')}</Label>
+                    <Textarea
+                      id="content_uz"
+                      name="content_uz"
+                      rows={4}
+                      defaultValue={editingItem?.content_uz}
                       required
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="title_ru">{t('titleRu')}</Label>
-                    <Input
-                      id="title_ru"
-                      name="title_ru"
-                      defaultValue={editingItem?.title_ru}
+                    <Label htmlFor="content_ru">{t('descriptionRu')}</Label>
+                    <Textarea
+                      id="content_ru"
+                      name="content_ru"
+                      rows={4}
+                      defaultValue={editingItem?.content_ru}
                       required
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="title_en">{t('titleEn')}</Label>
-                    <Input
-                      id="title_en"
-                      name="title_en"
-                      defaultValue={editingItem?.title_en}
+                    <Label htmlFor="content_en">{t('descriptionEn')}</Label>
+                    <Textarea
+                      id="content_en"
+                      name="content_en"
+                      rows={4}
+                      defaultValue={editingItem?.content_en}
                       required
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="content_uz">{t('descriptionUz')}</Label>
-                  <Textarea
-                    id="content_uz"
-                    name="content_uz"
-                    rows={4}
-                    defaultValue={editingItem?.content_uz}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="content_ru">{t('descriptionRu')}</Label>
-                  <Textarea
-                    id="content_ru"
-                    name="content_ru"
-                    rows={4}
-                    defaultValue={editingItem?.content_ru}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="content_en">{t('descriptionEn')}</Label>
-                  <Textarea
-                    id="content_en"
-                    name="content_en"
-                    rows={4}
-                    defaultValue={editingItem?.content_en}
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="category">{t('category')}</Label>
-                    <Input
-                      id="category"
-                      name="category"
-                      defaultValue={editingItem?.category || 'general'}
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="category">{t('category')}</Label>
+                      <Input
+                        id="category"
+                        name="category"
+                        defaultValue={editingItem?.category || 'general'}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="image_url">{t('imageUrl')}</Label>
+                      <Input
+                        id="image_url"
+                        name="image_url"
+                        defaultValue={editingItem?.image_url || ''}
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="image_url">{t('imageUrl')}</Label>
-                    <Input
-                      id="image_url"
-                      name="image_url"
-                      defaultValue={editingItem?.image_url || ''}
+
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="published"
+                      checked={published}
+                      onCheckedChange={setPublished}
                     />
+                    <Label htmlFor="published">{t('publish')}</Label>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <Switch
-                    id="published"
-                    checked={published}
-                    onCheckedChange={setPublished}
-                  />
-                  <Label htmlFor="published">{t('publish')}</Label>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleCloseDialog}
-                  >
-                    {t('cancel')}
-                  </Button>
-                  <Button type="submit" disabled={saveMutation.isPending}>
-                    {saveMutation.isPending && (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
-                    {t('save')}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCloseDialog}
+                    >
+                      {t('cancel')}
+                    </Button>
+                    <Button type="submit" disabled={saveMutation.isPending}>
+                      {saveMutation.isPending && (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      )}
+                      {t('save')}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
