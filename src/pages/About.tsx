@@ -100,14 +100,14 @@ const About: React.FC = () => {
       {/* Hero */}
       <section className="relative py-20 lg:py-28 bg-gradient-hero overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/ima.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -174,14 +174,14 @@ const About: React.FC = () => {
       {/* Spiritual, Educational, and Sports Activities & Psychological Support */}
       <section className="relative py-20 lg:py-28 overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/maktab/photo_2025-12-13_13-23-10.jpg)',
           }}
         />
         <div className="absolute inset-0 bg-background/40 backdrop-blur-sm" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12">
             <motion.div
@@ -240,7 +240,7 @@ const About: React.FC = () => {
               <p className="text-muted-foreground leading-relaxed mb-8">
                 {t('qualityOfEducationDesc')}
               </p>
-              
+
               <div className="grid md:grid-cols-3 gap-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -303,14 +303,14 @@ const About: React.FC = () => {
       {/* Clubs and Development */}
       <section className="relative py-20 lg:py-28 overflow-hidden">
         {/* Background Image with Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/maktab/rasm5.png)',
           }}
         />
         <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -328,7 +328,7 @@ const About: React.FC = () => {
               <p className="text-muted-foreground leading-relaxed mb-8">
                 {t('clubsAndDevelopmentDesc')}
               </p>
-              
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -568,17 +568,8 @@ const About: React.FC = () => {
       </section>
 
       {/* Leadership */}
-      <section className="relative py-20 lg:py-28 overflow-hidden">
-        {/* Background Image with Backdrop */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: 'url(/maktab/rasm.png)',
-          }}
-        />
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-md" />
-        
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="py-20 lg:py-28 bg-muted/30">
+        <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
