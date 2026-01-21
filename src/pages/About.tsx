@@ -567,8 +567,8 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Leadership */}
-      <section className="py-20 lg:py-28 bg-muted/30">
+      {/* Our Proud Students */}
+      <section className="py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -576,10 +576,10 @@ const About: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground">
-              {t('leadershipTitle')}
+            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white">
+              {t('ourProudStudents') || 'Our Proud Students'}
             </h2>
-            <p className="text-muted-foreground mt-3">
+            <p className="text-slate-300 mt-3">
               {t('leadershipSubtitle')}
             </p>
           </motion.div>
