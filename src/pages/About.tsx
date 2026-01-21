@@ -576,8 +576,13 @@ const About: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white">
-              {t('ourProudStudents') || 'Our Proud Students'}
+            <h2 className="font-display text-3xl lg:text-4xl font-bold italic">
+              <span className="text-slate-300">our</span>
+              <span className="text-white">Proud</span>
+              <span className="text-primary">Stud</span>
+              <span className="text-white">en</span>
+              <span className="text-red-500">t</span>
+              <span className="text-white">s</span>
             </h2>
             <p className="text-slate-300 mt-3">
               {t('leadershipSubtitle')}
