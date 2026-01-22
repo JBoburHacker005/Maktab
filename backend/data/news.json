@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440009",
+        "title_uz": "🎄 \"YANGI YIL - YANGI ORZULAR\" mavzusida insholar tanlovi",
+        "title_ru": "🎄 Конкурс сочинений на тему \"НОВЫЙ ГОД - НОВЫЕ МЕЧТЫ\"",
+        "title_en": "🎄 Essay competition on \"NEW YEAR - NEW DREAMS\"",
+        "content_uz": "🇺🇿 Oʻzbekiston Respublikasi Vazirlar Mahkamasining 2025-yil 15-dekabrdagi VM 21/25-241-son topshirigʻiga muvofiq maktablarda yangi yil tadbirlarini keng nishonlash toʻgʻrisidagi topshiriqi ijrosini taʼminlash maqsadida\n\n🎨 Tuproqqalʼa tuman ixtisoslashtirilgan maktabida 26-dekabr 2025 yil sanasida\n\n🎄 \"YANGI YIL - YANGI ORZULAR\" mavzusida insholar tanlovi oʻtkazildi.\n\nTanlovda o'quvchilarimiz yangi yil mavzusida o'z ijodiy qobiliyatlarini namoyon etdilar. Har bir ishtirokchi o'z orzulari, rejalari va yangi yilga bo'lgan umidlarini insholar orqali ifoda etdi. Bu tanlov o'quvchilarning yozish ko'nikmalarini rivojlantirish va ijodiy fikrlash qobiliyatini oshirishga xizmat qildi.",
+        "content_ru": "🇺🇿 В соответствии с поручением №VM 21/25-241 от 15 декабря 2025 года Кабинета Министров Республики Узбекистан об обеспечении выполнения поручения о широком праздновании новогодних мероприятий в школах\n\n🎨 В специализированной школе Тупроққалъа района 26 декабря 2025 года\n\n🎄 Был проведен конкурс сочинений на тему \"НОВЫЙ ГОД - НОВЫЕ МЕЧТЫ\".\n\nВ конкурсе наши учащиеся проявили свои творческие способности на тему Нового года. Каждый участник выразил свои мечты, планы и надежды на Новый год через сочинения. Этот конкурс способствовал развитию навыков письма учащихся и повышению их способности к творческому мышлению.",
+        "content_en": "🇺🇿 In accordance with Instruction No. VM 21/25-241 of December 15, 2025, of the Cabinet of Ministers of the Republic of Uzbekistan on ensuring the implementation of the instruction on the wide celebration of New Year events in schools\n\n🎨 At Tuproqqalʼa Specialized School on December 26, 2025\n\n🎄 An essay competition on \"NEW YEAR - NEW DREAMS\" was held.\n\nIn the competition, our students demonstrated their creative abilities on the theme of the New Year. Each participant expressed their dreams, plans, and hopes for the New Year through essays. This competition served to develop students' writing skills and enhance their creative thinking abilities.",
+        "category": "Academic",
+        "image_url": "/maktab/yangi_yil_insholar_tanlovi.png",
+        "published": true,
+        "created_at": "2025-12-26T10:00:00.000Z",
+        "updated_at": "2025-12-26T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440008",
         "title_uz": "Maktab rahbariyati va pedagoglari bilan yig'ilish",
         "title_ru": "Встреча с руководством школы и педагогами",
