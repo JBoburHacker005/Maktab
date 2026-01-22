@@ -18,6 +18,8 @@
     "railway:start": "node backend/server.js",
     "fetch-news": "tsx scripts/fetch_news.ts",
     "add-news": "tsx scripts/add_single_news.ts",
+    "add-zakovat": "tsx scripts/add_zakovat_news.ts",
+    "add-zakovat-direct": "node scripts/add_zakovat_direct.js",
     "railway:install": "npm install",
     "railway:build": "npm run build"
   },
