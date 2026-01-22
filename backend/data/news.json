@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440005",
+        "title_uz": "Eco-Schools xalqaro ekologik ta'lim loyihasi tadbiri",
+        "title_ru": "Мероприятие международного экологического образовательного проекта Eco-Schools",
+        "title_en": "Eco-Schools International Environmental Education Project Event",
+        "content_uz": "✅ Bugun Tuproqqalʼa tuman ixtisoslashtirilgan maktabida Eco-Schools xalqaro ekologik ta'lim loyihasi doirasida navbatdagi muhim tadbir tashkil etildi. Mazkur tadbir maktabimizning ECO JAMOASI tomonidan tashkillashtirilib, maktabda ekologik madaniyatni shakllantirish, o'quvchilarda atrof-muhitga mas'uliyatli munosabatni kuchaytirish hamda barqaror rivojlanish g'oyalarini targ'ib etishga qaratildi.\n\n♻️ Eco-Schools dasturining maqsad va vazifalari: uning maktab hayotidagi o'rni, shuningdek, chiqindilarni saralash, suv va elektr energiyasidan oqilona foydalanish, maktab hududini toza saqlash kabi dolzarb masalalar bo'yicha batafsil tushuntirishlar berish.\n\n🌍 Tadbirda o'quvchilarimiz ekologik muammolar haqida chuqur bilim olishdi va ularning yechimlari bo'yicha amaliy takliflar bilan tanishdilar. Bu loyiha maktabimizda ekologik ongni rivojlantirish va kelajak avlodni tabiatni muhofaza qilishga tayyorlash maqsadida muhim ahamiyatga ega.",
+        "content_ru": "✅ Сегодня в специализированной школе Тупроққалъа района был организован очередной важный мероприятие в рамках международного экологического образовательного проекта Eco-Schools. Данное мероприятие было организовано ECO JAMOASI нашей школы и направлено на формирование экологической культуры в школе, усиление ответственного отношения учащихся к окружающей среде, а также пропаганду идей устойчивого развития.\n\n♻️ Были даны подробные объяснения по целям и задачам программы Eco-Schools, ее роли в школьной жизни, а также по актуальным вопросам сортировки отходов, рационального использования воды и электроэнергии, поддержания чистоты на территории школы.\n\n🌍 На мероприятии наши учащиеся получили глубокие знания об экологических проблемах и познакомились с практическими предложениями по их решению. Этот проект имеет важное значение для развития экологического сознания в нашей школе и подготовки будущего поколения к защите природы.",
+        "content_en": "✅ Today, another important event was organized at Tuproqqalʼa Specialized School as part of the Eco-Schools international environmental education project. This event was organized by our school's ECO JAMOASI and aimed at forming an ecological culture in the school, strengthening students' responsible attitude towards the environment, and promoting sustainable development ideas.\n\n♻️ Detailed explanations were given about the goals and objectives of the Eco-Schools program, its role in school life, as well as on current issues such as waste sorting, rational use of water and electricity, and maintaining cleanliness on school grounds.\n\n🌍 During the event, our students gained deep knowledge about environmental issues and became familiar with practical solutions. This project is of great importance for developing environmental awareness in our school and preparing the future generation to protect nature.",
+        "category": "Academic",
+        "image_url": "/maktab/eco_schools_tadbir.png",
+        "published": true,
+        "created_at": "2025-01-18T10:00:00.000Z",
+        "updated_at": "2025-01-18T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440004",
         "title_uz": "Men ekkan nihol loyihasi amalga oshirildi",
         "title_ru": "Реализован проект \"Я посадил саженец\"",
