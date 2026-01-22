@@ -1,11 +1,17 @@
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, Tag, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Calendar, ArrowRight, Tag, Loader2, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { newsApi } from '@/lib/api';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 type NewsItem = {
   id: string;
@@ -24,6 +30,7 @@ type NewsItem = {
 const News: React.FC = () => {
   const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
 
   const categories = [
     { key: 'all', label: t('all') },
@@ -186,7 +193,11 @@ const News: React.FC = () => {
                   <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {excerpt}
                   </p>
-                  <Button variant="link" className="p-0 h-auto text-primary">
+                  <Button 
+                    variant="link" 
+                    className="p-0 h-auto text-primary"
+                    onClick={() => setSelectedNews(item)}
+                  >
                         {t('readMore')} <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
@@ -197,6 +208,54 @@ const News: React.FC = () => {
           )}
         </div>
       </section>
+
+      {/* News Detail Modal */}
+      <Dialog open={!!selectedNews} onOpenChange={(open) => !open && setSelectedNews(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          {selectedNews && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl">
+                  {getTitle(selectedNews)}
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                {selectedNews.image_url && (
+                  <div className="w-full aspect-video overflow-hidden rounded-lg">
+                    <img
+                      src={selectedNews.image_url.startsWith('http') 
+                        ? selectedNews.image_url 
+                        : selectedNews.image_url.startsWith('/') 
+                          ? selectedNews.image_url 
+                          : `/${selectedNews.image_url}`}
+                      alt={getTitle(selectedNews)}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/placeholder.svg';
+                      }}
+                    />
+                  </div>
+                )}
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-1">
+                    <Tag className="w-4 h-4" />
+                    {categories.find(c => c.key === selectedNews.category)?.label || selectedNews.category}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    {selectedNews.created_at ? new Date(selectedNews.created_at).toLocaleDateString() : ''}
+                  </span>
+                </div>
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <p className="whitespace-pre-line text-foreground leading-relaxed">
+                    {getContent(selectedNews)}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };

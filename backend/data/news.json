@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440002",
+        "title_uz": "🇺🇿 Vatan uchun, Millat uchun Xalq uchun 🇺🇿",
+        "title_ru": "🇺🇿 За Родину, за Нацию, за Народ 🇺🇿",
+        "title_en": "🇺🇿 For the Motherland, for the Nation, for the People 🇺🇿",
+        "content_uz": "💫 Ixtisoslashtirilgan taʼlim muassasalari agentligi tizimidagi Tuproqqalʼa ixtisoslashtirilgan maktabida Vatan uchun, Millat uchun, Xalq uchun shiori ostida oʻquv yili boshlandi. Oʻquvchilarni Vatanparvarlik ruhida tarbiyalash uchun maktabimizning 11-\"A\" sinf oʻquvchilariga pnevmatik quroldan oʻq otish mahorat darsi oʻtildi.\n\nTadbirda oʻquvchilarimiz harbiy kiyimdagi oʻqituvchi rahbarligida pnevmatik qurol bilan ishlash, nishonga olish va oʻq otish koʻnikmalarini oʻrgandilar. Bu dars oʻquvchilarda vatanparvarlik tuygʻusini mustahkamlab, ularni Vatan himoyasiga tayyorlash maqsadida tashkil etildi.",
+        "content_ru": "💫 В специализированной школе Тупроққалъа системы Агентства специализированных образовательных учреждений под девизом «За Родину, за Нацию, за Народ» начался учебный год. Для воспитания учащихся в духе патриотизма учащимся 11-«А» класса нашей школы был проведен урок мастерства стрельбы из пневматического оружия.\n\nНа мероприятии наши учащиеся под руководством учителя в военной форме научились работать с пневматическим оружием, прицеливаться и стрелять. Этот урок был организован с целью укрепления патриотических чувств у учащихся и подготовки их к защите Родины.",
+        "content_en": "💫 At Tuproqqalʼa Specialized School of the Agency for Specialized Educational Institutions, the academic year began under the motto \"For the Motherland, for the Nation, for the People.\" To educate students in the spirit of patriotism, a marksmanship lesson using pneumatic weapons was conducted for 11-\"A\" grade students of our school.\n\nDuring the event, our students learned to work with pneumatic weapons, aim, and shoot under the guidance of a teacher in military uniform. This lesson was organized to strengthen patriotic feelings among students and prepare them for the defense of the Motherland.",
+        "category": "Events",
+        "image_url": "/maktab/vatanparvarlik_qurol_darsi.png",
+        "published": true,
+        "created_at": "2025-01-15T10:00:00.000Z",
+        "updated_at": "2025-01-15T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440001",
         "title_uz": "2-sentabr — Yangi o'quv yilining ilk qo'ng'irog'i!",
         "title_ru": "2 сентября — Первый звонок нового учебного года!",
