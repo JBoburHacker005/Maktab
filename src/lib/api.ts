@@ -325,13 +325,21 @@ export const uploadApi = {
 
 export const statsApi = {
   getStats: async () => {
+    // Faqat published ma'lumotlarni olish (saytda ko'rinadiganlar)
     const [news, events, gallery, teachers, departments] = await Promise.all([
-      newsApi.getAll(),
-      eventsApi.getAll(),
-      galleryApi.getAll(),
-      teachersApi.getAll(),
-      departmentsApi.getAll(),
+      newsApi.getAll(true), // published=true
+      eventsApi.getAll(true), // published=true
+      galleryApi.getAll(true), // published=true
+      teachersApi.getAll(true), // published=true
+      departmentsApi.getAll(true), // published=true
     ]);
+
+    // Ma'lumotlarni tartiblash (eng yangi birinchi)
+    const sortedNews = (news.data || []).sort((a: any, b: any) => {
+      const dateA = new Date(a.created_at || 0).getTime();
+      const dateB = new Date(b.created_at || 0).getTime();
+      return dateB - dateA;
+    });
 
     return {
       news: news.data?.length || 0,
@@ -339,7 +347,7 @@ export const statsApi = {
       gallery: gallery.data?.length || 0,
       teachers: teachers.data?.length || 0,
       departments: departments.data?.length || 0,
-      recentNews: (news.data || []).slice(0, 5),
+      recentNews: sortedNews.slice(0, 5),
     };
   },
 };
