@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Calculator, Atom, Languages, Palette, Dumbbell, Monitor, Music, FlaskConical } from 'lucide-react';
+import { Calculator, Atom, Languages, Palette, Dumbbell, Monitor, Music, FlaskConical, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { departmentsApi } from '@/lib/api';
+import * as LucideIcons from 'lucide-react';
+
+type DepartmentItem = {
+  id: string;
+  name_uz: string;
+  name_ru: string;
+  name_en: string;
+  description_uz: string;
+  description_ru: string;
+  description_en: string;
+  icon?: string;
+  published: boolean;
+  created_at: string;
+};
 
 const Departments: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
-  const departments = [
+  // Backend API'dan bo'limlarni olish
+  const { data: apiDepartmentsResponse, isLoading } = useQuery({
+    queryKey: ['departments', 'published', language],
+    queryFn: async () => {
+      const response = await departmentsApi.getAll(true);
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'Bo\'limlar yuklanmadi');
+      }
+      return response.data as DepartmentItem[];
+    },
+  });
+
+  const apiDepartments = apiDepartmentsResponse || [];
+
+  // Hardcoded bo'limlar (fallback)
+  const hardcodedDepartments = [
     {
       icon: Calculator,
       name: t('mathematics'),
@@ -58,6 +89,55 @@ const Departments: React.FC = () => {
     },
   ];
 
+  // Bo'limlarni birlashtirish
+  const departments = useMemo(() => {
+    const deptList: Array<{
+      icon: React.ComponentType<{ className?: string }>;
+      name: string;
+      description: string;
+      subjects: string[];
+    }> = [];
+
+    // Backend API'dan olingan bo'limlar
+    if (apiDepartments && apiDepartments.length > 0) {
+      apiDepartments.forEach((dept) => {
+        const name = language === 'uz' ? dept.name_uz : language === 'ru' ? dept.name_ru : dept.name_en;
+        const description = language === 'uz' ? dept.description_uz : language === 'ru' ? dept.description_ru : dept.description_en;
+        
+        // Icon'ni olish (lucide-react'dan)
+        const IconComponent = (dept.icon && (LucideIcons as any)[dept.icon]) || Calculator;
+        
+        deptList.push({
+          icon: IconComponent,
+          name: name || '',
+          description: description || '',
+          subjects: [], // Backend'da subjects bo'lmagani uchun bo'sh qoldiramiz
+        });
+      });
+    }
+
+    // Hardcoded bo'limlar (fallback yoki qo'shimcha)
+    if (deptList.length === 0) {
+      return hardcodedDepartments.map(dept => ({
+        ...dept,
+        name: typeof dept.name === 'string' ? dept.name : t(dept.name as any),
+      }));
+    }
+
+    // Hardcoded bo'limlarni qo'shish (duplikatlarni oldini olish)
+    hardcodedDepartments.forEach((dept) => {
+      const exists = deptList.some(d => d.name === (typeof dept.name === 'string' ? dept.name : t(dept.name as any)));
+      if (!exists) {
+        deptList.push({
+          ...dept,
+          name: typeof dept.name === 'string' ? dept.name : t(dept.name as any),
+        });
+      }
+    });
+
+    return deptList;
+  }, [apiDepartments, language, t]);
+
   return (
     <Layout>
       {/* Hero */}
@@ -93,6 +173,11 @@ const Departments: React.FC = () => {
       {/* Departments Grid */}
       <section className="py-20 lg:py-28">
         <div className="container mx-auto px-4">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {departments.map((dept, index) => (
               <motion.div
@@ -125,6 +210,7 @@ const Departments: React.FC = () => {
               </motion.div>
             ))}
           </div>
+          )}
         </div>
       </section>
     </Layout>

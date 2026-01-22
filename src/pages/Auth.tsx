@@ -23,7 +23,7 @@ const Auth: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, user } = useAuth();
   const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -66,9 +66,17 @@ const Auth: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const { error } = isLogin 
-        ? await signIn(email, password)
-        : await signUp(email, password);
+      if (!isLogin) {
+        toast({
+          variant: 'destructive',
+          title: 'Xatolik',
+          description: 'Ro\'yxatdan o\'tish hozircha mavjud emas. Faqat tizimga kirish mumkin.',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const { error } = await signIn(email, password);
 
       if (error) {
         let message = error.message;
@@ -83,18 +91,10 @@ const Auth: React.FC = () => {
           description: message,
         });
       } else {
-        if (isLogin) {
-          // Wait a bit for role to be fetched, then navigate
-          setTimeout(() => {
-            navigate('/admin');
-          }, 500);
-        } else {
-          toast({
-            title: 'Muvaffaqiyatli!',
-            description: 'Ro\'yxatdan o\'tdingiz. Tizimga kirishingiz mumkin.',
-          });
-          setIsLogin(true);
-        }
+        // Wait a bit for role to be fetched, then navigate
+        setTimeout(() => {
+          navigate('/admin');
+        }, 500);
       }
     } catch (err: any) {
       let message = 'Kutilmagan xatolik yuz berdi';

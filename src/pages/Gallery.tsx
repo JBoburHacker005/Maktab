@@ -4,29 +4,41 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ZoomIn, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { supabase } from '@/integrations/supabase/client';
-import { Tables } from '@/integrations/supabase/types';
+import { galleryApi } from '@/lib/api';
 
-type GalleryRow = Tables<'gallery'>;
+type GalleryItem = {
+  id: string;
+  title_uz: string;
+  title_ru: string;
+  title_en: string;
+  image_url: string;
+  category?: string;
+  published: boolean;
+  created_at: string;
+};
 
 const Gallery: React.FC = () => {
   const { t, language } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // Supabase'dan rasmlarni olish
-  const { data: gallery, isLoading } = useQuery({
-    queryKey: ['gallery', language],
+  // Backend API'dan rasmlarni olish
+  const { data: apiGalleryResponse, isLoading } = useQuery({
+    queryKey: ['gallery', 'published', language],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('gallery')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data as GalleryRow[];
+      const response = await galleryApi.getAll(true);
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'Galereya rasmlari yuklanmadi');
+      }
+      // created_at bo'yicha kamayish tartibida tartiblash
+      return (response.data as GalleryItem[]).sort((a, b) => {
+        const dateA = new Date(a.created_at || 0).getTime();
+        const dateB = new Date(b.created_at || 0).getTime();
+        return dateB - dateA;
+      });
     },
   });
+
+  const apiGallery = apiGalleryResponse || [];
 
   // Hardcoded rasmlar (fallback)
   const hardcodedImages = [
@@ -89,12 +101,17 @@ const Gallery: React.FC = () => {
   const allImages = useMemo(() => {
     const images: Array<{ src: string; alt: string }> = [];
 
-    // Supabase'dan olingan rasmlar
-    if (gallery && gallery.length > 0) {
-      gallery.forEach((item) => {
+    // Backend API'dan olingan rasmlar
+    if (apiGallery && apiGallery.length > 0) {
+      apiGallery.forEach((item) => {
         const title = language === 'uz' ? item.title_uz : language === 'ru' ? item.title_ru : item.title_en;
+        const imageUrl = item.image_url.startsWith('http') 
+          ? item.image_url 
+          : item.image_url.startsWith('/') 
+            ? item.image_url 
+            : `/${item.image_url}`;
         images.push({
-          src: item.image_url,
+          src: imageUrl,
           alt: title,
         });
       });
@@ -113,7 +130,7 @@ const Gallery: React.FC = () => {
     }
 
     return images;
-  }, [gallery, language]);
+  }, [apiGallery, language]);
 
   return (
     <Layout>

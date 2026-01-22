@@ -4,28 +4,46 @@ import { motion } from 'framer-motion';
 import { Phone, Send, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { supabase } from '@/integrations/supabase/client';
-import { Tables } from '@/integrations/supabase/types';
+import { teachersApi } from '@/lib/api';
 
-type TeachersRow = Tables<'teachers'>;
+type TeacherItem = {
+  id: string;
+  name: string;
+  subject_uz: string;
+  subject_ru: string;
+  subject_en: string;
+  bio_uz?: string;
+  bio_ru?: string;
+  bio_en?: string;
+  image_url?: string;
+  email?: string;
+  phone?: string;
+  telegram_handle?: string;
+  published: boolean;
+  created_at: string;
+};
 
 const Teachers: React.FC = () => {
   const { t, language } = useLanguage();
 
-  // Supabase'dan o'qituvchilarni olish
-  const { data: supabaseTeachers, isLoading } = useQuery({
-    queryKey: ['teachers', language],
+  // Backend API'dan o'qituvchilarni olish
+  const { data: apiTeachersResponse, isLoading } = useQuery({
+    queryKey: ['teachers', 'published', language],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('teachers')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      return data as TeachersRow[];
+      const response = await teachersApi.getAll(true);
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'O\'qituvchilar yuklanmadi');
+      }
+      // created_at bo'yicha kamayish tartibida tartiblash
+      return (response.data as TeacherItem[]).sort((a, b) => {
+        const dateA = new Date(a.created_at || 0).getTime();
+        const dateB = new Date(b.created_at || 0).getTime();
+        return dateB - dateA;
+      });
     },
   });
+
+  const apiTeachers = apiTeachersResponse || [];
 
   const leaders = [
     {
@@ -302,16 +320,22 @@ const Teachers: React.FC = () => {
       phone?: string;
     }> = [];
 
-    // Supabase'dan olingan o'qituvchilar
-    if (supabaseTeachers && supabaseTeachers.length > 0) {
-      supabaseTeachers.forEach((teacher) => {
-        const name = language === 'uz' ? teacher.name_uz : language === 'ru' ? teacher.name_ru : teacher.name_en;
+    // Backend API'dan olingan o'qituvchilar
+    if (apiTeachers && apiTeachers.length > 0) {
+      apiTeachers.forEach((teacher) => {
         const subject = language === 'uz' ? teacher.subject_uz : language === 'ru' ? teacher.subject_ru : teacher.subject_en;
+        const imageUrl = teacher.image_url 
+          ? (teacher.image_url.startsWith('http') 
+              ? teacher.image_url 
+              : teacher.image_url.startsWith('/') 
+                ? teacher.image_url 
+                : `/${teacher.image_url}`)
+          : '/placeholder.svg';
         
         teachersList.push({
-          name: name || '',
+          name: teacher.name || '',
           subject: subject || '',
-          image: teacher.image_url || '/placeholder.svg',
+          image: imageUrl,
           telegram: teacher.telegram_handle || undefined,
           phone: teacher.phone || undefined,
         });
@@ -332,7 +356,7 @@ const Teachers: React.FC = () => {
     });
 
     return teachersList;
-  }, [supabaseTeachers, language]);
+  }, [apiTeachers, language]);
 
   return (
     <Layout>

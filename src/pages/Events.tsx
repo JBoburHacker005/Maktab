@@ -4,28 +4,46 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { supabase } from '@/integrations/supabase/client';
-import { Tables } from '@/integrations/supabase/types';
+import { eventsApi } from '@/lib/api';
 
-type EventsRow = Tables<'events'>;
+type EventItem = {
+  id: string;
+  title_uz: string;
+  title_ru: string;
+  title_en: string;
+  description_uz: string;
+  description_ru: string;
+  description_en: string;
+  location?: string;
+  event_date: string;
+  event_time?: string;
+  image_url?: string;
+  category?: string;
+  published: boolean;
+  created_at: string;
+};
 
 const Events: React.FC = () => {
   const { t, language } = useLanguage();
 
-  // Supabase'dan tadbirlarni olish
-  const { data: supabaseEvents, isLoading } = useQuery({
-    queryKey: ['events', language],
+  // Backend API'dan tadbirlarni olish
+  const { data: apiEventsResponse, isLoading } = useQuery({
+    queryKey: ['events', 'published', language],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('published', true)
-        .order('event_date', { ascending: false });
-
-      if (error) throw error;
-      return data as EventsRow[];
+      const response = await eventsApi.getAll(true);
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'Tadbirlar yuklanmadi');
+      }
+      // event_date bo'yicha kamayish tartibida tartiblash
+      return (response.data as EventItem[]).sort((a, b) => {
+        const dateA = new Date(a.event_date || 0).getTime();
+        const dateB = new Date(b.event_date || 0).getTime();
+        return dateB - dateA;
+      });
     },
   });
+
+  const apiEvents = apiEventsResponse || [];
 
   // Hardcoded tadbirlar (fallback)
   const hardcodedEvents = [
@@ -173,9 +191,9 @@ const Events: React.FC = () => {
       type: string;
     }> = [];
 
-    // Supabase'dan olingan tadbirlar
-    if (supabaseEvents && supabaseEvents.length > 0) {
-      supabaseEvents.forEach((event) => {
+    // Backend API'dan olingan tadbirlar
+    if (apiEvents && apiEvents.length > 0) {
+      apiEvents.forEach((event) => {
         const title = language === 'uz' ? event.title_uz : language === 'ru' ? event.title_ru : event.title_en;
         const description = language === 'uz' ? event.description_uz : language === 'ru' ? event.description_ru : event.description_en;
         const eventDate = event.event_date ? new Date(event.event_date).toISOString().split('T')[0] : '';
@@ -215,7 +233,7 @@ const Events: React.FC = () => {
       const dateB = new Date(b.date).getTime();
       return dateB - dateA; // Kamayish tartibida (eng yangi birinchi)
     });
-  }, [supabaseEvents, language]);
+  }, [apiEvents, language]);
 
   const getTypeColor = (type: string) => {
     const colors: Record<string, string> = {
