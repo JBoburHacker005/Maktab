@@ -162,7 +162,8 @@ const News: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:shadow-xl transition-all duration-300"
+                className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => setSelectedNews(item)}
               >
                     {item.image_url && (
                 <div className="aspect-video overflow-hidden">
@@ -247,9 +248,35 @@ const News: React.FC = () => {
                   </span>
                 </div>
                 <div className="prose prose-sm max-w-none dark:prose-invert">
-                  <p className="whitespace-pre-line text-foreground leading-relaxed">
-                    {getContent(selectedNews)}
-                  </p>
+                  <div className="text-foreground leading-relaxed space-y-3">
+                    {getContent(selectedNews).split('\n\n').map((paragraph, idx) => {
+                      const trimmed = paragraph.trim();
+                      if (!trimmed) return null;
+                      
+                      // Emoji bilan boshlanadigan paragraflar
+                      if (trimmed.startsWith('📖') || trimmed.startsWith('✅') || trimmed.startsWith('💫')) {
+                        return (
+                          <p key={idx} className="font-medium text-base">
+                            {trimmed}
+                          </p>
+                        );
+                      }
+                      // Raqamli ro'yxatlar
+                      if (/^\d+\./.test(trimmed)) {
+                        return (
+                          <p key={idx} className="ml-4">
+                            {trimmed}
+                          </p>
+                        );
+                      }
+                      // Oddiy paragraflar
+                      return (
+                        <p key={idx}>
+                          {trimmed}
+                        </p>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </>
