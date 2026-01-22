@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440004",
+        "title_uz": "Men ekkan nihol loyihasi amalga oshirildi",
+        "title_ru": "Реализован проект \"Я посадил саженец\"",
+        "title_en": "\"I Planted a Sapling\" project implemented",
+        "content_uz": "Xorazm viloyati Tuproqqal'a tuman ixtisoslashtirilgan maktabida \"Ustozga ehtirom\" oyligi doirasida \"Men ekkan nihol\" loyihasi amalga oshirildi. Maktab hududida 2025-2026 o'quv yilida ishga qabul qilingan o'qituvchilar tomonidan archa ko'chatlari ekildi.\n\n🌳 Bu loyiha maktabimizda ekologik ongni rivojlantirish, tabiatni muhofaza qilish va yashil muhit yaratish maqsadida tashkil etildi. Yangi o'qituvchilarimiz o'z hissalarini qo'shib, maktab hududini yanada go'zal va yashil qilishga yordam berishdi.\n\n✅ \"Men ekkan nihol\" loyihasi nafaqat maktabimizning ekologik holatini yaxshilash, balki o'qituvchilar va o'quvchilar o'rtasida hamkorlik va jamoaviy ish ruhini mustahkamlashga ham xizmat qilmoqda.",
+        "content_ru": "В специализированной школе Тупроққалъа района Хорезмской области в рамках месяца \"Уважение к учителю\" был реализован проект \"Я посадил саженец\". На территории школы учителями, принятыми на работу в 2025-2026 учебном году, были посажены саженцы арчи.\n\n🌳 Этот проект был организован с целью развития экологического сознания в нашей школе, защиты природы и создания зеленой среды. Наши новые учителя внесли свой вклад, помогая сделать территорию школы еще более красивой и зеленой.\n\n✅ Проект \"Я посадил саженец\" служит не только улучшению экологического состояния нашей школы, но и укреплению духа сотрудничества и коллективной работы между учителями и учащимися.",
+        "content_en": "At Tuproqqal'a Specialized School in Khorezm region, the \"I Planted a Sapling\" project was implemented as part of the \"Respect for Teachers\" month. On the school grounds, juniper saplings were planted by teachers hired for the 2025-2026 academic year.\n\n🌳 This project was organized to develop environmental awareness in our school, protect nature, and create a green environment. Our new teachers contributed by helping to make the school grounds even more beautiful and green.\n\n✅ The \"I Planted a Sapling\" project serves not only to improve the ecological condition of our school but also to strengthen the spirit of cooperation and teamwork between teachers and students.",
+        "category": "Events",
+        "image_url": "/maktab/men_ekkan_nihol.png",
+        "published": true,
+        "created_at": "2025-01-17T10:00:00.000Z",
+        "updated_at": "2025-01-17T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440003",
         "title_uz": "Jadid maʼrifatparvarlari mavzusida davra suhbati",
         "title_ru": "Круглый стол на тему \"Джадидские просветители\"",

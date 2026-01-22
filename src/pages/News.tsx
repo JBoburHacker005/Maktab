@@ -197,7 +197,10 @@ const News: React.FC = () => {
                   <Button 
                     variant="link" 
                     className="p-0 h-auto text-primary"
-                    onClick={() => setSelectedNews(item)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedNews(item);
+                    }}
                   >
                         {t('readMore')} <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
@@ -254,7 +257,7 @@ const News: React.FC = () => {
                       if (!trimmed) return null;
                       
                       // Emoji bilan boshlanadigan paragraflar
-                      if (trimmed.startsWith('📖') || trimmed.startsWith('✅') || trimmed.startsWith('💫')) {
+                      if (trimmed.startsWith('📖') || trimmed.startsWith('✅') || trimmed.startsWith('💫') || trimmed.startsWith('🌳')) {
                         return (
                           <p key={idx} className="font-medium text-base">
                             {trimmed}
