@@ -35,6 +35,7 @@ const News: React.FC = () => {
   const categories = [
     { key: 'all', label: t('all') },
     { key: 'Academic', label: t('newsCategoryAcademic') },
+    { key: 'Chemistry', label: t('newsCategoryChemistry') },
     { key: 'Sports', label: t('newsCategorySports') },
     { key: 'Events', label: t('newsCategoryEvents') },
     { key: 'Awards', label: t('newsCategoryAwards') },
