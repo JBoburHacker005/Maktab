@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440029",
+        "title_uz": "Biologiya fanidan laboratoriya mashg'uloti",
+        "title_ru": "Лабораторное занятие по биологии",
+        "title_en": "Biology laboratory lesson",
+        "content_uz": "🏢 Tuproqqalʼa tuman ixtisoslashtirilgan maktabining\n\n🧬🧬 Biologiya fanidan laboratoriya mashgʻuloti jarayonida 8-\"A\" sinf oʻquvchilari bilan nafas bilan chiqadigan CO2 ni (karbonat angidrid) gazini aniqlash amaliyoti oʻtkazildi.\n\n🩻 Nafas olish harakati oʻrganildi. O'quvchilar ushbu laboratoriya mashg'uloti davomida kalsiy gidroksid eritmasining o'pkadan chiqadigan karbonat angidrid gazi ta'sirida loyqalanib cho'kishining guvohi bo'lishdi.\n\n👩‍🏫 Oʻqituvchi: Yeshmuratova Munojat — oliy toifali biologiya fani oʻqituvchisi.\n\n👩‍🔬 Laborant: Pirniyaziva Maftuna",
+        "content_ru": "🏢 Специализированной школы Тупроққалъа района\n\n🧬🧬 В ходе лабораторного занятия по биологии с учащимися 8-\"А\" класса был проведён практикум по определению газа CO2 (углекислого газа), выделяемого при дыхании.\n\n🩻 Изучено дыхательное движение. Учащиеся в ходе этого лабораторного занятия стали свидетелями помутнения и осаждения раствора гидроксида кальция под воздействием углекислого газа, выделяемого из лёгких.\n\n👩‍🏫 Учитель: Ешмуратова Муножат — учитель биологии высшей категории.\n\n👩‍🔬 Лаборант: Пирниязива Мафтуна",
+        "content_en": "🏢 Tuproqqalʼa District Specialized School\n\n🧬🧬 During a biology laboratory lesson, a practical session on identifying CO2 (carbon dioxide) gas released through breathing was conducted with Grade 8-\"A\" students.\n\n🩻 Breathing movement was studied. During this laboratory lesson, students witnessed the clouding and precipitation of calcium hydroxide solution under the influence of carbon dioxide gas released from the lungs.\n\n👩‍🏫 Teacher: Yeshmuratova Munojat — biology teacher of the highest category.\n\n👩‍🔬 Laboratory assistant: Pirniyaziva Maftuna",
+        "category": "Academic",
+        "image_url": "/maktab/biologiya_laboratoriya_mashguloti.jpg",
+        "published": true,
+        "created_at": "2025-12-05T10:00:00.000Z",
+        "updated_at": "2025-12-05T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440028",
         "title_uz": "10-dekabr - O'zbekiston Respublikasi Davlat madhiyasi kuni",
         "title_ru": "10 декабря — День Государственного гимна Республики Узбекистан",
