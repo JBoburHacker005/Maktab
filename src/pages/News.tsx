@@ -258,7 +258,49 @@ const News: React.FC = () => {
                       if (!trimmed) return null;
                       
                       // Emoji bilan boshlanadigan paragraflar
-                      if (trimmed.startsWith('📖') || trimmed.startsWith('✅') || trimmed.startsWith('💫') || trimmed.startsWith('🌳') || trimmed.startsWith('♻️') || trimmed.startsWith('🌍') || trimmed.startsWith('⚡️') || trimmed.startsWith('🎯') || trimmed.startsWith('📸') || trimmed.startsWith('🗓') || trimmed.startsWith('🏢') || trimmed.startsWith('✨') || trimmed.startsWith('🎖') || trimmed.startsWith('👫') || trimmed.startsWith('🇺🇿') || trimmed.startsWith('📌') || trimmed.startsWith('🎨') || trimmed.startsWith('🎄') || trimmed.startsWith('🥳') || trimmed.startsWith('🥁') || trimmed.startsWith('🎷') || trimmed.startsWith('🎉') || trimmed.startsWith('🧬') || trimmed.startsWith('👨‍👩‍👧‍👦') || trimmed.startsWith('🏆') || trimmed.startsWith('🌐') || trimmed.startsWith('🧠') || trimmed.startsWith('🔥') || trimmed.startsWith('💬') || trimmed.startsWith('📅') || trimmed.startsWith('📍') || trimmed.startsWith('📲') || trimmed.startsWith('💥') || trimmed.startsWith('🧑‍🎓') || trimmed.startsWith('🎊')) {
+                      if (
+                        trimmed.startsWith('📖') ||
+                        trimmed.startsWith('✅') ||
+                        trimmed.startsWith('💫') ||
+                        trimmed.startsWith('🌳') ||
+                        trimmed.startsWith('♻️') ||
+                        trimmed.startsWith('🌍') ||
+                        trimmed.startsWith('⚡️') ||
+                        trimmed.startsWith('🎯') ||
+                        trimmed.startsWith('📸') ||
+                        trimmed.startsWith('🗓') ||
+                        trimmed.startsWith('🏢') ||
+                        trimmed.startsWith('✨') ||
+                        trimmed.startsWith('🎖') ||
+                        trimmed.startsWith('👫') ||
+                        trimmed.startsWith('🇺🇿') ||
+                        trimmed.startsWith('📌') ||
+                        trimmed.startsWith('🎨') ||
+                        trimmed.startsWith('🎄') ||
+                        trimmed.startsWith('🥳') ||
+                        trimmed.startsWith('🥁') ||
+                        trimmed.startsWith('🎷') ||
+                        trimmed.startsWith('🎉') ||
+                        trimmed.startsWith('🧬') ||
+                        trimmed.startsWith('👨‍👩‍👧‍👦') ||
+                        trimmed.startsWith('🏆') ||
+                        trimmed.startsWith('🌐') ||
+                        trimmed.startsWith('🧠') ||
+                        trimmed.startsWith('🔥') ||
+                        trimmed.startsWith('💬') ||
+                        trimmed.startsWith('📅') ||
+                        trimmed.startsWith('📍') ||
+                        trimmed.startsWith('📲') ||
+                        trimmed.startsWith('💥') ||
+                        trimmed.startsWith('🧑‍🎓') ||
+                        trimmed.startsWith('🎊') ||
+                        trimmed.startsWith('🗣') ||
+                        trimmed.startsWith('💻') ||
+                        trimmed.startsWith('⚜️') ||
+                        trimmed.startsWith('🔹') ||
+                        trimmed.startsWith('🎁') ||
+                        trimmed.startsWith('🌟')
+                      ) {
                         return (
                           <p key={idx} className="font-medium text-base">
                             {trimmed}
