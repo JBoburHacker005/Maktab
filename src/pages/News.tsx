@@ -305,6 +305,7 @@ const News: React.FC = () => {
                         trimmed.startsWith('❇️') ||
                         trimmed.startsWith('🔰') ||
                         trimmed.startsWith('🎼') ||
+                        trimmed.startsWith('🎵') ||
                         trimmed.startsWith('📝') ||
                         trimmed.startsWith('🔹') ||
                         trimmed.startsWith('🎁') ||
