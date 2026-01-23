@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440019",
+        "title_uz": "Ijro rejalar bo‘yicha yig‘ilish",
+        "title_ru": "Совещание по планам исполнения",
+        "title_en": "Meeting on implementation plans",
+        "content_uz": "❇️ O'zbekiston Respublikasi Maktabgacha va maktab ta’limi vazirining 2025-yil 17-oktyabrdagi 391-son buyrug'i ijrosini ta'minlash maqsadida Ixtisoslashtirilgan ta'lim muassasalari agentligi Tuproqqalʼa tuman ixtisoslashtirilgan maktabida 2025-yil 27-oktyabr kuni maktab ma'muriyati va pedagogik jamoasi bilan 02-27-25-AF-sonli Tuproqqalʼa tuman ixtisoslashtirilgan maktabi buyrug'i yuzasidan rejalar ishlab chiqildi.\n\n❇️ Yìg'ilishda targ'ibot ishlarini amalga oshirish uchun maktab rahbariyati va o'qituvchilarga haftalik va oylik rejalar yaratilib, shu asosida qilingan ishlar OAVda keng yoritib borish vazifasi yuklatildi.",
+        "content_ru": "❇️ В целях обеспечения исполнения приказа Министра дошкольного и школьного образования Республики Узбекистан от 17 октября 2025 года №391, 27 октября 2025 года в специализированной школе Тупроққалъа системы Агентства специализированных образовательных учреждений с участием администрации школы и педагогического коллектива были разработаны планы по приказу специализированной школы Тупроққалъа района №02-27-25-AF.\n\n❇️ На совещании для осуществления пропагандистской работы администрации школы и учителям были разработаны недельные и месячные планы, и было поручено широко освещать выполненные работы в средствах массовой информации.",
+        "content_en": "❇️ In order to ensure the implementation of Order No. 391 of 17 October 2025 of the Minister of Preschool and School Education of the Republic of Uzbekistan, on 27 October 2025, at Tuproqqalʼa Specialized School of the Agency for Specialized Educational Institutions, plans were developed together with the school administration and teaching staff based on Order No. 02-27-25-AF of the Tuproqqalʼa Specialized School.\n\n❇️ At the meeting, to carry out outreach work, weekly and monthly plans were drawn up for the school administration and teachers, and it was assigned to widely cover the work done in the mass media.",
+        "category": "Academic",
+        "image_url": "/maktab/rejalar_yigilishi.png",
+        "published": true,
+        "created_at": "2025-10-27T10:00:00.000Z",
+        "updated_at": "2025-10-27T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440018",
         "title_uz": "⚽️ “Ixtisoslashtirilgan ta’lim muassasalari agentligi rahbar kubogi” sektor bosqichi",
         "title_ru": "⚽️ Секторный этап кубка руководителя Агентства специализированных образовательных учреждений",
