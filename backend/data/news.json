@@ -1,5 +1,19 @@
 [
     {
+        "id": "550e8400-e29b-41d4-a716-446655440030",
+        "title_uz": "Ona tili va adabiyot fanidan dars mashg'uloti",
+        "title_ru": "Урок по родному языку и литературе",
+        "title_en": "Native language and literature lesson",
+        "content_uz": "🌸 Tuproqqalʼa tuman ixtisoslashtirilgan maktabining ona tili va adabiyot fani oʻqituvchisi Azatova Layloning 5-\"B\" sinf oʻquvchilari bilan navbatdagi dars mashgʻulotidan lavhalar.\n\n🎯 Mavzu: Isajon Sultonning \"Otamga nimadir bo'ldi...\" asarini takrorlash mavzusida.\n\n🎯 Mavzuga oid qoʻllanilgan metodlar:\n\n1. \"Xazinani top\" metodi\n\n2. \"Olmalarni teramiz\" metodi.",
+        "content_ru": "🌸 Кадры очередного урока учителя родного языка и литературы Азатовой Лайло с учащимися 5-\"Б\" класса специализированной школы Тупроққалъа района.\n\n🎯 Тема: Повторение произведения Исажона Султона \"С отцом что-то случилось...\".\n\n🎯 Применённые методы по теме:\n\n1. Метод \"Найди сокровище\"\n\n2. Метод \"Собираем яблоки\".",
+        "content_en": "🌸 Scenes from a lesson by Azatova Laylo, teacher of native language and literature, with Grade 5-\"B\" students at Tuproqqalʼa District Specialized School.\n\n🎯 Topic: Review of Isajon Sulton's work \"Something happened to my father...\".\n\n🎯 Methods applied to the topic:\n\n1. \"Find the treasure\" method\n\n2. \"We pick apples\" method.",
+        "category": "Academic",
+        "image_url": "/maktab/ona_tili_adabiyot_darsi.jpg",
+        "published": true,
+        "created_at": "2025-12-12T10:00:00.000Z",
+        "updated_at": "2025-12-12T10:00:00.000Z"
+    },
+    {
         "id": "550e8400-e29b-41d4-a716-446655440029",
         "title_uz": "Biologiya fanidan laboratoriya mashg'uloti",
         "title_ru": "Лабораторное занятие по биологии",
