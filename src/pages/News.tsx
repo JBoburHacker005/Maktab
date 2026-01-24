@@ -313,7 +313,12 @@ const News: React.FC = () => {
                         trimmed.startsWith('📝') ||
                         trimmed.startsWith('🔹') ||
                         trimmed.startsWith('🎁') ||
-                        trimmed.startsWith('🌟')
+                        trimmed.startsWith('🌟') ||
+                        trimmed.startsWith('🔬') ||
+                        trimmed.startsWith('🧅') ||
+                        trimmed.startsWith('🏋️') ||
+                        trimmed.startsWith('✍️') ||
+                        trimmed.startsWith('🌹')
                       ) {
                         return (
                           <p key={idx} className="font-medium text-base">
