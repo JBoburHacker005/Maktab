@@ -145,7 +145,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Durdiyeva Farzona',
       subject: 'History',
-      image: '/teachers/tarix.JPG',
+      image: '/teachers/tarix3.jpg',
       telegram: '@Farzona_Durdiyeva',
       phone: '+998 (93) 116-29-94',
     },
@@ -219,7 +219,7 @@ const Teachers: React.FC = () => {
     {
       name: 'Ataboyeva Mahliyo',
       subject: 'Computer Science',
-      image: '/teachers/informatika.jpg',
+      image: '/teachers/informatika3.jpg',
       telegram: '@M18082023',
       phone: '+998 (99) 739-40-78',
     },
