@@ -1,1 +1,106 @@
-[]
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "name_uz": "Matematika",
+    "name_ru": "Математика",
+    "name_en": "Mathematics",
+    "description_uz": "Algebra, kalkulyus, statistika va amaliy matematikani qamrab olgan ilg'or matematika dasturi.",
+    "description_ru": "Продвинутая программа по математике, охватывающая алгебру, исчисление, статистику и прикладную математику.",
+    "description_en": "Advanced mathematics curriculum covering algebra, calculus, statistics, and applied mathematics.",
+    "icon": "Calculator",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "name_uz": "Fan",
+    "name_ru": "Наука",
+    "name_en": "Science",
+    "description_uz": "Amaliy laboratoriya tajribalari va tadqiqot imkoniyatlari bilan keng qamrovli fan dasturlari.",
+    "description_ru": "Комплексные программы по науке с практическим лабораторным опытом и исследовательскими возможностями.",
+    "description_en": "Comprehensive science programs with hands-on laboratory experiences and research opportunities.",
+    "icon": "Atom",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "name_uz": "Tillar",
+    "name_ru": "Языки",
+    "name_en": "Languages",
+    "description_uz": "Ingliz, o'zbek, rus va boshqa tillarda muloqot ko'nikmalarini rivojlantiruvchi ko'p tilli ta'lim.",
+    "description_ru": "Многоязычное образование, способствующее развитию коммуникативных навыков на английском, узбекском, русском и других языках.",
+    "description_en": "Multilingual education fostering communication skills in English, Uzbek, Russian, and more.",
+    "icon": "Languages",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "name_uz": "San'at",
+    "name_ru": "Искусство",
+    "name_en": "Art",
+    "description_uz": "Turli vositalar va texnikalar orqali badiiy ifodani rivojlantiruvchi ijodiy san'at dasturlari.",
+    "description_ru": "Творческие программы по искусству, развивающие художественное самовыражение через различные средства и техники.",
+    "description_en": "Creative arts programs nurturing artistic expression through various mediums and techniques.",
+    "icon": "Palette",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "name_uz": "Sport",
+    "name_ru": "Спорт",
+    "name_en": "Sport",
+    "description_uz": "Jismoniy tarbiya, jamoaviy ish va sportchilikni targ'ib qiluvchi keng qamrovli jismoniy tarbiya.",
+    "description_ru": "Комплексное физическое воспитание, способствующее фитнесу, командной работе и спортивному мастерству.",
+    "description_en": "Comprehensive physical education promoting fitness, teamwork, and sportsmanship.",
+    "icon": "Dumbbell",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "name_uz": "Texnologiya",
+    "name_ru": "Технология",
+    "name_en": "Technology",
+    "description_uz": "Talabalarni raqamli kelajakka tayyorlovchi zamonaviy texnologiya ta'limi.",
+    "description_ru": "Современное технологическое образование, готовящее студентов к цифровому будущему.",
+    "description_en": "Cutting-edge technology education preparing students for the digital future.",
+    "icon": "Monitor",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440007",
+    "name_uz": "Musiqa",
+    "name_ru": "Музыка",
+    "name_en": "Music",
+    "description_uz": "Ritm, ohang va ijro ko'nikmalarini turli asboblar bo'yicha rivojlantiruvchi musiqa ta'limi.",
+    "description_ru": "Музыкальное образование, развивающее ритм, гармонию и исполнительские навыки на различных инструментах.",
+    "description_en": "Musical education developing rhythm, harmony, and performance skills across instruments.",
+    "icon": "Music",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "name_uz": "Tadqiqot laboratoriyasi",
+    "name_ru": "Исследовательская лаборатория",
+    "name_en": "Research Laboratory",
+    "description_uz": "Ilmiy tadqiqotlarga qiziqadigan talabalar uchun ilg'or tadqiqot imkoniyatlari.",
+    "description_ru": "Продвинутые исследовательские возможности для студентов, заинтересованных в научных исследованиях.",
+    "description_en": "Advanced research opportunities for students interested in scientific exploration.",
+    "icon": "FlaskConical",
+    "published": true,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z"
+  }
+]
