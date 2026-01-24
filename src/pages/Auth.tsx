@@ -186,19 +186,6 @@ const Auth: React.FC = () => {
                 {isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish'}
               </Button>
             </form>
-
-            <div className="mt-4 text-center text-sm">
-              <span className="text-muted-foreground">
-                {isLogin ? 'Hisobingiz yo\'qmi? ' : 'Hisobingiz bormi? '}
-              </span>
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-primary hover:underline font-medium"
-              >
-                {isLogin ? 'Ro\'yxatdan o\'ting' : 'Tizimga kiring'}
-              </button>
-            </div>
           </CardContent>
         </Card>
       </motion.div>
