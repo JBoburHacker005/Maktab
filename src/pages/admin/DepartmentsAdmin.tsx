@@ -199,7 +199,7 @@ const DepartmentsAdmin: React.FC = () => {
                 {t('delete')} all
               </Button>
             )}
-            <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
+            <Dialog open={dialogOpen} onOpenChange={(open) => open ? setDialogOpen(true) : handleCloseDialog()}>
               <DialogTrigger asChild>
                 <Button onClick={() => handleOpenDialog()}>
                   <Plus className="w-4 h-4 mr-2" />
