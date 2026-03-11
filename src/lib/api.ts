@@ -199,6 +199,10 @@ export const galleryApi = {
   delete: async (id: string) => {
     return request(`/api/gallery/${id}`, { method: 'DELETE' });
   },
+
+  clearAll: async () => {
+    return request('/api/gallery', { method: 'DELETE' });
+  },
 };
 
 // ============================================
@@ -232,6 +236,10 @@ export const teachersApi = {
   delete: async (id: string) => {
     return request(`/api/teachers/${id}`, { method: 'DELETE' });
   },
+
+  clearAll: async () => {
+    return request('/api/teachers', { method: 'DELETE' });
+  },
 };
 
 // ============================================
@@ -264,6 +272,10 @@ export const departmentsApi = {
 
   delete: async (id: string) => {
     return request(`/api/departments/${id}`, { method: 'DELETE' });
+  },
+
+  clearAll: async () => {
+    return request('/api/departments', { method: 'DELETE' });
   },
 };
 

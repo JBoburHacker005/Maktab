@@ -5,7 +5,7 @@
 // ============================================
 
 import { Router } from 'express';
-import { getAll, getById, create, update, remove } from '../controllers/teachersController.js';
+import { getAll, getById, create, update, remove, clearAll } from '../controllers/teachersController.js';
 import { verifyToken } from '../middleware/auth.js';
 
 const router = Router();
@@ -17,6 +17,7 @@ router.get('/:id', getById);
 // Protected routes (admin only)
 router.post('/', verifyToken, create);
 router.put('/:id', verifyToken, update);
+router.delete('/', verifyToken, clearAll);
 router.delete('/:id', verifyToken, remove);
 
 export default router;

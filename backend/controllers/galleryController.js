@@ -185,10 +185,32 @@ export const remove = (req, res) => {
     }
 };
 
+/**
+ * Barcha rasmlarni o'chirish
+ * DELETE /api/gallery
+ */
+export const clearAll = (req, res) => {
+    try {
+        db.clearAll(FILENAME);
+
+        return res.json({
+            success: true,
+            message: 'Barcha rasmlar o\'chirildi',
+        });
+    } catch (error) {
+        console.error('Clear all gallery error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server xatosi',
+        });
+    }
+};
+
 export default {
     getAll,
     getById,
     create,
     update,
     remove,
+    clearAll,
 };

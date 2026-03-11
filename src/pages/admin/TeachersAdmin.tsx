@@ -5,9 +5,9 @@
 // CRUD operatsiyalari
 // ============================================
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { teachersApi } from '@/lib/api';
+import { teachersApi, uploadApi } from '@/lib/api';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -55,9 +55,13 @@ interface TeacherItem {
 const TeachersAdmin: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<TeacherItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [published, setPublished] = useState(true);
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
@@ -126,6 +130,48 @@ const TeachersAdmin: React.FC = () => {
     },
   });
 
+  const clearAllMutation = useMutation({
+    mutationFn: async () => {
+      return teachersApi.clearAll();
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-teachers'] });
+        queryClient.invalidateQueries({ queryKey: ['teachers'] });
+        setClearAllDialogOpen(false);
+        toast({ title: t('deleted'), description: t('deleted') });
+      }
+    },
+    onError: (error: Error) => {
+      toast({ variant: 'destructive', title: t('error'), description: error.message });
+    },
+  });
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        const response = await uploadApi.uploadImage(base64, file.name);
+        if (response.success && response.data) {
+          setImageUrl(response.data.url);
+          toast({ title: t('success'), description: 'Rasm yuklandi' });
+        } else {
+          toast({ variant: 'destructive', title: t('error'), description: response.message });
+        }
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      setUploading(false);
+      toast({ variant: 'destructive', title: t('error'), description: 'Rasm yuklab bo\'lmadi' });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -138,7 +184,7 @@ const TeachersAdmin: React.FC = () => {
       bio_uz: formData.get('bio_uz') as string || null,
       bio_ru: formData.get('bio_ru') as string || null,
       bio_en: formData.get('bio_en') as string || null,
-      image_url: formData.get('image_url') as string || null,
+      image_url: imageUrl || formData.get('image_url') as string || null,
       email: formData.get('email') as string || null,
       phone: formData.get('phone') as string || null,
       published: published,
@@ -151,9 +197,11 @@ const TeachersAdmin: React.FC = () => {
     if (item) {
       setEditingItem(item);
       setPublished(item.published ?? false);
+      setImageUrl(item.image_url || '');
     } else {
       setEditingItem(null);
       setPublished(true);
+      setImageUrl('');
     }
     setDialogOpen(true);
   };
@@ -162,6 +210,7 @@ const TeachersAdmin: React.FC = () => {
     setDialogOpen(false);
     setEditingItem(null);
     setPublished(true);
+    setImageUrl('');
   };
 
   const getSubject = (item: TeacherItem) => {
@@ -178,81 +227,118 @@ const TeachersAdmin: React.FC = () => {
             <h1 className="text-2xl font-display font-bold">{t('adminTeachers')}</h1>
             <p className="text-muted-foreground">{t('teachers')}</p>
           </div>
-          <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('add')}
+          <div className="flex items-center gap-2">
+            {teachers && teachers.length > 0 && (
+              <Button
+                variant="destructive"
+                onClick={() => setClearAllDialogOpen(true)}
+              >
+                {t('delete')} all
               </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>{editingItem ? t('edit') : t('add')}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Ism *</Label>
-                  <Input id="name" name="name" defaultValue={editingItem?.name} required />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            )}
+            <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
+              <DialogTrigger asChild>
+                <Button onClick={() => handleOpenDialog()}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('add')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{editingItem ? t('edit') : t('add')}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="subject_uz">Fan (UZ) *</Label>
-                    <Input id="subject_uz" name="subject_uz" defaultValue={editingItem?.subject_uz} required />
+                    <Label htmlFor="name">Ism *</Label>
+                    <Input id="name" name="name" defaultValue={editingItem?.name} required />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="subject_uz">Fan (UZ) *</Label>
+                      <Input id="subject_uz" name="subject_uz" defaultValue={editingItem?.subject_uz} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="subject_ru">Fan (RU) *</Label>
+                      <Input id="subject_ru" name="subject_ru" defaultValue={editingItem?.subject_ru} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="subject_en">Fan (EN) *</Label>
+                      <Input id="subject_en" name="subject_en" defaultValue={editingItem?.subject_en} required />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio_uz">Biografiya (UZ)</Label>
+                    <Textarea id="bio_uz" name="bio_uz" rows={2} defaultValue={editingItem?.bio_uz || ''} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="subject_ru">Fan (RU) *</Label>
-                    <Input id="subject_ru" name="subject_ru" defaultValue={editingItem?.subject_ru} required />
+                    <Label htmlFor="bio_ru">Biografiya (RU)</Label>
+                    <Textarea id="bio_ru" name="bio_ru" rows={2} defaultValue={editingItem?.bio_ru || ''} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="subject_en">Fan (EN) *</Label>
-                    <Input id="subject_en" name="subject_en" defaultValue={editingItem?.subject_en} required />
+                    <Label htmlFor="bio_en">Biografiya (EN)</Label>
+                    <Textarea id="bio_en" name="bio_en" rows={2} defaultValue={editingItem?.bio_en || ''} />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="bio_uz">Biografiya (UZ)</Label>
-                  <Textarea id="bio_uz" name="bio_uz" rows={2} defaultValue={editingItem?.bio_uz || ''} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bio_ru">Biografiya (RU)</Label>
-                  <Textarea id="bio_ru" name="bio_ru" rows={2} defaultValue={editingItem?.bio_ru || ''} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bio_en">Biografiya (EN)</Label>
-                  <Textarea id="bio_en" name="bio_en" rows={2} defaultValue={editingItem?.bio_en || ''} />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="image_url">{t('imageUrl')}</Label>
-                    <Input id="image_url" name="image_url" defaultValue={editingItem?.image_url || ''} />
+                    <div className="flex gap-2">
+                      <Input
+                        id="image_url"
+                        name="image_url"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        placeholder="Rasm URL yoki yuklang"
+                      />
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                      >
+                        {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                    {imageUrl && (
+                      <img src={imageUrl} alt="Preview" className="w-20 h-20 object-cover rounded-full mt-2" />
+                    )}
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" defaultValue={editingItem?.email || ''} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Telefon</Label>
-                    <Input id="phone" name="phone" defaultValue={editingItem?.phone || ''} />
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <Switch id="published" checked={published} onCheckedChange={setPublished} />
-                  <Label htmlFor="published">{t('publish')}</Label>
-                </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input id="email" name="email" type="email" defaultValue={editingItem?.email || ''} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Telefon</Label>
+                      <Input id="phone" name="phone" defaultValue={editingItem?.phone || ''} />
+                    </div>
+                  </div>
 
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={handleCloseDialog}>{t('cancel')}</Button>
-                  <Button type="submit" disabled={saveMutation.isPending}>
-                    {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    {t('save')}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                  <div className="flex items-center gap-2">
+                    <Switch id="published" checked={published} onCheckedChange={setPublished} />
+                    <Label htmlFor="published">{t('publish')}</Label>
+                  </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button type="button" variant="outline" onClick={handleCloseDialog}>{t('cancel')}</Button>
+                    <Button type="submit" disabled={saveMutation.isPending}>
+                      {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                      {t('save')}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         {isLoading ? (
@@ -301,6 +387,24 @@ const TeachersAdmin: React.FC = () => {
             <AlertDialogFooter>
               <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
               <AlertDialogAction onClick={() => deletingId && deleteMutation.mutate(deletingId)}>{t('delete')}</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={clearAllDialogOpen} onOpenChange={setClearAllDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('cannotUndo')}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => clearAllMutation.mutate()}
+                disabled={clearAllMutation.isPending}
+              >
+                {t('delete')} all
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

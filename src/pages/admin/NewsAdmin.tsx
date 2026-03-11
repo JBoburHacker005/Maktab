@@ -5,9 +5,9 @@
 // CRUD operatsiyalari
 // ============================================
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { newsApi } from '@/lib/api';
+import { newsApi, uploadApi } from '@/lib/api';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -58,6 +58,9 @@ const NewsAdmin: React.FC = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
   const [published, setPublished] = useState(true);
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { toast } = useToast();
   const { language, t } = useLanguage();
@@ -165,6 +168,31 @@ const NewsAdmin: React.FC = () => {
     },
   });
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        const response = await uploadApi.uploadImage(base64, file.name);
+        if (response.success && response.data) {
+          setImageUrl(response.data.url);
+          toast({ title: t('success'), description: 'Rasm yuklandi' });
+        } else {
+          toast({ variant: 'destructive', title: t('error'), description: response.message });
+        }
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      setUploading(false);
+      toast({ variant: 'destructive', title: t('error'), description: 'Rasm yuklab bo\'lmadi' });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -177,7 +205,7 @@ const NewsAdmin: React.FC = () => {
       content_ru: formData.get('content_ru') as string,
       content_en: formData.get('content_en') as string,
       category: formData.get('category') as string || 'general',
-      image_url: formData.get('image_url') as string || null,
+      image_url: imageUrl || null,
       published: published,
     };
 
@@ -188,9 +216,11 @@ const NewsAdmin: React.FC = () => {
     if (item) {
       setEditingItem(item);
       setPublished(item.published ?? false);
+      setImageUrl(item.image_url || '');
     } else {
       setEditingItem(null);
       setPublished(true);
+      setImageUrl('');
     }
     setDialogOpen(true);
   };
@@ -199,6 +229,7 @@ const NewsAdmin: React.FC = () => {
     setDialogOpen(false);
     setEditingItem(null);
     setPublished(true);
+    setImageUrl('');
   };
 
   const getTitle = (item: NewsItem) => {
@@ -312,11 +343,33 @@ const NewsAdmin: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="image_url">{t('imageUrl')}</Label>
-                      <Input
-                        id="image_url"
-                        name="image_url"
-                        defaultValue={editingItem?.image_url || ''}
-                      />
+                      <div className="flex gap-2">
+                        <Input
+                          id="image_url"
+                          name="image_url"
+                          value={imageUrl}
+                          onChange={(e) => setImageUrl(e.target.value)}
+                          placeholder="Rasm URL yoki yuklang"
+                        />
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleImageUpload}
+                          accept="image/*"
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={uploading}
+                        >
+                          {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                        </Button>
+                      </div>
+                      {imageUrl && (
+                        <img src={imageUrl} alt="Preview" className="w-full h-32 object-cover rounded mt-2" />
+                      )}
                     </div>
                   </div>
 

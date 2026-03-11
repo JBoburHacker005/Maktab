@@ -52,6 +52,7 @@ interface DepartmentItem {
 const DepartmentsAdmin: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<DepartmentItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [published, setPublished] = useState(true);
@@ -123,6 +124,23 @@ const DepartmentsAdmin: React.FC = () => {
     },
   });
 
+  const clearAllMutation = useMutation({
+    mutationFn: async () => {
+      return departmentsApi.clearAll();
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        queryClient.invalidateQueries({ queryKey: ['admin-departments'] });
+        queryClient.invalidateQueries({ queryKey: ['departments'] });
+        setClearAllDialogOpen(false);
+        toast({ title: t('deleted'), description: t('deleted') });
+      }
+    },
+    onError: (error: Error) => {
+      toast({ variant: 'destructive', title: t('error'), description: error.message });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -172,66 +190,76 @@ const DepartmentsAdmin: React.FC = () => {
             <h1 className="text-2xl font-display font-bold">{t('adminDepartments')}</h1>
             <p className="text-muted-foreground">{t('departments')}</p>
           </div>
-          <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('add')}
+          <div className="flex items-center gap-2">
+            {departments && departments.length > 0 && (
+              <Button
+                variant="destructive"
+                onClick={() => setClearAllDialogOpen(true)}
+              >
+                {t('delete')} all
               </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>{editingItem ? t('edit') : t('add')}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            )}
+            <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
+              <DialogTrigger asChild>
+                <Button onClick={() => handleOpenDialog()}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('add')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{editingItem ? t('edit') : t('add')}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name_uz">Nom (UZ) *</Label>
+                      <Input id="name_uz" name="name_uz" defaultValue={editingItem?.name_uz} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="name_ru">Nom (RU) *</Label>
+                      <Input id="name_ru" name="name_ru" defaultValue={editingItem?.name_ru} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="name_en">Nom (EN) *</Label>
+                      <Input id="name_en" name="name_en" defaultValue={editingItem?.name_en} required />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="name_uz">Nom (UZ) *</Label>
-                    <Input id="name_uz" name="name_uz" defaultValue={editingItem?.name_uz} required />
+                    <Label htmlFor="description_uz">{t('descriptionUz')} *</Label>
+                    <Textarea id="description_uz" name="description_uz" rows={3} defaultValue={editingItem?.description_uz} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name_ru">Nom (RU) *</Label>
-                    <Input id="name_ru" name="name_ru" defaultValue={editingItem?.name_ru} required />
+                    <Label htmlFor="description_ru">{t('descriptionRu')} *</Label>
+                    <Textarea id="description_ru" name="description_ru" rows={3} defaultValue={editingItem?.description_ru} required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="name_en">Nom (EN) *</Label>
-                    <Input id="name_en" name="name_en" defaultValue={editingItem?.name_en} required />
+                    <Label htmlFor="description_en">{t('descriptionEn')} *</Label>
+                    <Textarea id="description_en" name="description_en" rows={3} defaultValue={editingItem?.description_en} required />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="description_uz">{t('descriptionUz')} *</Label>
-                  <Textarea id="description_uz" name="description_uz" rows={3} defaultValue={editingItem?.description_uz} required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="description_ru">{t('descriptionRu')} *</Label>
-                  <Textarea id="description_ru" name="description_ru" rows={3} defaultValue={editingItem?.description_ru} required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="description_en">{t('descriptionEn')} *</Label>
-                  <Textarea id="description_en" name="description_en" rows={3} defaultValue={editingItem?.description_en} required />
-                </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="icon">Icon (Lucide icon nomi)</Label>
+                    <Input id="icon" name="icon" defaultValue={editingItem?.icon || 'BookOpen'} placeholder="BookOpen, Users, Building2..." />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="icon">Icon (Lucide icon nomi)</Label>
-                  <Input id="icon" name="icon" defaultValue={editingItem?.icon || 'BookOpen'} placeholder="BookOpen, Users, Building2..." />
-                </div>
+                  <div className="flex items-center gap-2">
+                    <Switch id="published" checked={published} onCheckedChange={setPublished} />
+                    <Label htmlFor="published">{t('publish')}</Label>
+                  </div>
 
-                <div className="flex items-center gap-2">
-                  <Switch id="published" checked={published} onCheckedChange={setPublished} />
-                  <Label htmlFor="published">{t('publish')}</Label>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={handleCloseDialog}>{t('cancel')}</Button>
-                  <Button type="submit" disabled={saveMutation.isPending}>
-                    {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    {t('save')}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                  <div className="flex justify-end gap-2">
+                    <Button type="button" variant="outline" onClick={handleCloseDialog}>{t('cancel')}</Button>
+                    <Button type="submit" disabled={saveMutation.isPending}>
+                      {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                      {t('save')}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         {isLoading ? (
@@ -275,6 +303,24 @@ const DepartmentsAdmin: React.FC = () => {
             <AlertDialogFooter>
               <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
               <AlertDialogAction onClick={() => deletingId && deleteMutation.mutate(deletingId)}>{t('delete')}</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={clearAllDialogOpen} onOpenChange={setClearAllDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('cannotUndo')}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => clearAllMutation.mutate()}
+                disabled={clearAllMutation.isPending}
+              >
+                {t('delete')} all
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

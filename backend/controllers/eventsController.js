@@ -81,7 +81,9 @@ export const create = (req, res) => {
             description_en,
             location,
             event_date,
+            event_time,
             image_url,
+            category,
             published = true,
         } = req.body;
 
@@ -116,7 +118,9 @@ export const create = (req, res) => {
             description_en,
             location: location || null,
             event_date,
+            event_time: event_time || null,
             image_url: image_url || null,
+            category: category || 'Cultural',
             published,
         });
 

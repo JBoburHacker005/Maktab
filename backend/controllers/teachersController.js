@@ -190,10 +190,32 @@ export const remove = (req, res) => {
     }
 };
 
+/**
+ * Barcha o'qituvchilarni o'chirish
+ * DELETE /api/teachers
+ */
+export const clearAll = (req, res) => {
+    try {
+        db.clearAll(FILENAME);
+
+        return res.json({
+            success: true,
+            message: 'Barcha o\'qituvchilar o\'chirildi',
+        });
+    } catch (error) {
+        console.error('Clear all teachers error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server xatosi',
+        });
+    }
+};
+
 export default {
     getAll,
     getById,
     create,
     update,
     remove,
+    clearAll,
 };
