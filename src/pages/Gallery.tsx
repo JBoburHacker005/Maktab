@@ -97,9 +97,17 @@ const Gallery: React.FC = () => {
     '/maktab/yutuq 2.png',
   ];
 
-  // Barcha rasmlarni birlashtirish
+  // Barcha rasmlarni birlashtirish (dublikatsiz)
   const allImages = useMemo(() => {
+    const seenSrcs = new Set<string>();
     const images: Array<{ src: string; alt: string }> = [];
+
+    const addImage = (src: string, alt: string) => {
+      if (!seenSrcs.has(src)) {
+        seenSrcs.add(src);
+        images.push({ src, alt });
+      }
+    };
 
     // Backend API'dan olingan rasmlar
     if (apiGallery && apiGallery.length > 0) {
@@ -110,18 +118,15 @@ const Gallery: React.FC = () => {
           : item.image_url.startsWith('/') 
             ? item.image_url 
             : `/${item.image_url}`;
-        images.push({
-          src: imageUrl,
-          alt: title,
-        });
+        addImage(imageUrl, title);
       });
     }
 
-    // Maktab rasmlari
+    // Maktab rasmlari (dublikatsiz)
     maktabImages.forEach((src) => {
       const fileName = src.split('/').pop() || '';
       const alt = fileName.replace(/\.(jpg|png)$/i, '').replace(/_/g, ' ').replace(/photo /g, '');
-      images.push({ src, alt });
+      addImage(src, alt);
     });
 
     // Hardcoded rasmlar (fallback)

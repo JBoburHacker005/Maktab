@@ -310,19 +310,24 @@ const Teachers: React.FC = () => {
     },
   ];
 
-  // O'qituvchilarni birlashtirish
+  // O'qituvchilarni birlashtirish (dublikatsiz)
   const allTeachers = useMemo(() => {
-    const teachersList: Array<{
-      name: string;
-      subject: string;
-      image: string;
-      telegram?: string;
-      phone?: string;
-    }> = [];
-
-    // Backend API'dan olingan o'qituvchilar
+    // Agar API'dan o'qituvchilar mavjud bo'lsa, faqat API ma'lumotlarini ko'rsatamiz
     if (apiTeachers && apiTeachers.length > 0) {
+      const seenNames = new Set<string>();
+      const teachersList: Array<{
+        name: string;
+        subject: string;
+        image: string;
+        telegram?: string;
+        phone?: string;
+      }> = [];
+
       apiTeachers.forEach((teacher) => {
+        const normalizedName = (teacher.name || '').trim().toLowerCase();
+        if (seenNames.has(normalizedName)) return;
+        seenNames.add(normalizedName);
+
         const subject = language === 'uz' ? teacher.subject_uz : language === 'ru' ? teacher.subject_ru : teacher.subject_en;
         const imageUrl = teacher.image_url 
           ? (teacher.image_url.startsWith('http') 
@@ -340,22 +345,12 @@ const Teachers: React.FC = () => {
           phone: teacher.phone || undefined,
         });
       });
+
+      return teachersList;
     }
 
-    // Hardcoded o'qituvchilar (fallback yoki qo'shimcha)
-    if (teachersList.length === 0) {
-      return teachers;
-    }
-
-    // Hardcoded o'qituvchilarni qo'shish (duplikatlarni oldini olish)
-    teachers.forEach((teacher) => {
-      const exists = teachersList.some(t => t.name === teacher.name);
-      if (!exists) {
-        teachersList.push(teacher);
-      }
-    });
-
-    return teachersList;
+    // Fallback: Hardcoded o'qituvchilar
+    return teachers;
   }, [apiTeachers, language]);
 
   return (

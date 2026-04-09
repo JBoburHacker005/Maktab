@@ -89,53 +89,44 @@ const Departments: React.FC = () => {
     },
   ];
 
-  // Bo'limlarni birlashtirish
+  // Bo'limlarni birlashtirish (dublikatsiz)
   const departments = useMemo(() => {
-    const deptList: Array<{
-      icon: React.ComponentType<{ className?: string }>;
-      name: string;
-      description: string;
-      subjects: string[];
-    }> = [];
-
-    // Backend API'dan olingan bo'limlar
+    // Agar API'dan bo'limlar mavjud bo'lsa, faqat API ma'lumotlarini ko'rsatamiz
     if (apiDepartments && apiDepartments.length > 0) {
+      const seenNames = new Set<string>();
+      const deptList: Array<{
+        icon: React.ComponentType<{ className?: string }>;
+        name: string;
+        description: string;
+        subjects: string[];
+      }> = [];
+
       apiDepartments.forEach((dept) => {
         const name = language === 'uz' ? dept.name_uz : language === 'ru' ? dept.name_ru : dept.name_en;
-        const description = language === 'uz' ? dept.description_uz : language === 'ru' ? dept.description_ru : dept.description_en;
+        const normalizedName = (name || '').trim().toLowerCase();
         
-        // Icon'ni olish (lucide-react'dan)
+        if (seenNames.has(normalizedName)) return;
+        seenNames.add(normalizedName);
+
+        const description = language === 'uz' ? dept.description_uz : language === 'ru' ? dept.description_ru : dept.description_en;
         const IconComponent = (dept.icon && (LucideIcons as any)[dept.icon]) || Calculator;
         
         deptList.push({
           icon: IconComponent,
           name: name || '',
           description: description || '',
-          subjects: [], // Backend'da subjects bo'lmagani uchun bo'sh qoldiramiz
+          subjects: [],
         });
       });
+
+      return deptList;
     }
 
-    // Hardcoded bo'limlar (fallback yoki qo'shimcha)
-    if (deptList.length === 0) {
-      return hardcodedDepartments.map(dept => ({
-        ...dept,
-        name: typeof dept.name === 'string' ? dept.name : t(dept.name as any),
-      }));
-    }
-
-    // Hardcoded bo'limlarni qo'shish (duplikatlarni oldini olish)
-    hardcodedDepartments.forEach((dept) => {
-      const exists = deptList.some(d => d.name === (typeof dept.name === 'string' ? dept.name : t(dept.name as any)));
-      if (!exists) {
-        deptList.push({
-          ...dept,
-          name: typeof dept.name === 'string' ? dept.name : t(dept.name as any),
-        });
-      }
-    });
-
-    return deptList;
+    // Fallback: Hardcoded bo'limlar
+    return hardcodedDepartments.map(dept => ({
+      ...dept,
+      name: typeof dept.name === 'string' ? dept.name : t(dept.name as any),
+    }));
   }, [apiDepartments, language, t]);
 
   return (
