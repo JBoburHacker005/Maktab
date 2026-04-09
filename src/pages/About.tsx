@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Eye, Award, BookOpen, Users, Calendar, GraduationCap, Trophy, FileText, Laptop, Leaf, Brain, FlaskConical, Atom, Calculator, Activity, Heart, BarChart3, Send, Github, Mail, PhoneCall } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, LabelList as RechartsLabelList } from 'recharts';
 import Layout from '@/components/layout/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+const getInitials = (name: string) => {
+  const parts = name.split(' ');
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+};
+
 const About: React.FC = () => {
   const { t } = useLanguage();
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   const achievements = [
     { icon: Users, value: '295+', label: t('students') },
@@ -616,15 +625,28 @@ const About: React.FC = () => {
                 className="text-center"
               >
                 <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden ring-4 ring-primary/20 bg-muted">
-                  <img
-                    src={person.image}
-                    alt={person.name}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg';
-                    }}
-                  />
+                  {failedImages.has(person.image) ? (
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{
+                        background: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%)',
+                      }}
+                    >
+                      <span className="text-white font-bold text-2xl select-none">
+                        {getInitials(person.name)}
+                      </span>
+                    </div>
+                  ) : (
+                    <img
+                      src={person.image}
+                      alt={person.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      onError={() => {
+                        setFailedImages((prev) => new Set(prev).add(person.image));
+                      }}
+                    />
+                  )}
                 </div>
                 <h3 className="font-display font-semibold text-lg text-foreground">
                   {person.name}
