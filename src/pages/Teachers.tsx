@@ -312,6 +312,9 @@ const Teachers: React.FC = () => {
 
   // O'qituvchilarni birlashtirish (dublikatsiz)
   const allTeachers = useMemo(() => {
+    // Leaderlar ismlarini yig'ib olish (dublikat tekshirish uchun)
+    const leaderNames = new Set(leaders.map(l => l.name.trim().toLowerCase()));
+
     // Agar API'dan o'qituvchilar mavjud bo'lsa, faqat API ma'lumotlarini ko'rsatamiz
     if (apiTeachers && apiTeachers.length > 0) {
       const seenNames = new Set<string>();
@@ -325,7 +328,10 @@ const Teachers: React.FC = () => {
 
       apiTeachers.forEach((teacher) => {
         const normalizedName = (teacher.name || '').trim().toLowerCase();
-        if (seenNames.has(normalizedName)) return;
+        
+        // Agar bu ism allaqachon ro'yxatda yoki Leaderlar ichida bo'lsa o'tkazib yuborish
+        if (seenNames.has(normalizedName) || leaderNames.has(normalizedName)) return;
+        
         seenNames.add(normalizedName);
 
         const subject = language === 'uz' ? teacher.subject_uz : language === 'ru' ? teacher.subject_ru : teacher.subject_en;
@@ -349,9 +355,19 @@ const Teachers: React.FC = () => {
       return teachersList;
     }
 
-    // Fallback: Hardcoded o'qituvchilar
-    return teachers;
-  }, [apiTeachers, language]);
+    // Fallback: Hardcoded o'qituvchilar - dublikatlarsiz va leaderlarsiz
+    const uniqueTeachers = [];
+    const seenFallback = new Set<string>();
+    
+    for (const t of teachers) {
+      const normName = t.name.trim().toLowerCase();
+      if (!seenFallback.has(normName) && !leaderNames.has(normName)) {
+        seenFallback.add(normName);
+        uniqueTeachers.push(t);
+      }
+    }
+    return uniqueTeachers;
+  }, [apiTeachers, language, leaders, teachers]);
 
   return (
     <Layout>
