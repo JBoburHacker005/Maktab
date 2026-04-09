@@ -26,8 +26,8 @@ const About: React.FC = () => {
       image: '/teachers/Ganijon.JPG',
     },
     {
-      name: 'Qurbonboyev Maqsadbek',
-      image: '/teachers/Maqsadbek.jpg',
+      name: 'Kamiljanov Sanjarbek',
+      image: '/teachers/Sanjarbek.jpg',
     },
     {
       name: "Komiljonov Bobur",
