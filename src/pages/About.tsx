@@ -26,6 +26,10 @@ const About: React.FC = () => {
       image: '/teachers/Ganijon.JPG',
     },
     {
+      name: 'Qurbonboyev Maqsadbek',
+      image: '/teachers/Maqsadbek.jpg',
+    },
+    {
       name: "Komiljonov Bobur",
       image: '/teachers/Komiljonov Bobur.jpg',
     },
@@ -70,12 +74,28 @@ const About: React.FC = () => {
       image: '/teachers/Muzrob.jpg',
     },
     {
+      name: 'Xudayberganova Go\'zalxon',
+      image: '/teachers/Gozalxon.jpg',
+    },
+    {
       name: "Jumaniyozov Muhammadjon",
       image: '/teachers/Muhammad.jpg',
     },
     {
       name: "Eshchonov Xamidjon",
       image: '/teachers/XAMIDJON.jpg',
+    },
+    {
+      name: "Xudashukurov Amirxon",
+      image: '/teachers/Amirxon.jpg',
+    },
+    {
+      name: "Ergashova Dilshoda",
+      image: '/teachers/Dilshoda.jpg',
+    },
+    {
+      name: "Jumaniyozov Bilolbek",
+      image: '/teachers/Bilolbek.jpg',
     },
   ];
 
