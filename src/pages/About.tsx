@@ -26,12 +26,12 @@ const About: React.FC = () => {
       image: '/teachers/Ganijon.JPG',
     },
     {
-      name: 'Kamiljanov Sanjarbek',
-      image: '/teachers/Sanjarbek.jpg',
-    },
-    {
       name: "Komiljonov Bobur",
       image: '/teachers/Komiljonov Bobur.jpg',
+    },
+    {
+      name: 'Kamiljanov Sanjarbek',
+      image: '/teachers/Sanjarbek.jpg',
     },
     {
       name: "Ilxomova Charosxon",
