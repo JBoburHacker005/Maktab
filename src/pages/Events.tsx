@@ -177,6 +177,126 @@ const Events: React.FC = () => {
       location: 'Main Hall',
       type: 'Cultural',
     },
+    {
+      id: 14,
+      title: 'Eco Qumita Yig\'ilishi',
+      description:
+        '✅Bugun Tuproqqalʼa tuman ixtisoslashtirilgan maktabida Eco-Schools xalqaro ekologik ta\'lim loyihasi doirasida navbatdagi muhim tadbir tashkil etildi.',
+      date: '2026-01-19',
+      time: '10:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 15,
+      title: '"ZAKOVAT" intellektual oʻyini',
+      description:
+        'Oʻtkir Hoshimov ijodiga bag\'ishlangan "ZAKOVAT" intellektual o\'yini tashkil etildi.',
+      date: '2026-01-29',
+      time: '13:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 16,
+      title: '"BOʻLAJAK MEDIKLAR" nomli tadbir',
+      description:
+        '11-"B" sinf oʻquvchilari ishtirokida "BOʻLAJAK MEDIKLAR" nomli tadbir tashkil etildi',
+      date: '2026-01-28',
+      time: '11:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 17,
+      title: '🕯IKKI BUYUK SIYMO🕯',
+      description:
+        '🕯Tadbirda Alisher Navoiy va Zahiriddin Muhammad Bobur ijodidan gʻazal va ruboiylar, hikmatli soʻzlar aytildi.',
+      date: '2026-02-09',
+      time: '10:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 18,
+      title: 'Xalqaro ilm fan sohasidagi xotin-qizlar kuni',
+      description:
+        'Xalqaro ilm fan sohasidagi xotin-qizlar kuni munosabati bilan ma\'naviy-ma\'rifiy tadbir tashkil etildi.',
+      date: '2026-02-13',
+      time: '10:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 19,
+      title: 'Zulfiya Isroilova tavallud tadbiri',
+      description:
+        'Zulfiya Isroilova tavallud sanasiga bagʻishlangan maʼnaviy-maʼrifiy tadbir boʻlib oʻtdi.',
+      date: '2026-02-27',
+      time: '13:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 20,
+      title: '“МАСЛЕНИЦА”',
+      description:
+        '“МАСЛЕНИЦА” mavzusida ma\'naviy-ma\'rifiy tadbir tashkil etildi.',
+      date: '2026-03-05',
+      time: '10:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 21,
+      title: '8-mart Xalqaro xotin-qizlar kuni',
+      description:
+        'Tuproqqalʼa tuman ixtisoslashtirilgan maktabida "Ayol baxtli bo\'lsa, jamiyat baxtlidir" shiori ostidagi tadbir o\'tkazildi',
+      date: '2026-03-06',
+      time: '13:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 22,
+      title: '🎓 Osiyo xalqaro universiteti vakillari bilan uchrashuv tashkil etildi.',
+      description:
+        '🎓 Osiyo xalqaro universiteti vakillari bilan uchrashuv tashkil etildi.',
+      date: '2026-03-13',
+      time: '11:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 23,
+      title: '21-mart "Navro\'z" umumxalq bayramini',
+      description:
+        'Navro\'zni ulug\'lash – insonni ulug\'lashdir!" degan bosh g\'oya asosida oʻtkazish maqsadida Tuproqqalʼa tuman ixtisoslashtirilgan maktabida "Navroʻz sayli" boʻlib oʻtdi.',
+      date: '2026-03-19',
+      time: '11:00',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
+    {
+      id: 24,
+      title: '"DIREKTOR STIPENDIYASI" topshirish tadbiri',
+      description:
+        'Kurbanbayev Bunyodbek Jumaboy oʻgʻli 5-"A" sinf oʻquvchisi. Quranboyev Suhrobbek Yunusbek oʻgʻli 5-"A" sinf oʻquvchisi. Xudayberganova Goʻzalxon Oybek qizi 8-"A" sinf o\'quvchisi',
+      date: '2026-04-03',
+      time: '11:00',
+      location: 'School Yard',
+      type: 'Cultural',
+    },
+    {
+      id: 25,
+      title: 'Amir Temur tavalludining 690 yilligi',
+      description:
+        'Sohibqiron Amir Temur hayoti hamda tarixiy merosini keng targ\'ib qilish, o\'quvchilarda vatanparvarlik, tarixiy xotiraga hurmat tuyg\'ularini yanada mustahkamlashdan iborat bo\'ldi',
+      date: '2026-04-09',
+      time: '12:30',
+      location: 'Main Hall',
+      type: 'Cultural',
+    },
   ];
 
   // Tadbirlarni birlashtirish va tartiblash
