@@ -332,9 +332,10 @@ const Events: React.FC = () => {
       });
     }
 
-    // Hardcoded tadbirlar (fallback yoki qo'shimcha)
-    if (allEventsList.length === 0) {
-      hardcodedEvents.forEach((event) => {
+    // Hardcoded tadbirlar (har doim qo'shiladi, dublikatlar tekshiriladi)
+    const apiTitles = new Set(allEventsList.map(e => e.title.toLowerCase().trim()));
+    hardcodedEvents.forEach((event) => {
+      if (!apiTitles.has(event.title.toLowerCase().trim())) {
         allEventsList.push({
           id: event.id,
           title: event.title,
@@ -344,8 +345,8 @@ const Events: React.FC = () => {
           location: event.location,
           type: event.type,
         });
-      });
-    }
+      }
+    });
 
     // Sanasi bo'yicha kamayish tartibida tartiblash (eng yangi birinchi)
     return allEventsList.sort((a, b) => {
