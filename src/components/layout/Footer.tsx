@@ -123,8 +123,6 @@ const Footer: React.FC = () => {
           <div className="flex-1 flex items-center justify-center gap-4 text-sm text-muted-foreground">
             <a href="#" className="hover:text-primary transition-colors">{t('privacyPolicy')}</a>
             <a href="#" className="hover:text-primary transition-colors">{t('termsOfService')}</a>
-            <span className="text-border">|</span>
-            <Link to="/admin" className="hover:text-primary transition-colors">Admin</Link>
           </div>
 
           {/* Right: Creator */}

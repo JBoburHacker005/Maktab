@@ -27,8 +27,8 @@ const config = {
 
     // Admin credentials (default)
     defaultAdmin: {
-        username: 'Bobur',
-        password: 'boburbek',
+        username: 'admin005@jbn.jbn',
+        password: 'admin005',
         role: 'super_admin',
     },
 };
