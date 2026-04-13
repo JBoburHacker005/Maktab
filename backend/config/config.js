@@ -35,7 +35,8 @@ const config = {
     // Telegram sozlamalari
     telegram: {
         botToken: process.env.TELEGRAM_BOT_TOKEN,
-        chatId: process.env.TELEGRAM_CHAT_ID,
+        // Bir nechta ID bo'lsa, ularni ro'yxatga aylantiramiz
+        chatIds: process.env.TELEGRAM_CHAT_ID ? process.env.TELEGRAM_CHAT_ID.split(',').map(id => id.trim()) : [],
     },
 };
 

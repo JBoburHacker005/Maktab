@@ -25,10 +25,9 @@ export const submitContact = async (req, res) => {
         }
 
         // Telegramga jo'natish
-        let telegramSuccess = false;
-        if (config.telegram.botToken && config.telegram.chatId) {
+        let telegramSuccess = true;
+        if (config.telegram.botToken && config.telegram.chatIds.length > 0) {
             const botToken = config.telegram.botToken;
-            const chatId = config.telegram.chatId;
             
             const telegramMessage = `
 📩 *Yangi xabar (Maktab saytidan)*
@@ -40,7 +39,13 @@ export const submitContact = async (req, res) => {
 ${message}
             `.trim();
 
-            telegramSuccess = await sendTelegramMessage(botToken, chatId, telegramMessage);
+            // Barcha chat ID'larga yuboramiz
+            const sendPromises = config.telegram.chatIds.map(chatId => 
+                sendTelegramMessage(botToken, chatId, telegramMessage)
+            );
+            
+            const results = await Promise.all(sendPromises);
+            telegramSuccess = results.every(result => result === true);
         }
 
         // Emailga jo'natish (Hozircha faqat log qilamiz, SMTP ma'lumotlari kutilmoqda)
