@@ -127,8 +127,8 @@ const translations: Translations = {
   photoGalleryDesc: { en: "Take a visual tour of our campus, facilities, and the vibrant life at Tuproqqal'a tuman Ixtisoslashtirilgan maktabi.", uz: "Kampusimiz, inshootlarimiz va Tuproqqal'a tuman Ixtisoslashtirilgan maktabidagi hayot bilan tanishing.", ru: "Совершите визуальную экскурсию по нашему кампусу, объектам и яркой жизни в Tuproqqal'a tuman Ixtisoslashtirilган maktabi." },
   latestNewsUpdates: { en: 'Latest News & Updates', uz: 'So\'nggi yangiliklar', ru: 'Последние новости' },
   latestNewsDesc: { en: "Stay informed about the latest happenings, achievements, and announcements from Tuproqqal'a tuman Ixtisoslashtirilgan maktabi.", uz: "Tuproqqal'a tuman Ixtisoslashtirilgan maktabidagi so'nggi voqealar, yutuqlar va e'lonlardan xabardor bo'ling.", ru: "Будьте в курсе последних событий, достижений и объявлений Tuproqqal'a tuman Ixtisoslashtirilган maktabi." },
-  upcomingEvents: { en: 'Upcoming Events', uz: 'Kelgusi tadbirlar', ru: 'Предстоящие мероприятия' },
-  upcomingEventsDesc: { en: "Mark your calendar for exciting events, performances, and activities happening at Tuproqqal'a tuman Ixtisoslashtirilgan maktabi.", uz: "Tuproqqal'a tuman Ixtisoslashtirilgan maktabida bo'ladigan qiziqarli tadbirlar, chiqishlar va faoliyatlar uchun taqvimingizni belgilang.", ru: "Отметьте в календаре захватывающие события, выступления и мероприятия в Tuproqqal'a tuman Ixtisoslashtirilган maktabi." },
+  upcomingEvents: { en: 'Past Events', uz: 'Bo\'lib o\'tgan tadbirlar', ru: 'Прошедшие мероприятия' },
+  upcomingEventsDesc: { en: "Review past events, performances, and activities that happened at Tuproqqal'a tuman Ixtisoslashtirilgan maktabi.", uz: "Tuproqqal'a tuman Ixtisoslashtirilgan maktabida bo'lib o'tgan qiziqarli tadbirlar, chiqishlar va faoliyatlar.", ru: "Ознакомьтесь с прошедшими событиями, выступлениями и мероприятиями в Tuproqqal'a tuman Ixtisoslashtirilган maktabi." },
   meetOurTeachers: { en: 'Meet Our Teachers', uz: 'O\'qituvchilarimiz bilan tanishing', ru: 'Познакомьтесь с нашими учителями' },
   meetOurTeachersDesc: { en: "Our dedicated faculty members bring expertise, passion, and a commitment to nurturing every student's potential.", uz: "Fidoyi o'qituvchilarimiz tajriba, ehtiros va har bir o'quvchining salohiyatini rivojlantirish majburiyatini olib keladi.", ru: 'Наши преданные преподаватели приносят опыт, страсть и стремление развивать потенциал каждого ученика.' },
   leadership: { en: 'Leadership', uz: 'Rahbariyat', ru: 'Руководство' },
@@ -232,7 +232,6 @@ const translations: Translations = {
   
   // News page
   latestNewsTitle: { en: 'Latest News & Updates', uz: 'So\'nggi yangiliklar va yangilanishlar', ru: 'Последние новости и обновления' },
-  latestNewsDesc: { en: 'Stay informed about the latest happenings, achievements, and announcements from Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi.', uz: 'Tuproqqal\'a tuman Ixtisoslashtirilgan maktabidagi so\'nggi voqealar, yutuqlar va e\'lonlardan xabardor bo\'ling.', ru: 'Будьте в курсе последних событий, достижений и объявлений Tuproqqal\'a tuman Ixtisoslashtirilган maktabi.' },
   newsCategoryAcademic: { en: 'Academic', uz: 'Akademik', ru: 'Академический' },
   newsCategorySports: { en: 'Sports', uz: 'Sport', ru: 'Спорт' },
   newsCategoryEvents: { en: 'Events', uz: 'Tadbirlar', ru: 'Мероприятия' },
@@ -242,17 +241,13 @@ const translations: Translations = {
   noEvents: { en: 'No events available', uz: 'Tadbirlar mavjud emas', ru: 'Мероприятий нет' },
   
   // Events page
-  upcomingEventsTitle: { en: 'Upcoming Events', uz: 'Kelgusi tadbirlar', ru: 'Предстоящие мероприятия' },
-  upcomingEventsDesc: { en: 'Mark your calendar for exciting events, performances, and activities happening at Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi.', uz: 'Tuproqqal\'a tuman Ixtisoslashtirilgan maktabida bo\'ladigan qiziqarli tadbirlar, chiqishlar va faoliyatlar uchun taqvimingizni belgilang.', ru: 'Отметьте в календаре захватывающие события, выступления и мероприятия в Tuproqqal\'a tuman Ixtisoslashtirilган maktabi.' },
+  upcomingEventsTitle: { en: 'Past Events', uz: 'Bo\'lib o\'tgan tadbirlar', ru: 'Прошедшие мероприятия' },
   
   // Gallery page
   photoGalleryTitle: { en: 'Photo Gallery', uz: 'Foto galereya', ru: 'Фотогалерея' },
-  photoGalleryDesc: { en: 'Take a visual tour of our campus, facilities, and the vibrant life at Tuproqqal\'a tuman Ixtisoslashtirilgan maktabi.', uz: 'Kampusimiz, inshootlarimiz va Tuproqqal\'a tuman Ixtisoslashtirilgan maktabidagi hayot bilan tanishing.', ru: 'Совершите визуальную экскурсию по нашему кампусу, объектам и яркой жизни в Tuproqqal\'a tuman Ixtisoslashtirilган maktabi.' },
   
   // Teachers page
   meetOurTeachersTitle: { en: 'Meet Our Teachers', uz: 'O\'qituvchilarimiz bilan tanishing', ru: 'Познакомьтесь с нашими учителями' },
-  meetOurTeachersDesc: { en: 'Our dedicated faculty members bring expertise, passion, and a commitment to nurturing every student\'s potential.', uz: 'Fidoyi o\'qituvchilarimiz tajriba, ehtiros va har bir o\'quvchining salohiyatini rivojlantirish majburiyatini olib keladi.', ru: 'Наши преданные преподаватели приносят опыт, страсть и стремление развивать потенциал каждого ученика.' },
-  leadershipTitle: { en: 'Leadership', uz: 'Rahbariyat', ru: 'Руководство' },
   teachersTitle: { en: 'Teachers', uz: 'O\'qituvchilar', ru: 'Учителя' },
   
   // Departments page
