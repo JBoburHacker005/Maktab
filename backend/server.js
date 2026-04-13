@@ -22,6 +22,7 @@ import teachersRoutes from './routes/teachers.js';
 import departmentsRoutes from './routes/departments.js';
 import settingsRoutes from './routes/settings.js';
 import uploadRoutes from './routes/upload.js';
+import contactRoutes from './routes/contact.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -98,6 +99,7 @@ app.use('/api/teachers', teachersRoutes);
 app.use('/api/departments', departmentsRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/contact', contactRoutes);
 
 // ============================================
 // STATIC FILES (FRONTEND)

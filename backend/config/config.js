@@ -31,6 +31,12 @@ const config = {
         password: 'admin005',
         role: 'super_admin',
     },
+
+    // Telegram sozlamalari
+    telegram: {
+        botToken: process.env.TELEGRAM_BOT_TOKEN,
+        chatId: process.env.TELEGRAM_CHAT_ID,
+    },
 };
 
 export default config;

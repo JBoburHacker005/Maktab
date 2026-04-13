@@ -332,6 +332,19 @@ export const uploadApi = {
 };
 
 // ============================================
+// CONTACT API
+// ============================================
+
+export const contactApi = {
+  submit: async (data: { name: string; email: string; subject: string; message: string }) => {
+    return request('/api/contact', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+// ============================================
 // STATS API (Dashboard uchun)
 // ============================================
 
@@ -373,6 +386,7 @@ export default {
   departments: departmentsApi,
   settings: settingsApi,
   upload: uploadApi,
+  contact: contactApi,
   stats: statsApi,
   setToken,
   removeToken,

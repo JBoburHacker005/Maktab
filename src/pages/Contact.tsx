@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { contactApi } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 
 const Contact: React.FC = () => {
@@ -21,16 +22,31 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    toast({
-      title: t('messageSent'),
-      description: t('messageSentDesc'),
-    });
-
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setIsSubmitting(false);
+    try {
+      const response = await contactApi.submit(formData);
+      
+      if (response.success) {
+        toast({
+          title: t('messageSent'),
+          description: t('messageSentDesc'),
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: t('error'),
+          description: response.message || 'Xabarni yuborishda xatolik yuz berdi',
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: t('error'),
+        description: 'Server bilan bog\'lanishda xatolik yuz berdi',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
