@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Search, Sun, Moon, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, Search, Sun, Moon, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
+
+const FLAGS: Record<string, string> = {
+  en: 'https://img.icons8.com/color/48/great-britain-circular.png',
+  uz: 'https://img.icons8.com/color/48/uzbekistan-circular.png',
+  ru: 'https://img.icons8.com/color/48/russia-circular.png',
+};
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +43,6 @@ const Navbar: React.FC = () => {
     }
   }, [isDark]);
 
-  // Close lang dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
@@ -65,12 +70,12 @@ const Navbar: React.FC = () => {
     { code: 'ru', label: 'RU' },
   ] as const;
 
-  const currentLang = languages.find(l => l.code === language)?.label || 'UZ';
+  const currentLang = languages.find(l => l.code === language) || languages[1];
 
   return (
     <header className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300', isScrolled ? 'bg-card/95 backdrop-blur-md shadow-md' : 'bg-transparent')}>
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-16 lg:h-20 gap-2">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
             <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow overflow-hidden">
@@ -83,13 +88,13 @@ const Navbar: React.FC = () => {
           <span className="font-display font-bold text-sm text-foreground flex-1 text-center lg:hidden px-2">{t('schoolName')}</span>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-0.5 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  'px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap',
+                  'px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap',
                   location.pathname === link.href
                     ? 'text-primary bg-primary/10'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -107,7 +112,7 @@ const Navbar: React.FC = () => {
               {searchOpen && (
                 <motion.input
                   initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 160, opacity: 1 }}
+                  animate={{ width: 150, opacity: 1 }}
                   exit={{ width: 0, opacity: 0 }}
                   type="text"
                   placeholder={t('search')}
@@ -119,37 +124,46 @@ const Navbar: React.FC = () => {
               <Search className="w-4 h-4" />
             </Button>
 
-            {/* Language Selector — single dropdown button */}
+            {/* Language Selector — circular flag dropdown */}
             <div className="hidden sm:block relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-muted hover:bg-muted/80 transition-colors"
+                className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-muted transition-colors"
               >
-                <Globe className="w-3.5 h-3.5" />
-                {currentLang}
-                <ChevronDown className={cn('w-3 h-3 transition-transform', langOpen ? 'rotate-180' : '')} />
+                <img
+                  src={FLAGS[currentLang.code]}
+                  alt={currentLang.label}
+                  className="w-5 h-5 rounded-full object-cover"
+                />
+                <span className="text-xs font-semibold text-foreground">{currentLang.label}</span>
+                <ChevronDown className={cn('w-3 h-3 text-muted-foreground transition-transform', langOpen ? 'rotate-180' : '')} />
               </button>
 
               <AnimatePresence>
                 {langOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                    initial={{ opacity: 0, y: -6, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-1.5 w-24 rounded-xl bg-card border border-border shadow-lg overflow-hidden z-50"
+                    className="absolute right-0 mt-1.5 w-28 rounded-xl bg-card border border-border shadow-lg overflow-hidden z-50"
                   >
                     {languages.map(lang => (
                       <button
                         key={lang.code}
                         onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
                         className={cn(
-                          'w-full px-3 py-2 text-xs font-medium text-left transition-colors',
+                          'w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium transition-colors',
                           language === lang.code
                             ? 'bg-primary/10 text-primary'
                             : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                         )}
                       >
+                        <img
+                          src={FLAGS[lang.code]}
+                          alt={lang.label}
+                          className="w-4 h-4 rounded-full object-cover"
+                        />
                         {lang.label}
                       </button>
                     ))}
@@ -204,10 +218,11 @@ const Navbar: React.FC = () => {
                         key={lang.code}
                         onClick={() => setLanguage(lang.code)}
                         className={cn(
-                          'px-2 py-1 text-xs font-medium rounded-md transition-all duration-200',
+                          'flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-md transition-all duration-200',
                           language === lang.code ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
                         )}
                       >
+                        <img src={FLAGS[lang.code]} alt={lang.label} className="w-4 h-4 rounded-full object-cover" />
                         {lang.label}
                       </button>
                     ))}
