@@ -352,11 +352,11 @@ export const statsApi = {
   getStats: async () => {
     // Faqat published ma'lumotlarni olish (saytda ko'rinadiganlar)
     const [news, events, gallery, teachers, departments] = await Promise.all([
-      newsApi.getAll(true), // published=true
-      eventsApi.getAll(true), // published=true
-      galleryApi.getAll(true), // published=true
-      teachersApi.getAll(true), // published=true
-      departmentsApi.getAll(true), // published=true
+      newsApi.getAll(), // barcha yangiliklar
+      eventsApi.getAll(), // barcha tadbirlar
+      galleryApi.getAll(), // barcha rasmlar
+      teachersApi.getAll(), // barcha o'qituvchilar
+      departmentsApi.getAll(), // barcha bo'limlar
     ]);
 
     // Ma'lumotlarni tartiblash (eng yangi birinchi)
