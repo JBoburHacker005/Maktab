@@ -7,9 +7,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 const FLAGS: Record<string, string> = {
-  en: 'https://img.icons8.com/color/48/great-britain-circular.png',
-  uz: 'https://img.icons8.com/color/48/uzbekistan-circular.png',
-  ru: 'https://img.icons8.com/color/48/russia-circular.png',
+  en: 'https://hatscripts.github.io/circle-flags/flags/gb.svg',
+  uz: 'https://hatscripts.github.io/circle-flags/flags/uz.svg',
+  ru: 'https://hatscripts.github.io/circle-flags/flags/ru.svg',
 };
 
 const Navbar: React.FC = () => {
