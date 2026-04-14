@@ -19,7 +19,7 @@ const About: React.FC = () => {
 
   const achievements = [
     { icon: Users, value: '295+', label: t('students') },
-    { icon: BookOpen, value: '29+', label: t('teachersCount') },
+    { icon: BookOpen, value: '35+', label: t('teachersCount') },
     { icon: Calendar, value: '4+', label: t('yearsExp') },
     { icon: Award, value: '50+', label: t('awards') },
     { icon: GraduationCap, value: '95%', label: t('universityAdmission100') },
