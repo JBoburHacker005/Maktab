@@ -48,28 +48,28 @@ const Teachers: React.FC = () => {
   const leaders = [
     {
       name: 'Matyoqubova Lobarxon',
-      role: 'Direktor',
+      role: t('directorRole'),
       image: '/teachers/deriktor.jpg',
       phone: '+998 (95) 444-14-74',
       telegram: '@lobar_ortiqboyevna',
     },
     {
       name: 'Kenjayev Maqsudbek',
-      role: 'Direktor o‘rinbosari (ma’naviy-ma’rifiy)',
+      role: t('viceDirectorSpiritual'),
       image: '/teachers/maqsud ustoz.png',
       phone: '+998 (99) 963-50-60',
       telegram: '@Maqsudbek',
     },
     {
       name: 'Matyoqubov Ro‘zmatjon',
-      role: 'Maktab maslahatchisi',
+      role: t('directorAdvisor'),
       image: '/teachers/maslahatchi.jpg',
       phone: '+998 (99) 338-91-11',
       telegram: '@rico9111',
     },
     {
       name: 'Otamurotov Farhod',
-      role: 'Direktor o‘rinbosari (o’quv ishlari)',
+      role: t('viceDirectorAcademic'),
       image: '/teachers/zavuch.JPG',
       phone: '+998 (97) 528-19-93',
       telegram: '@Farxod586',
