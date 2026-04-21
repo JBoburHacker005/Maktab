@@ -62,7 +62,7 @@ const Teachers: React.FC = () => {
     },
     {
       name: 'Matyoqubov Ro‘zmatjon',
-      role: 'Direktor maslahatchisi',
+      role: 'Maktab maslahatchisi',
       image: '/teachers/maslahatchi.jpg',
       phone: '+998 (99) 338-91-11',
       telegram: '@rico9111',

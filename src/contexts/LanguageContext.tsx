@@ -203,7 +203,7 @@ const translations: Translations = {
   // Director roles
   directorRole: { en: 'Director', uz: 'Direktor', ru: 'Директор' },
   viceDirectorSpiritual: { en: 'Vice Director (Spiritual-Educational)', uz: "Direktor o'rinbosari (ma'naviy-ma'rifiy)", ru: 'Заместитель директора (духовно-просветительский)' },
-  directorAdvisor: { en: 'Director Advisor', uz: 'Direktor maslahatchisi', ru: 'Советник директора' },
+  directorAdvisor: { en: 'School Advisor', uz: 'Maktab maslahatchisi', ru: 'Школьный советник' },
   viceDirectorAcademic: { en: 'Vice Director (Academic)', uz: "Direktor o'rinbosari (o'quv ishlari)", ru: 'Заместитель директора (учебная часть)' },
   
   // Footer

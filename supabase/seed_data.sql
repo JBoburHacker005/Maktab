@@ -105,7 +105,7 @@ VALUES
 ),
 (
   'Matyoqubov Ro‘zmatjon',
-  'Direktor maslahatchisi', 'Advisor to the Principal', 'Советник директора',
+  'Maktab maslahatchisi', 'School Advisor', 'Школьный советник',
   '+998 (99) 338-91-11',
   '/teachers/maslahatchi.jpg',
   'Telegram: @rico9111', 'Telegram: @rico9111', 'Telegram: @rico9111',
