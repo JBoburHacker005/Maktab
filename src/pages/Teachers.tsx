@@ -407,7 +407,7 @@ const Teachers: React.FC = () => {
           {/* Leadership */}
           <div className="mb-14">
             <div className="mb-6 text-center">
-              <h2 className="font-display text-3xl font-bold text-foreground">{t('leadershipTitle')}</h2>
+              <h2 className="font-display text-3xl font-bold text-foreground">{t('leadership')}</h2>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {leaders.map((leader, index) => (
