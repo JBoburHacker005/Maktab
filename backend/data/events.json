@@ -1,5 +1,22 @@
 [
   {
+    "id": "e30e8400-e29b-41d4-a716-446655440001",
+    "title_uz": "XUDASHUKUROV AMIRXON",
+    "title_ru": "ХУДАШУКУРОВ АМИРХОН",
+    "title_en": "XUDASHUKUROV AMIRXON",
+    "description_uz": "XUDASHUKUROV AMIRXON 🥇 “Vatanparvarlar” xalqaro harbiy-sport musobaqasida Oʻzbekiston terma jamoasi tarkibida munosib ishtirok etib, gʻolib boʻlib, yurtimiz sharafini himoya qilib qaytdi.",
+    "description_ru": "ХУДАШУКУРОВ АМИРХОН 🥇 достойно принял участие и победил в международных военно-спортивных соревнованиях «Патриоты» в составе сборной Узбекистана, защитив честь нашей страны.",
+    "description_en": "XUDASHUKUROV AMIRXON 🥇 actively participated and won the international military-sports competition \"Patriots\" as part of the Uzbekistan national team, defending the honor of our country.",
+    "location": "Maktab",
+    "event_date": "2026-04-29",
+    "event_time": "9:00 AM",
+    "image_url": null,
+    "category": "Cultural",
+    "published": true,
+    "created_at": "2026-08-29T00:00:00.000Z",
+    "updated_at": "2026-08-29T00:00:00.000Z"
+  },
+  {
     "id": "550e8400-e29b-41d4-a716-446655440001",
     "title_uz": "Bilimlar kuni",
     "title_ru": "День знаний",
